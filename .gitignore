@@ -9,3 +9,4 @@ High-Dimensional Statistics.pdf
 *.snm
 *.gz
 *.toc
+.DS_Store
