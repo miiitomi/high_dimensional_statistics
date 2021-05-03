@@ -3,21 +3,28 @@
 \usepackage{amsmath, amssymb, amsthm, color}
 \usefonttheme{professionalfonts}
 
+\newcommand{\ex}{\mathbb{E}}
+\newcommand{\var}{\mathrm{var}}
+
 \title{3. Concentration of measure}
-\author{Presenter: Yoji Tomita}
+\author{Yoji Tomita}
 \date{May 12, 2021}
 
 \begin{document}
 
 \maketitle
 
-\begin{frame}{Table of Contents}
-    \tableofcontents
-\end{frame}
+% \begin{frame}{Table of Contents}
+%     \tableofcontents
+% \end{frame}
 
 \begin{frame}{Introduction}
 \begin{itemize}
-    \item 
+    \item 2章を前提として, この章ではtail boundやconcentration inequalitiesを求めるためのより上級的な手法を紹介する.
+    \item 3.1：Concentration by entropic techniques
+    \item 3.2：A geometric perspective on concentration
+    \item 3.3：Wasserstein distances and information inequalities
+    \item 3.4：Tail bounds for empirical processes
 \end{itemize}
 \end{frame}
 
@@ -32,7 +39,61 @@
 \subsection{3.1.1 Entropy and its properties}
 \begin{frame}{3.1.1 Entropy and its properties}
 \begin{itemize}
-    \item 
+    \item 凸関数 $\phi:\mathbb{R} \to \mathbb{R}$と, 確率変数$X\sim \mathbb{P}$に対して, $\phi$-entropyを
+    \[\mathbb{H}_\phi(X) := \ex[\phi(X)] - \phi(\ex[X])\]
+    とする($X, \phi(X)$の有限期待値は仮定).\\
+    　
+    \item Jensenの不等式より, $\phi$-entropyは非負.
+    \item これは$X$のばらつき加減を表す.
+    \begin{itemize}
+        \item 極端な場合, $X$がa.s.で期待値と一致するなら, $\mathbb{H}_\phi(X) = 0$.
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+    \item 例1：$\phi(u) = u^2$なら$\mathbb{H}_\phi(X)$は分散.
+        \[ \mathbb{H}_\phi(X) = \ex[X^2] - (\ex[X])^2 = \var(X).\]
+    　
+    \item 例2：$\phi(u) = -\log u$, $Z := e^{\lambda X}$とすると,
+        \[ \mathbb{H}_\phi(e^{\lambda X})  = -\lambda \ex[X] + \log \ex[e^{\lambda X}] = \log\ex[e^{\lambda(X-\ex[X])}]\]
+        となり, centerd cumulant generating functionとなる.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+    \begin{itemize}
+        \item この章では, 次の凸関数$\phi:[0,\infty)\to\mathbb{R}$に対するentropyを考える.
+        \[\phi(u) := 
+            \begin{cases}
+                u\log u & \mathrm{for} \ u > 0\\
+                0       & \mathrm{for} \ u = 0
+            \end{cases}.\tag{3.1}
+        \]
+        非負確率変数$Z$に対して, $\phi$-entropyは
+        \[ \mathbb{H}(Z) = \ex[Z\log Z] - \ex[Z]\log\ex[Z], \tag{3.2}\]
+        となる(ただし関連する期待値の存在は仮定). 
+        \begin{itemize}
+            \item Shannon entropyやKullback-Leibler divergenceと関連がある(see Exercise 3.1).
+            \item 以後このentropyを考えるので, $\mathbb{H}_\phi$のsubscrript $\phi$は省略.
+        \end{itemize}
+        　
+        \item $Z = e^{\lambda X}$とすると, $\mathbb{H}(e^{\lambda X})$は$X$のモーメント母関数$\varphi_X(\lambda)=\ex[e^{\lambda X}]$とその導関数$\phi_X'(\lambda)$で表せる.
+        \[\mathbb{H}(e^{\lambda X}) = \lambda \varphi_X'(\lambda) - \varphi_X(\lambda)\log\varphi_X(\lambda). \tag{3.3}\]
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{exampleblock}{Example 3.1 (Entropy of a Gauusian random variable)}
+    \begin{itemize}
+        \item $X$は1次元正規分布$X\sim \mathcal{N}(0, \sigma^2)$とすると, $\varphi_X(\lambda) = e^{\lambda^2\sigma^2/2}, \varphi_X'(\lambda) = \lambda \sigma^2\varphi_X(\lambda)$なので,
+        \[ \mathbb{H}(E^{\lambda X}) = \lambda^2\sigma^2\varphi_X(\lambda) - \frac{1}{2}\lambda^2\sigma^2\varphi_X(\lambda) = \frac{1}{2}\lambda^2\sigma^2\varphi_X(\lambda). \tag{3.4}\]
+    \end{itemize}
+\end{exampleblock}
+　\\
+\begin{itemize}
+    \item この節の残りで, このエントロピー(3.3)とtail boundsとの関連性を説明していく.
 \end{itemize}
 \end{frame}
 
