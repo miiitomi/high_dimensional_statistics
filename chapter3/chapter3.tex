@@ -15,10 +15,6 @@
 
 \maketitle
 
-% \begin{frame}{Table of Contents}
-%     \tableofcontents
-% \end{frame}
-
 \begin{frame}{Introduction}
 \begin{itemize}
     \item 2章を前提として, この章ではtail boundやconcentration inequalitiesを求めるためのより上級的な手法を紹介する.
@@ -142,6 +138,66 @@ Remarks:
     \item $\lambda_0 \downarrow 0$とすると
     \[ G(\lambda) - \ex[X] \le \frac{1}{2}\sigma^2\lambda \]
     となり, これは(\ref{3.6})と同値である.\qed
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\begin{itemize}
+    \item 2章と同様に, 次はsub-exponential tailをもつ確率変数を考える.
+\end{itemize}
+\begin{block}{Proposition 3.3 (Bernsten entropy bound)}
+    正整数$b, \sigma$が存在して, エントロピー$\mathbb{H}(e^{\lambda X})$は以下を満たすとする.
+    \[
+        \mathbb{H}(e^{\lambda x})
+        \le \lambda^2\left\{b\varphi_X'(\lambda) + \varphi_X(\lambda)(\sigma^2-b\ex[X])\right\}
+        \ \ \ \mathrm{for\ all}\ \lambda \in [0, 1/b).
+        \tag{3.10}\label{3.10}
+    \]
+    このとき, 
+    \[
+        \log\ex[e^{\lambda(X-\ex[X])}] \le \sigma^2\lambda^2(1-b\lambda)^{-1}
+        \ \ \ \mathrm{for\ all}\ \lambda \in [0, 1/b).
+        \tag{3.11}\label{3.11}
+    \]
+\end{block}
+Remarks:
+\begin{itemize}
+    \item Chernoff argumentより, Prop.3.3は以下のsub-exponential tailsをもつ変数の上側Bernstein-type boundを含意する.
+    \[
+        \mathbb{P}[X\ge\ex[X] + \delta]
+        \le \exp\left(-\frac{\delta^2}{4\sigma^2+2b\delta}\right)
+        \ \ \ \mathrm{for\ all}\ \delta \ge 0.
+        \tag{3.12}\label{3.12}
+    \]
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+{\bf Proof.}
+\begin{itemize}
+    \item 一般性を失わずに$\ex[X] = 0$と$b = 1$を仮定できる(see Exercise 3.6).
+    \item このとき(\ref{3.10})は次のように簡単化される.
+    \[
+        \mathbb{H}(e^{\lambda X})
+        \le \lambda^2 \left\{\varphi'(\lambda) + \varphi(\lambda)\sigma^2\right\}
+        \ \ \ \mathrm{for\ all}\ \lambda \in [0,1).
+        \tag{3.13}\label{3.13}
+    \]
+    \item Prop.3.2の証明と同様に$G(\lambda) = \frac{1}{\lambda}\log \varphi(\lambda)$を定義すると,
+    (\ref{3.13})は$G' \le \sigma^2 + \frac{\varphi'}{\varphi}$と同値になる.
+    \item $\lambda_0 > 0$を任意にとり$\lambda_0$から$\lambda$まで両辺積分すると,
+    \[
+        G(\lambda) - G(\lambda_0)
+        \le \sigma^2(\lambda-\lambda_0) + \log\varphi(\lambda) - \log \varphi(\lambda_0).
+    \]
+    \item $\lambda_0 \downarrow 0$とすると,
+    $\lim_{\lambda\downarrow 0}G(\lambda_0) = \ex[X]$と$\log\varphi(0)=0$より,
+    \[
+        G(\lambda) - \ex[X] \le \sigma^2 \lambda + \log\varphi(\lambda)
+        \tag{3.14}\label{3.14}
+    \]
+    となる.
+    \item (\ref{3.14})に$G$と$\varphi$を入れて書き換えると(\ref{3.11})が得られる.\qed
 \end{itemize}
 \end{frame}
 
