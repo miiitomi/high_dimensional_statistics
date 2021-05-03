@@ -1,8 +1,9 @@
 \documentclass[aspectratio=169, dvipdfmx]{beamer}
 \usetheme{Boadilla}
-\usepackage{amsmath, amssymb, amsthm, color}
+\usepackage{amsmath, amssymb, amsthm, color, latexsym}
 \usefonttheme{professionalfonts}
 
+\def\qed{\hfill $\Box$}
 \newcommand{\ex}{\mathbb{E}}
 \newcommand{\var}{\mathrm{var}}
 
@@ -69,10 +70,10 @@
             \begin{cases}
                 u\log u & \mathrm{for} \ u > 0\\
                 0       & \mathrm{for} \ u = 0
-            \end{cases}.\tag{3.1}
+            \end{cases}.\tag{3.1}\label{3.1}
         \]
         非負確率変数$Z$に対して, $\phi$-entropyは
-        \[ \mathbb{H}(Z) = \ex[Z\log Z] - \ex[Z]\log\ex[Z], \tag{3.2}\]
+        \[ \mathbb{H}(Z) = \ex[Z\log Z] - \ex[Z]\log\ex[Z], \tag{3.2}\label{3.2}\]
         となる(ただし関連する期待値の存在は仮定). 
         \begin{itemize}
             \item Shannon entropyやKullback-Leibler divergenceと関連がある(see Exercise 3.1).
@@ -80,7 +81,7 @@
         \end{itemize}
         　
         \item $Z = e^{\lambda X}$とすると, $\mathbb{H}(e^{\lambda X})$は$X$のモーメント母関数$\varphi_X(\lambda)=\ex[e^{\lambda X}]$とその導関数$\phi_X'(\lambda)$で表せる.
-        \[\mathbb{H}(e^{\lambda X}) = \lambda \varphi_X'(\lambda) - \varphi_X(\lambda)\log\varphi_X(\lambda). \tag{3.3}\]
+        \[\mathbb{H}(e^{\lambda X}) = \lambda \varphi_X'(\lambda) - \varphi_X(\lambda)\log\varphi_X(\lambda). \tag{3.3}\label{3.3}\]
     \end{itemize}
 \end{frame}
 
@@ -88,12 +89,59 @@
 \begin{exampleblock}{Example 3.1 (Entropy of a Gauusian random variable)}
     \begin{itemize}
         \item $X$は1次元正規分布$X\sim \mathcal{N}(0, \sigma^2)$とすると, $\varphi_X(\lambda) = e^{\lambda^2\sigma^2/2}, \varphi_X'(\lambda) = \lambda \sigma^2\varphi_X(\lambda)$なので,
-        \[ \mathbb{H}(E^{\lambda X}) = \lambda^2\sigma^2\varphi_X(\lambda) - \frac{1}{2}\lambda^2\sigma^2\varphi_X(\lambda) = \frac{1}{2}\lambda^2\sigma^2\varphi_X(\lambda). \tag{3.4}\]
+        \[ \mathbb{H}(E^{\lambda X}) = \lambda^2\sigma^2\varphi_X(\lambda) - \frac{1}{2}\lambda^2\sigma^2\varphi_X(\lambda) = \frac{1}{2}\lambda^2\sigma^2\varphi_X(\lambda). \tag{3.4}\label{3.4}\]
     \end{itemize}
 \end{exampleblock}
 　\\
 \begin{itemize}
-    \item この節の残りで, このエントロピー(3.3)とtail boundsとの関連性を説明していく.
+    \item この節の残りで, このエントロピー(\ref{3.3})とtail boundsとの関連性を説明していく.
+\end{itemize}
+\end{frame}
+
+\subsection{3.1.2 Herbst argument and its extensions}
+\begin{frame}{3.1.2 Herbst argument and its extensions}
+\begin{itemize}
+    \item ある定数$\sigma > 0$が存在して, エントロピーが次の上限を満たすとする.
+    \[ \mathbb{H}(e^{\lambda X}) \le \frac{1}{2}\sigma^2 \lambda^2\varphi_X(\lambda).\tag{3.5}\label{3.5} \]
+    \begin{itemize}
+        \item Example 3.1より, 正規分布$X\sim \mathcal{N}(0,\sigma^2)$は任意の$\lambda \in \mathbb{R}$に対し(3.5)をイコールで満たす.
+        \item また任意のboundedな確率変数も(\ref{3.5})を満たす(Exercise 3.7).
+    \end{itemize}
+    \item このとき, その確率変数はsub-Gaussianとなる.
+\end{itemize}
+\begin{block}{Proposition 3.2 (Herbst argument)}
+    エントロピー$\mathbb{H}(e^{\lambda X})$が(\ref{3.5})を任意の$\lambda \in I$ (ただし$I=[0, \infty)\ \mathrm{or}\ \mathbb{R}$)について満たすとする.
+    このとき,
+    \[ \log \ex[e^{\lambda(X-\ex[X])}] \le \frac{1}{2}\lambda^2\sigma^2 \ \ \ \mathrm{for\ all}\ \lambda\in I. \tag{3.6}\label{3.6} \]
+\end{block}
+\end{frame}
+
+\begin{frame}{}
+Remarks:
+\begin{itemize}
+    \item $I = \mathbb{R}$なら, (\ref{3.6})は$X-\ex[X]$がパラメータ$\sigma$のsub-Gauusianであることと同値.
+    \item Chernoff argumentより, $I = [0, \infty)$でも片側tail-bound
+    \[ \mathbb{P}[X \ge \ex[X]+t] \le e^{-\frac{t^2}{2\sigma^2}} \tag{3.7}\label{3.7}\]
+    が得られ, $I=\mathbb{R}$なら両側tail bounds
+    \[ \mathbb{P}[|X-\ex[X]|\ge t] \le 2e^{-\frac{t^2}{2\sigma^2}}\]
+    となる.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}{} 
+{\bf Proof.}
+\begin{itemize}
+    \item $I = [0,\infty)$の場合のみ示す($I=\mathbb{R}$は演習とする).
+    \item エントロピーのモーメント母関数による表現(\ref{3.3})と仮定(\ref{3.5})より,
+    \[\mathbb{H}(e^{\lambda X}) = \lambda \varphi'(\lambda) - \varphi(\lambda)\log\varphi(\lambda)\le\frac{1}{2}\sigma^2\lambda^2\varphi(\lambda) \ \ \ \forall \lambda \ge 0.\tag{3.8}\label{3.8} \]
+    \item 関数$G$を$G(\lambda):= \frac{1}{\lambda}\log\varphi(\lambda)\ (\lambda\ne 0)$と定義し, $\lambda=0$では連続性を満たすように
+    \[ G(0):= \lim_{\lambda \to 0}G(\lambda) = \ex[X] \tag{3.9}\label{3.9}\]
+    とする.
+    \item $G'(\lambda) = \frac{1}{\lambda}\frac{\varphi'(\lambda)}{\varphi(\lambda)}-\frac{1}{\lambda^2}\log\varphi(\lambda)$より, (\ref{3.8})は$G'(\lambda) \le \frac{1}{2}\sigma^2$となるので, $\lambda_0(>0)$から$\lambda$まで両辺積分すると
+    \[ G(\lambda) - G(\lambda_0) \le \frac{1}{2}\sigma^2(\lambda-\lambda_0). \]
+    \item $\lambda_0 \downarrow 0$とすると
+    \[ G(\lambda) - \ex[X] \le \frac{1}{2}\sigma^2\lambda \]
+    となり, これは(\ref{3.6})と同値である.\qed
 \end{itemize}
 \end{frame}
 
