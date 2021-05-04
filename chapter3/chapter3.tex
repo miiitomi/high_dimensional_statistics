@@ -201,4 +201,142 @@ Remarks:
 \end{itemize}
 \end{frame}
 
+\subsection{3.1.3 Separately convex functions and the entropic method}
+\begin{frame}{3.1.3 Separately convex functions and the entropic method}
+\begin{itemize}
+    \item Entropy methodは複数の確率変数からなる関数のconcentrationを考える時に強力.
+    \item 関数$f:\mathbb{R}^n \to \mathbb{R}$が{\it separately convex}であるとは,
+          各$k\in\{1,\dots,n\}$について1変数関数
+          \[y_k \mapsto f(x_1,\dots,x_{k-1},y_k,x_{k+1},\dots,x_n)\]
+          が任意の$(x_1,\dots,x_{k-1},x_{k+1},\dots,x_n) \in \mathbb{R}^{n-1}$に対して凸であることをいう.
+    \item また関数$f$がユークリッドノルムに対して$L$-Lipschitzであるとは,
+          \[
+              \left|f(x)-f(x')\right| \le L \|x-x'\|
+              \ \ \ \mathrm{for\ all}\ x,x'\in\mathbb{R}^n.
+          \]
+          が成り立つことをいう.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Theorem 3.4}
+    $\{X_i\}_{i=1}^n$は独立な確率変数列でそれぞれのサポートは$[a,b]$に含まれるものとし,
+    $f:\mathbb{R}^n\to\mathbb{R}$はseparately convexかつ$L$-Lipschitzであるとする.
+    このとき, 任意の$\delta > 0$に対して
+    \[
+        \mathbb{P}\left[ f(X) \le \ex[f(X)] + \delta \right]
+        \le \exp\left(-\frac{\delta^2}{4L^2(b-a)^2}\right)
+        \tag{3.16}\label{3.16}
+    \]
+    が成り立つ.
+\end{block}
+{Remarks:}
+\begin{itemize}
+    \item この結果はGaussianヘ変数のLipscitz関数のupper tail boundを求めたThm.2.26のanalogueだが,
+          独立かつboundedな変数に対して適用できる.
+    \item ただし, separetely convexityの仮定は一般に取り除くことができない.
+    \item $f$がjointly convexの場合はlower tail boundの導出に他のテクニックが使える(cf Thm.3.24).
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{exampleblock}{Example 3.5 (Sharp bounds on Rademacher complexity)}
+    \begin{itemize}
+        \item 有界部分集合$\mathcal{A}\in\mathbb{R}^n$は所与とし,
+        確率変数$Z = \sup_{a\in\mathcal{A}}\sum_{k=1}^na_k\epsilon_k$を考える.
+        \item $\epsilon_k \in \{\-1,1\}$はi.i.d.なRademacher variables.
+        \item $Z$は線形関数の$\sup$をとったものなのでjointly (したがってseparately) convex.
+        \item 別の$Z' = Z(\epsilon')$に対し, 任意の$a\in\mathcal{A}$について
+        \[
+            \langle a,\epsilon\rangle - Z'
+            = \langle a,\epsilon\rangle - \sup_{a'\in\mathcal{A}}\langle a,\epsilon'\rangle
+            \le \langle a, \epsilon-\epsilon'\rangle
+            \le \|a\|_2 \|\epsilon-\epsilon'\|_2.
+        \]
+        \item $a\in \mathcal{A}$について$\sup$をとると
+        $Z-Z' \le \sup_{a\in\mathcal{A}}\|a\|_2\|\epsilon-\epsilon'\|$.
+        \item よって, $Z$は$\mathcal{W}(\mathcal{A}):=\sup_{a\in\mathcal{A}}\|a\|_2\|$-Lipschitz.
+        \item したがって, Theorem 3.4より
+        \[ \mathcal{P}[Z \le \ex[Z]+t] \le \exp\left(-\frac{t^2}{16\mathcal{W}^2(\mathcal{A})}\right).
+        \tag{3.17}\label{3.17}\]
+        \item 通常$\mathcal{W}^2(A)$は$\sum_{k=1}^n\sup a_k^2$よりずっと小さいので, Example2.25より強いboundとなる.
+    \end{itemize}
+\end{exampleblock}
+\end{frame}
+
+% Example 3.6はとりあえず省略.
+
+\subsection{3.1.4 Tensorization and separately convex functions}
+\begin{frame}{3.1.4 Tensorization and separately convex functions}
+\begin{itemize}
+    \item 2つのlemmaをもとにTheorem 3.4を証明する.
+\end{itemize}
+\begin{block}{Lemma 3.7}
+    $X, Y \sim \mathbb{P}$, i.i.d.とすると, 任意の関数$g:\mathbb{R}\to\mathbb{R}$に対し以下が成り立つ.
+    \[
+        \mathbb{H}(e^{\lambda g(X)})
+        \le \lambda^2\ex\left[(g(X)-g(Y))^2e^{\lambda g(X)}\mathbb{I}[g(X)\ge g(Y)]\right]
+        \ \ \ \mathrm{for\ all}\ \lambda > 0.
+        \tag{3.20a}\label{3.20a}
+    \]
+    さらに$X$のサポートが$[a,b]$に含まれ, $g$が凸かつLipschitzなら,
+    \[
+        \mathbb{H}(e^{\lambda g(X)})
+        \le \lambda^2(b-a)^2\ex\left[(g'(X))^2e^{\lambda g(X)}\right]
+        \ \ \ \mathrm{for\ all}\ \lambda>0,
+        \tag{3.20b}\label{3.20b}
+    \]
+    が成り立つ($g'$は$g$の導関数).
+\end{block}
+\end{frame}
+
+\begin{frame}{}
+\begin{itemize}
+    \item Lemma 3.7は, 凸かつLipschitzな関数はほとんどいたるところ微分可能であるという事実を使っている(Rademacher's Theorem).
+    \item また, $g$が$L$-Lipschitzなら$\|g'\|_\infty \le L$\footnote{関数$f$に対して$\|f\|_\infty$は$f$の本質的上限$\|f\|_\infty:=\inf\{C\ge 0: |f(x)| \le C \mathrm{\ almost\ every}\ x.\}$.}なので,
+          (\ref{3.20b})は以下を含意する.
+          \[
+              \mathbb{H}(e^{\lambda  g(X)}) \le \lambda^2 L^2(b-a)^2\ex[e^{\lambda g(X)}]
+              \ \ \ \mathrm{for\ all}\ \lambda > 0.
+          \] 
+    \item したがってProposition 3.2より
+    \[ \mathbb{P}[g(X) \ge \ex[g(X)]+\delta] \le e^{-\frac{\delta^2}{4L^2(b-a)^2}} \]
+    となるので, Lemma 3.7はTheorem 3.4の1変数バージョンをただちに導く.
+    \item しかし(\ref{3.20b})では$L$でなく$g'$とより強いboundとなっており,
+    これがTheorem 3.4の導出において重要となる.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+{\bf Proof of Lemma 3.7}
+\begin{itemize}
+    \item エントロピーの定義より,
+\begin{align*}
+    \mathbb{H}(e^{\lambda g(X)})
+    &= \ex_X[\lambda g(X) e^{\lambda g(X)}] - \ex_X[e^{\lambda g(X)}]\log(\ex_Y[e^{\lambda g(Y)}])\\
+    &\le \ex_X[\lambda g(X) e^{\lambda g(X)}] - \ex_{X,Y}[e^{\lambda g(X)}\lambda g(Y)] \tag{Jensen's inequality}\\
+    &= \frac{1}{2} \ex_{X,Y}\left[\lambda\{g(X)-g(Y)\}\{e^{\lambda g(X)}-e^{\lambda g(Y)}\}\right] \\
+    &= \lambda \ex\left[\{g(X)-g(Y)\}\{e^{\lambda g(X)}-e^{\lambda g(Y)}\}\mathbb{I}[g(X) \ge g(Y)]\right]. \tag{3.22}\label{3.22}
+\end{align*}
+    となる(ただし最後の等式は$X,Y$の対称性より).
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\begin{itemize}
+    \item 指数関数の凸性より, 任意の$s\ge t$に対し$e^s - e^t \le e^s(s-t)$なので,
+    \[ (s-t)(e^s-e^t)\mathbb{I}[s\ge t] \le (s-t)^2e^s\mathbb{I}[s\ge t] \]
+    \item これを(\ref{3.22})に適用すると, (\ref{3.20a})
+    \[
+        \mathbb{H}(e^{\lambda g(X)})
+        \le \lambda^2\ex[(g(X)-g(Y))^2 e^{\lambda g(X)} \mathbb{I}[g(X)\ge g(Y)]].
+        \tag{3.23}\label{3.23}
+    \]
+    が得られる.
+    \item さらに$g$が凸で$x,y\in[a,b]$とすると, $g(x)-g(y)\le g'(x)(x-y)$より,
+    \[(g(x)-g(y))^2\mathbb{I}[g(x)\ge g(y)] \le (g'(x))^2(x-y)^2\le (g'(x))^2(b-a)^2\]
+    となるので, これを(\ref{3.23})に適用すれば(\ref{3.20a})が得られる.\qed
+\end{itemize}
+\end{frame}
+
 \end{document}
