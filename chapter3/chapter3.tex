@@ -264,7 +264,11 @@ Remarks:
 \end{exampleblock}
 \end{frame}
 
-% Example 3.6はとりあえず省略.
+\begin{frame}
+\begin{itemize}
+    \item Example 3.6はとりあえず省略.
+\end{itemize}
+\end{frame}
 
 \subsection{3.1.4 Tensorization and separately convex functions}
 \begin{frame}{3.1.4 Tensorization and separately convex functions}
@@ -336,6 +340,184 @@ Remarks:
     \item さらに$g$が凸で$x,y\in[a,b]$とすると, $g(x)-g(y)\le g'(x)(x-y)$より,
     \[(g(x)-g(y))^2\mathbb{I}[g(x)\ge g(y)] \le (g'(x))^2(x-y)^2\le (g'(x))^2(b-a)^2\]
     となるので, これを(\ref{3.23})に適用すれば(\ref{3.20a})が得られる.\qed
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+{\bf Tensorization peoperty of entropy}
+\begin{itemize}
+    \item 関数$f:\mathbb{R}^n\to\mathbb{R}, k \in \{1,\dots,n\}, x_{\setminus k}=(x_i, i\ne k)\in\mathbb{R}^{n-1}$に対して,
+    条件付きエントロピーを
+    \[ \mathbb{H}(e^{\lambda f_k(X_k)} \mid x_{\setminus k}) := \mathbb{H}(e^{\lambda f(x_1,\dots,x_{k-1},X_k,x_{k+1},\dots,x_n)}) \]
+    と定義する（$f_k$は$x_k\mapsto f(x_1,\dots,x_k,\dots,x_n)$なる1変数関数）.
+    \item 確率変数$X^{\setminus k}\in \mathbb{R}^{n-1}$に対し,
+    このエントロピー$\mathbb{H}(e^{\lambda f_k(X_k)} \mid X^{\setminus k})$は確率変数となる.
+\end{itemize}
+\begin{block}{Lemma 3.8 (Tensorization of entropy)}
+$n$変数関数$f:\mathbb{R}^n \to \mathbb{R}$と, 独立な確率変数列$\{X_k\}_{k=1}^n$に対し,
+\[
+    \mathbb{H}(e^{\lambda f(X_1\dots,X_k)})
+    \le \ex\left[ \sum_{k=1}^n\mathbb{H}(e^{\lambda f_k(X_k)} \mid X^{\setminus k}) \right]
+    \ \ \ \mathrm{for\ all}\ \lambda > 0.
+    \tag{3.21}\label{3.21}
+\]
+\end{block}
+\end{frame}
+
+\begin{frame}{}{}
+{\bf Proof of Lemma 3.8}
+\begin{itemize}
+    \item まずエントロピーは以下のように表せる（Exercise 3.9）.
+    \[
+        \mathbb{H}\left(e^{\lambda f(X)}\right)
+        = \sup _{g}\left\{\mathbb{E}\left[g(X) e^{\lambda f(X)}\right] \mid \mathbb{E}\left[e^{g(X)}\right] \leq 1\right\}.
+        \tag{3.24}\label{3.24}
+        \]
+    \item 各$j = 1,\dots,n$に対し, $X_j = (X_j\dots,X_n)$とする.
+    \item $g$は$\ex[e^{g(X)}]\le 1$を満たす関数とする.
+    \item 関数列$g_1,\dots, g_n$を以下で定義する.
+    \begin{align*}
+        &g^{1}\left(X_{1}, \ldots, X_{n}\right):=g(X)-\log \mathbb{E}\left[e^{g(X)} \mid X_{2}^{n}\right] \\
+        &g^{k}\left(X_{k}, \ldots, X_{n}\right):=\log \frac{\mathbb{E}\left[e^{g(X)} \mid X_{k}^{n}\right]}{\mathbb{E}\left[e^{g(X)} \mid X_{k+1}^{n}\right]} \quad \mathrm{for}\ k=2, \ldots, n.
+    \end{align*}
+    \item すると定義より,
+    \[
+        \sum_{k=1}^{n} g^{k}\left(X_{k}, \ldots, X_{n}\right)=g(X)-\log \mathbb{E}\left[e^{g(X)}\right] \geq g(X).
+        \tag{3.25}\label{3.25}
+    \]
+    で, さらに$\ex[\exp(g^k(X_k,\dots,X_n))\mid X_{k+1}^n] = 1$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+    \item このとき,
+    \begin{align*}
+        \mathbb{E}\left[g(X) e^{\lambda f(X)}\right] 
+        & \stackrel{(\mathrm{i})}{\le} \sum_{k=1}^{n} \mathbb{E}\left[g^{k}\left(X_{k}, \ldots, X_{n}\right) e^{\lambda f(X)}\right] \\
+        &=\sum_{k=1}^{n} \mathbb{E}_{X_{\setminus k}}\left[\mathbb{E}_{X_{k}}\left[g^{k}\left(X_{k}, \ldots, X_{n}\right) e^{\lambda f(X)} \mid X_{\backslash k}\right]\right] \\
+        & \stackrel{(\mathrm{ii})}{\leq} \sum_{k=1}^{n} \mathbb{E}_{X_{\setminus k}}\left[\mathbb{H}\left(e^{\lambda f_{k}\left(X_{k}\right)} \mid X_{\backslash k}\right)\right]
+    \end{align*}
+    となる, ただし$(\mathrm{i})$は(\ref{3.25}), $(\mathrm{ii})$は(\ref{3.24})と$\ex[\exp(g^k(X_k,\dots,X_n))\mid X_{\backslash k}] = 1$より.
+    \item これを関数$g \mathrm{\ s.t.\ } \ex[e^{g(X)}]\le 1$に対して$\sup$をとると, (\ref{3.24})より
+    \[ \mathbb{H}(e^{\lambda f(X_1\dots,X_k)})
+    \le \ex\left[ \sum_{k=1}^n \mathbb{H}(e^{\lambda f_k(X_k)} \mid X^{\setminus k}) \right] \]
+    が得られる.\qed
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+{\bf Proof of Theorem 3.4}
+\begin{itemize}
+    \item 各$k=1,\dots,n$と$x_{\backslash k}\in\mathbb{R}^{n-1}$について, 仮定より$f_k$は凸かつLipschitzなので,
+    Lemma 3.7より 
+    \begin{align*}
+        \mathbb{H}\left(e^{\lambda f_{k}\left(X_{k}\right)} \mid x_{\backslash k}\right)
+        &\leq \lambda^{2}(b-a)^{2} \mathbb{E}_{X_{k}}\left[\left(f_{k}^{\prime}\left(X_{k}\right)\right)^{2} e^{\lambda f_{k}\left(X_{k}\right)} \mid x_{\backslash k}\right] \\
+        &=\lambda^{2}(b-a)^{2} \mathbb{E}_{X_{k}}\left[\left(\frac{\partial f\left(x_{1}, \ldots, X_{k}, \ldots, x_{n}\right)}{\partial x_{k}}\right)^{2} e^{\lambda f\left(x_{1}, \ldots, X_{k}, \ldots, x_{n}\right)}\right]
+    \end{align*}
+    \item Lemma 3.8より,
+    \[
+        \mathbb{H}\left(e^{\lambda f(X)}\right)
+        \leq \lambda^{2}(b-a)^{2} \mathbb{E}\left[\sum_{k=1}^{n}\left(\frac{\partial f(X)}{\partial x_{k}}\right)^{2} e^{\lambda f(X)}\right]
+        \stackrel{(\mathrm{i})}{\leq}  \lambda^{2}(b-a)^{2} L^{2} \mathbb{E}\left[e^{\lambda f(X)}\right]
+    \]
+    となる, ただし$\mathrm{(i)}$はLipschitz関数の性質
+    $\|\nabla f(x)\|_{2}^{2}=\sum_{k=1}^{n}\left(\frac{\partial f(x)}{\partial x_{k}}\right)^{2} \leq L^{2}$
+    より.
+    \item したがって, Proposition 3.2を$f(X)$に適用すると, upper bound (\ref{3.16})が得られる.\qed
+\end{itemize}
+\end{frame}
+
+\section{3.2 A geometric perspective on concentration}
+
+\begin{frame}{3.2 A geometric perspective on concentration}
+\begin{itemize}
+    \item Concentration of measureの幾何的な面の議論に移る.
+    \item この章の結果は, 距離測度空間(metric measure space)---つまり, 距離空間$(\mathcal{X}, \rho)$とそのボレル集合上の確率測度$\mathbb{P}$---の言葉で示される.
+    \item 距離空間の例としては, 
+    \begin{itemize}
+        \item the Euclid space $\mathcal{X} = \mathbb{R}^n$ with the usual Euclidian metric $\rho(x,y):=\|x-y\|_2$,
+        \item the discrete cube $\mathcal{X} = \{0, 1\}^n$ with the Hamming metric $\rho(x,y)=\sum_{j=1}^n\mathbb{I}[x_j\ne y_j]$
+    \end{itemize}
+    などがある.
+\end{itemize}
+\end{frame}
+
+\subsection{3.2.1 Concentration functions}
+\begin{frame}{3.2.1 Concentration functions}
+\begin{itemize}
+    \item 集合$A\subseteq \mathcal{X}$と点$x\in \mathcal{X}$に対し, それらの距離を以下とする.
+    \[ \rho(x, A) := \inf_{y \in A}\rho(x, y). \tag{3.26}\label{3.26}\]
+    \item パラメータ$\epsilon > 0$に対し, $A$の$\epsilon$-拡張($\epsilon$-enlargement)は以下で与えられる.
+    \[ A^\epsilon := \{ x \in \mathcal{X} \mid \rho(x, A) < \epsilon \}. \tag{3.27}\label{3.27} \]
+\end{itemize}
+\begin{block}{Definition 3.9}
+    距離測度空間$(\mathcal{X}, \rho, \mathbb{P})$のconcentration function $\alpha:[0,\infty)\to\mathbb{R}_+$は,
+    \[
+        \alpha_{\mathbb{P}, (\mathcal{X}, \rho)}(\epsilon)
+        := \sup_{A \subseteq \mathcal{X}}\left\{ 1-\mathbb{P}[A^\epsilon]\ \Big|\ \mathbb{P}[A] \ge \frac{1}{2} \right\}
+        \tag{3.28}\label{3.28}
+    \]
+    で定義される, ただし$\sup$は全ての可測部分集合$A$についてとられる.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+    \item Example 3.10 省略.
+\end{itemize}
+\end{frame}
+
+\subsection{3.2.2 Connection to Lipschitz functions}
+\begin{frame}{3.2.2 Connection to Lipschitz functions}
+\begin{itemize}
+    \item 関数$f:\mathcal{X}\to\mathbb{R}$が距離$\rho$に関して$L$-Lipschitzであるとは, 以下が成り立つことをいう.
+    \[ |f(x)-f(y)| \le L \rho(x, y) \ \ \ \mathrm{for\ all}\ x,y\in\mathcal{X}. \tag{3.36}\label{3.36}\]
+    \item 確率変数$X \sim \mathbb{P}$に対し, $m_f$は$f(X)$の任意のメディアンとする, つまり,
+    \[ \mathbb{P}[f(X) \ge m_f] \ge 1/2\ \ \ \mathrm{and}\ \ \ \mathbb{P}[f(X) \le m_f] \ge 1/2. \tag{3.37}\label{3.37}\]
+\end{itemize}
+\begin{block}{Proposition 3.11}
+\begin{itemize}
+    \item 確率変数$X\sim \mathbb{P}$とconcentration function$\alpha_{\mathbb{P}}$に対し,
+    $(\mathcal{X}, \rho)$上の$L$-Lipschitz関数$f$は次を満たす.
+    \[ \mathbb{P}[|f(X)-m_f|\ge \epsilon] \le 2 \alpha_{\mathbb{P}}(\epsilon/L). \tag{3.39a}\label{3.39a}\]
+    \item 関数$\beta:\mathbb{R}_+\to\mathbb{R}_+$は, 任意の$1$-Lipschitz関数$f$に対し
+    \[ \mathbb{P}[f(X) \ge \ex[f(X)] + \epsilon] \le \beta(\epsilon)\ \ \ \mathrm{for\ any}\ \epsilon \ge 0. \tag{3.39b}\label{3.39b}\]
+    を満たすとする. このとき, concentraion functionはbound $\alpha_{\mathbb{P}}(\epsilon) \le \beta(\frac{\epsilon}{2})$をもつ.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{}{}
+{\bf Proof of Proposition 3.11}\\
+{（前半）}
+\begin{itemize}
+    \item 集合$A = \{x\in\mathcal{X} \mid f(x) \le m_f\}$と, その$\epsilon/L$-拡張$A^{\epsilon/L}$について考える.
+    \item 任意の$x \in A^{\epsilon/L}$に対し, $\rho(x, y) < \epsilon/L$なる$y\in A$が存在する.
+    \item Lipschitz性より$|f(x) - f(y)| \le L\rho(x,y) < \epsilon$なので,
+    \[ A^{\epsilon/L} \subseteq \{x\in\mathcal{X} \mid f(x) < m_f + \epsilon\}. \tag{3.38}\label{3.38} \]
+    \item したがって,
+    \[ 
+        \mathbb{P}[f(X)\ge m_f+\epsilon]
+        \stackrel{\mathrm{(i)}}{\le} 1-\mathbb{P}[A^{\epsilon/L}]
+        \stackrel{\mathrm{(ii)}}{\le} \alpha_{\mathbb{P}}(\epsilon/L)
+    \]
+     が成り立つ, ただし$\mathrm{(i)}$は(\ref{3.38}), $\mathrm{(ii)}$は$\mathbb{P}(A) \ge 1/2$と$\alpha_{\mathbb{P}}$の定義より.
+    \item 同様にして$\mathbb{P}[f(X)\le m_f-\epsilon] \le \alpha_{\mathbb{P}}(\epsilon/L)$も示されるので, (\ref{3.39a})が得られる.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+{（後半）}
+\begin{itemize}
+    \item $\epsilon \ge 0$を固定し, $A$は$\mathbb{P}[A]\ge 1/2$を満たす任意の可測集合とする.
+    \item 関数$f(x) := \min\{\rho(x, A), \epsilon\}$は1-Lipschitz（らしい）で$1-\mathbb{P}[A^\epsilon]=\mathbb{P}[f(X)\ge\epsilon]$.
+    \item また, 定義より$\ex[f(X)] \le (1-\mathbb{P}[A])\epsilon \le \epsilon/2$なので, 
+    \[ \mathbb{P}\left[f(X)\ge \epsilon\right] \le \mathbb{P}\left[f(X)\ge\ex[f(X)]+\epsilon/2\right] \le \beta(\epsilon/2). \]
+    \item したがって, 任意の可測集合$A \mathrm{\ s.t.\ }\mathbb{P}[A]\ge 1/2$に対して
+    \[ 1-\mathbb{P}[A^\epsilon] \le \beta(\epsilon/2) \]
+    となるので, $\alpha_{\mathbb{P}}(\epsilon) \le \beta({\epsilon/2})$.\qed
 \end{itemize}
 \end{frame}
 
