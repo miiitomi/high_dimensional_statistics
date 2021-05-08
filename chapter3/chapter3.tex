@@ -4,6 +4,7 @@
 \usefonttheme{professionalfonts}
 
 \def\qed{\hfill $\Box$}
+\def\endexample{\hfill $\clubsuit$}
 \newcommand{\ex}{\mathbb{E}}
 \newcommand{\var}{\mathrm{var}}
 
@@ -205,7 +206,7 @@ Remarks:
 \begin{frame}{3.1.3 Separately convex functions and the entropic method}
 \begin{itemize}
     \item Entropy methodは複数の確率変数からなる関数のconcentrationを考える時に強力.
-    \item 関数$f:\mathbb{R}^n \to \mathbb{R}$が{\it separately convex}であるとは,
+    \item 関数$f:\mathbb{R}^n \to \mathbb{R}$が{separately convex}であるとは,
           各$k\in\{1,\dots,n\}$について1変数関数
           \[y_k \mapsto f(x_1,\dots,x_{k-1},y_k,x_{k+1},\dots,x_n)\]
           が任意の$(x_1,\dots,x_{k-1},x_{k+1},\dots,x_n) \in \mathbb{R}^{n-1}$に対して凸であることをいう.
@@ -239,8 +240,8 @@ Remarks:
 \end{itemize}
 \end{frame}
 
-\begin{frame}
-\begin{exampleblock}{Example 3.5 (Sharp bounds on Rademacher complexity)}
+\begin{frame}{}{}
+{\bf Example 3.5} (Sharp bounds on Rademacher complexity)
     \begin{itemize}
         \item 有界部分集合$\mathcal{A}\in\mathbb{R}^n$は所与とし,
         確率変数$Z = \sup_{a\in\mathcal{A}}\sum_{k=1}^na_k\epsilon_k$を考える.
@@ -260,8 +261,8 @@ Remarks:
         \[ \mathcal{P}[Z \le \ex[Z]+t] \le \exp\left(-\frac{t^2}{16\mathcal{W}^2(\mathcal{A})}\right).
         \tag{3.17}\label{3.17}\]
         \item 通常$\mathcal{W}^2(A)$は$\sum_{k=1}^n\sup a_k^2$よりずっと小さいので, Example2.25より強いboundとなる.
+        \endexample
     \end{itemize}
-\end{exampleblock}
 \end{frame}
 
 \begin{frame}
@@ -518,6 +519,186 @@ $n$変数関数$f:\mathbb{R}^n \to \mathbb{R}$と, 独立な確率変数列$\{X_
     \item したがって, 任意の可測集合$A \mathrm{\ s.t.\ }\mathbb{P}[A]\ge 1/2$に対して
     \[ 1-\mathbb{P}[A^\epsilon] \le \beta(\epsilon/2) \]
     となるので, $\alpha_{\mathbb{P}}(\epsilon) \le \beta({\epsilon/2})$.\qed
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+    \item Example 3.12はとりあえず省略.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+{\bf Example 3.13} (Concentration for Boolean hypercube)
+\begin{itemize}
+    \item Boolean hypercube $\mathcal{X} = \{0, 1\}^n$とHamming metric $\rho_H(x, y):= \sum_{j=1}^n\mathbb{I}[x_j\ne y_j]$を考える.
+    \item 確率測度$\mathbb{P}$は$\mathcal{X}$上の一様分布.
+    \item 半径$r$, 中心$x\in\mathcal{X}$の球をHamming ballと呼び, 以下で定義する.
+    \[ \mathbb{B}_H(r; x) = \{y \in \{0,1\}^n \mid \rho_H(y,x)\le r\}. \]
+    \item 非空な部分集合$A, B \subseteq \mathcal{X}$に対し, Harper's combinatorial theoremより,
+    正整数$r_A, r_B$と対応する部分集合$A', B' \subseteq \mathcal{X}$が存在し, 以下を満たす.
+    \begin{itemize}
+        \item $\mathbb{B}_{H}\left(r_{A}-1 ; 0\right) \subseteq A^{\prime} \subseteq \mathbb{B}_{H}\left(r_{A} ; 0\right) \quad
+            \mathrm{and} \quad \mathbb{B}_{H}\left(r_{B}-1 ; 1\right) \subseteq B^{\prime} \subseteq \mathbb{B}_{H}\left(r_{B} ; 1\right).$\footnote{$0,1$はそれぞれall-zeros vector, all-ones vector.}
+        \item $\mathrm{card}(A) = \mathrm{card}(A'), \mathrm{card}(B)=\mathrm{card}(B')$.
+        \item $\rho_H(A', B') \ge \rho_H(A, B)$.
+    \end{itemize}
+    \item 上の結果より, concentration functionは以下のように抑えられる.
+    \[ \alpha_{\mathbb{P}}(\epsilon) \le \exp\left(-\frac{2\epsilon^2}{n}\right) \ \ \ \mathrm{for\ all}\ n\ge 3. \tag{3.42}\label{3.42} \]
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+    \item 任意の部分集合$A$ s.t. $\mathbb{P}[A] = \mathrm{card}(A)/2^n \ge 1/2$をとる.
+    \item 任意の$\epsilon > 0$に対し, $B = \mathcal{X}\setminus A^\epsilon$とする.
+    \item (\ref{3.42})にを示すには, $\mathbb{P}[B] \le \exp(-2\epsilon^2/n)$を示せば良い.
+    \item $\epsilon \le 1$なら$\mathbb{P}[B]\le 1/2\le \exp(-2/n)\le \exp(-2\epsilon^2/n)$なので, 以後$\epsilon > 1$とする.
+    \item 定義より,
+    \[ \rho_H(A, B) = \min_{a \in A, b\in B}\rho(a,b) \ge \epsilon. \]
+    \item $A', B'$をHarperの定理によって保証される集合とする. 
+    \item $\mathrm{card}(A)=\mathrm{card}(A')\ge1/2$より, $A'$は$1$の数が$n/2$以下のベクトルを全て含む.
+    \item $\rho_H(A', B')\ge \rho_H(A, B) \ge \epsilon$なので, $B'$は1の数が$n/2 + \epsilon$以上であるベクトルを全て含む.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+    \item したがって, $\{X_i\}_{i=1}^n$をi.i.d. Bernoulli変数とすると, 上の議論とHoeffding boundより,
+    \[\mathbb{P}[B]=\mathbb{P}[B']\le\mathbb{P}\left[\sum_{i=1}^nX_i\ge\frac{n}{2}+\epsilon\right] \le \exp\left(-\frac{2\epsilon^2}{n}\right)\]
+    となり, $A$は$\mathbb{P}[A]\ge1/2$の任意の集合で$B = \mathcal{X}\setminus A^\epsilon$なので, (\ref{3.42})が得られる.
+    \item よってProposition 3.11より, 任意の1-Lipschitz関数に対し
+    \[ \mathbb{P}\left[\left|f(X)-m_{f}\right| \geq \epsilon\right] \leq 2 \exp\left(-\frac{2 \epsilon^{2}}{n}\right) .\]
+    \endexample
+\end{itemize}
+\end{frame}
+
+\subsection{3.2.3 From geometry to concentration}
+\begin{frame}{3.2.3 From geometry to concentration}
+\begin{itemize}
+    \item これらの幾何的な面は, 凸幾何学とconcentration of measureの関連性を示唆する.
+    \item Brunn-Minkowski theorem
+    \begin{itemize}
+        \item $\mathrm{R}^n$上の任意の2つのcompact set $C, D \subset \mathbb{R}^n$に対し, 以下が成り立つ.
+        {\footnotesize\[ \operatorname{vol}(\lambda C+(1-\lambda) D)
+        \geq \left(\lambda\operatorname{vol}(C)^{1 / n}+(1-\lambda)\operatorname{vol}(D)^{1 / n}\right)^n
+        \ge \operatorname{vol}(C)^\lambda \operatorname{vol}(D)^{1-\lambda}
+         \quad \mathrm{for\ all}\ \lambda \in[0,1], \]}
+         ただし, $\operatorname{vol}$はvolume, つまり$\mathrm{R}^n$上のLebesgue測度で, 
+         \[\lambda C+(1-\lambda)D = \left\{\lambda c + (1-\lambda)d\mid c\in C,\ d\in D\right\}.\]
+    \end{itemize}
+    には, 次のfunctional-analytic generalizationが知られている.
+    \begin{itemize}
+        \item Example 3.14 省略.
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+    \begin{block}{Theorem 3.15 (Pr\'ekopa-Leindler inequality)}
+        $u,v,w$は非負可積分関数で, ある$\lambda \in [0, 1]$が存在して,
+        \[ w(\lambda x + (1-\lambda)y) \ge u(x)^\lambda v(y)^{1-\lambda}
+        \quad \mathrm{for\ all}\ x,y\in\mathbb{R}^n.
+        \tag{3.46}\label{3.46}\]
+        を満たすものとする. このとき,
+        \[
+            \int w(x)dx \ge \left(\int u(x)\right)^\lambda \left(\int v(x)dx\right)^{1-\lambda}.
+            \tag{3.47}\label{3.47}
+        \]
+    \end{block}
+    \begin{itemize}
+        \item このPr\'ekopa-Leibler inequalityは,
+        strongly log-concaveな分布のもとでのLipschitz関数の集中不等式の導出に使われる.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+    \item $\mathbb{R}^n$上の分布$\mathbb{P}$ with density $p$が{strongly log-concave distribution}であるとは,
+    $\log p$がstrongly concaveであることをいう.\\
+    $\Leftrightarrow$ densityが$p(x) = \exp(-\psi(x))$とかける,
+    ただし$\psi:\mathbb{R}^n\to\mathbb{R}$はstorongly convex, つまりある$\gamma > 0$が存在して
+    \[
+        \lambda \psi(x)+(1-\lambda) \psi(y)-\psi(\lambda x+(1-\lambda) y)
+        \geq \frac{\gamma}{2} \lambda(1-\lambda)\|x-y\|_{2}^{2}
+        \tag{3.48}\label{3.48}
+    \]
+    を任意の$\lambda \in[0,1],\ x,y\in\mathbb{R}^n$に対して満たす.\\
+    　
+    \item $n$次元標準Gaussian分布はパラメータ$\gamma=1$のstrongly log-concaveである.
+    \item 一般に, covariance matrix $\Sigma\succ 0$
+    \footnote{つまり, $\Sigma$が正定値.}のGauusian分布は$\gamma = \gamma_{\min}(\Sigma^{-1})=(\gamma_{\max}(\Sigma))^{-1}$でstrognly log-cocave.
+    \item non-Gaussianでもstorongly log-concaveな分布は多数ある（らしい）.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Theorem 3.16}
+    $\mathbb{P}$はパラメータ$\gamma>0$のstrongly log-concave distributionとする.
+    任意の$L$-Lipschitz関数$f:\mathbb{R}^n\to\mathbb{R}$に対し, 以下が成り立つ.
+    \[
+        \mathbb{P}[|f(X)-\mathbb{E}[f(X)]|
+        \geq t] \leq 2 e^{-\frac{\gamma t^{2}}{4 L^{2}}}.
+        \tag{3.49}\label{3.49}
+    \]
+\end{block}
+{\bf Proof.}
+\begin{itemize}
+    \item $h$を$\ex[h(X)]=0$なる任意の$L$-Lipschitz関数とする.
+    \item $\ex[e^{h(X)}]\le e^{L^2/\gamma}$を示せば十分である.
+    \begin{itemize}
+        \item もしこれが成り立つなら, 任意の$K$-Lipschitz関数$f$と$\lambda\in\mathbb{R}$に対し,
+        $L=\lambda K$-Lipschitz関数$h:= \lambda(f - \ex[f(X)])$を考えれば,
+        \[ \ex[e^{\lambda(f(X)-\ex[f(X)])}] \le e^{\frac{\lambda^2 K^2}{\gamma}}\quad\mathrm{for\ all}\ \lambda\in\mathbb{R} \]
+        となり, $f(X)-\ex[f(X)]$がsub-Gaussianとなるので, (\ref{3.49})のtail boundが得られる.
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+    \item $h$に対し, $g$を以下で定義する.
+    \[ g(y) := \inf_{x\in\mathbb{R}^n} \left\{h(x) + \frac{\gamma}{4}\|x-y\|_2^2\right\}.\]
+    \item Pr\'ekopa-Leindler inequalityを$\lambda = 1/2$として使うために, 関数$u,v,w$を,
+    \begin{align*}
+        w(z) &= p(z) = \exp(-\psi(z)),\\
+        u(x) &= \exp(-h(x)-\psi(x)),\\
+        v(x) &= \exp(g(y)-\psi(y)),
+    \end{align*}
+    とする, ただし$p$は$\mathbb{P}$のdensityで, log-concavityより$\psi$はstorongly convex.
+    \item (\ref{3.46})のRHSの$\log$をとったものを$R$とすると,
+    \[ R = \frac{1}{2}\{g(y)-h(x)\} - \frac{1}{2}\psi(x)-\frac{1}{2}\psi(y)
+    = \frac{1}{2}\{g(y)-h(x)-2E(x,y)\} - \psi(x/2+y/2), \]
+    where $E(x,y):= \frac{1}{2}\psi(x)+\frac{1}{2}\psi(y)-\psi(x/2+y/2)$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+    \item $\psi$がstrongly convexなので, $2E(x,y) \ge \frac{\gamma}{4}\|x-y\|_2^2$.
+    \item これを代入すると,
+    \[ R\le \frac{1}{2}\left\{g(y)-h(x)-\frac{\gamma}{4}\|x-y\|_2^2\right\}-\psi(x/2+y/2)\le -\psi(x/2+y/2)\]
+    となる(ただし最後の不等号は$g$の定義より)ので, (\ref{3.46})は$\lambda=1/2$で満たされる.
+    \item Pr\'ekopa-Leindler inequalityと$\int w(x)dx = \int p(x)dx = 1$より, (\ref{3.47})の$\log$をとって
+    \[ 0 \ge \frac{1}{2}\log\int e^{-h(x)-\psi(x)}dx + \frac{1}{2}\log\int e^{g(y)-\psi(y)}dy. \]
+    \item これを書き換えると,
+    \[ \mathbb{E}[e^{g(Y)}]
+    \leq \frac{1}{\mathbb{E}\left[e^{-h(X)}\right]}
+    \stackrel{\mathrm{(i)}}{\leq} \frac{1}{e^{\mathbb{E}[-h(X)]}} \stackrel{\mathrm{(ii)}}{=} 1 \]
+    となる, ただし$\mathrm{(i)}$はJensen, $\mathrm{(ii)}$は$\ex[h(X)]=0$より.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+    \item また, $h$のLipschitz性$|h(x)-h(y)|\le L\|x-y\|_2$より,
+    \begin{align*}
+        g(y)
+        =\inf _{x \in \mathbb{R}^{n}}\left\{h(x)+\frac{\gamma}{4}\|x-y\|_{2}^{2}\right\}
+        &\geq h(y)+\inf _{x \in \mathbb{R}^{n}}\left\{-L\|x-y\|_{2}+\frac{\gamma}{4}\|x-y\|_{2}^{2}\right\} \\
+        &=h(y)-\frac{L^{2}}{\gamma}.
+    \end{align*}
+    \item したがって, $\ex[e^h(X)] \le \exp(L^2/\gamma)$となる.\qed
 \end{itemize}
 \end{frame}
 
