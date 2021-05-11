@@ -86,7 +86,7 @@
 \begin{exampleblock}{Example 3.1 (Entropy of a Gauusian random variable)}
     \begin{itemize}
         \item $X$は1次元正規分布$X\sim \mathcal{N}(0, \sigma^2)$とすると, $\varphi_X(\lambda) = e^{\lambda^2\sigma^2/2}, \varphi_X'(\lambda) = \lambda \sigma^2\varphi_X(\lambda)$なので,
-        \[ \mathbb{H}(E^{\lambda X}) = \lambda^2\sigma^2\varphi_X(\lambda) - \frac{1}{2}\lambda^2\sigma^2\varphi_X(\lambda) = \frac{1}{2}\lambda^2\sigma^2\varphi_X(\lambda). \tag{3.4}\label{3.4}\]
+        \[ \mathbb{H}(e^{\lambda X}) = \lambda^2\sigma^2\varphi_X(\lambda) - \frac{1}{2}\lambda^2\sigma^2\varphi_X(\lambda) = \frac{1}{2}\lambda^2\sigma^2\varphi_X(\lambda). \tag{3.4}\label{3.4}\]
     \end{itemize}
 \end{exampleblock}
 　\\
@@ -117,7 +117,7 @@
 Remarks:
 \begin{itemize}
     \item $I = \mathbb{R}$なら, (\ref{3.6})は$X-\ex[X]$がパラメータ$\sigma$のsub-Gauusianであることと同値.
-    \item Chernoff argumentより, $I = [0, \infty)$でも片側tail-bound
+    \item Chernoff argumentより, $I = [0, \infty)$で片側tail-bound
     \[ \mathbb{P}[X \ge \ex[X]+t] \le e^{-\frac{t^2}{2\sigma^2}} \tag{3.7}\label{3.7}\]
     が得られ, $I=\mathbb{R}$なら両側tail bounds
     \[ \mathbb{P}[|X-\ex[X]|\ge t] \le 2e^{-\frac{t^2}{2\sigma^2}}\]
@@ -265,9 +265,37 @@ Remarks:
     \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}{}{}
+{\bf Example 3.6} (Operator norm of a random matrix)
 \begin{itemize}
-    \item Example 3.6はとりあえず省略.
+    \item $\mathbf{X} \in \mathbb{R}^{n^\times d}$はランダム行列で,
+    $X_{ij}$は平均$0$, サポート$[-1,+1]$の分布からi.i.d.でひかれるとする.
+    \item $|||\mathbf{X}|||_2$はスペクトルノルム（最大の特異値）, or $\ell_2$-オペレータノルムとし, これは以下で与えられる.
+    \[
+        |||\mathbf{X}|||_{2}
+        =\max _{v \in \mathbb{R}^{d} \atop \|v\|_{2}=1}\|\mathbf{X} v\|_{2}
+        =\max _{v \in \mathbb{R}^{d}\atop \|v\|_{2}=1} \max _{u \in \mathbb{R}^{n} \atop\|u\|_{2}=1} u^{\mathrm{T}} \mathbf{X} v .
+        \tag{3.18}\label{3.18}
+    \]
+    \item $\mathbf{X} \mapsto |||\mathbf{X}|||_2$を関数$f:\mathbb{R}^{nd}\to\mathbb{R}$と見ると,
+    $f$はTheorem 3.4の仮定を満たす.
+    \begin{itemize}
+        \item $f$は線形な関数のsupremumなのでconvex,
+        \item かつ
+        \[
+            \Big| |||\mathbf{X}|||_{2}-|||\mathbf{X}^{\prime}|||_{2}\Big|
+            \stackrel{(\mathrm{i})}{\leq}|||\mathbf{X}-\mathbf{X}^{\prime}|||_{2}
+            \stackrel{(\mathrm{ii})}{\leq}|||\mathbf{X}-\mathbf{X}^{\prime}|||_{\mathrm{F}},
+            \tag{3.19}\label{3.19}
+        \]
+        となる（$(\mathrm{i})$は三角不等式, $(\mathrm{ii})$はフロべニウスノルムは常にオペレータノルムを上からおさえることより）ので,
+        $f$は$L=1$でLipschitz.
+    \end{itemize}
+    \item したがって, Theorem 3.4より,
+    \[
+        \mathbb{P}[|||\mathbf{X}|||_2\ge \ex[|||\mathbf{X}|||_2]+\delta]
+        \le e^{-\frac{\delta^2}{16}}.
+    \]
 \end{itemize}
 \end{frame}
 
@@ -464,9 +492,62 @@ $n$変数関数$f:\mathbb{R}^n \to \mathbb{R}$と, 独立な確率変数列$\{X_
 \end{block}
 \end{frame}
 
-\begin{frame}
+\begin{frame}{}{}
+{\bf Example 3.10} (Concentration function for sphere)
 \begin{itemize}
-    \item Example 3.10 省略.
+    \item $n$次元Euclidean sphere
+    \[
+        \mathbb{S}^{n-1} := \{x\in \mathbb{R}^n\mid \|x\|_2=1\}
+        \tag{3.29}\label{3.29}
+    \]
+    上の一様分布$\mathbb{P}$と,
+    geodesic distance $\rho(x, y):=\arccos\langle x,y\rangle$を考える.
+    \item 各$y\in\mathbb{S}^{n-1}$に対し, hemisphere $H_y$ $(\mathbb{P}(H_y)=1/2)$を以下で定義する. (a)
+    \[
+        H_y
+        := \{x\in \mathbb{S}^{n-1}\mid \rho(x,y) \ge \pi/2\}
+        = \{ x \in \mathbb{S}^{n-1} \mid \langle x, y\rangle \le 0 \}.
+        \tag{3.30}\label{3.30}
+    \]
+    \item この$\epsilon$-拡張は, 以下となる. (b)
+    \[
+        H_y^\epsilon = \{z\in \mathbb{S}^{n-1} \mid \langle z, y \rangle < \sin(\epsilon)\}.
+        \tag{3.31}\label{3.31}
+    \]
+\end{itemize}
+\begin{center}
+    \includegraphics[width=8cm]{figure_3_1.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{}{}
+\begin{itemize}
+    \item 一様分布であることより, concentration functionは, 
+    \[
+        \alpha_{\mathbb{S}^{n-1}}(\epsilon) = 1 - \mathbb{P}[H_y^\epsilon].
+        \tag{3.32}\label{3.32}
+    \]
+    \item $\sin(\epsilon) \ge \epsilon/2$ (for all $\epsilon\in (0,\pi/2]$)より,
+    $\mathbb{P}[H_y^\epsilon] \ge \mathbb{P}[\tilde{H}_y^\epsilon]$である, ただし
+    \[
+        \tilde{H}_y^\epsilon
+        := \{z\in \mathbb{S}^{n-1} \mid \langle z, y\rangle \le \epsilon/2\}.
+    \]
+    \item さらに, 幾何的な計算により, 任意の$\epsilon \in (0, \sqrt{2})$に対して
+    \[
+        \mathbb{P}[\tilde{H}_y^\epsilon]
+        \ge 1 - \left(1-\left(\frac{\epsilon}{2}\right)^2\right)^{n/2}
+        \ge 1 - e^{-n\epsilon^2/8}
+        \tag{3.33}\label{3.33}
+    \]
+    となる(？), ただし最後の不等号は$(1-t)\le e^{-t}$より.
+    \item したがってconcentration functionの上限$\alpha_{\mathbb{S}^{n-1}}(\epsilon) \le e^{-n\epsilon^2/8}$が得られる.
+    \item 似たアプローチでさらに注意深く上限をとると, より厳しい上限
+    \[
+        \alpha_{\mathbb{S}^{n-1}}(\epsilon) \le \sqrt{\frac{\pi}{2}}e^{-\frac{n\epsilon^2}{2}}
+        \tag{3.34}\label{3.34}
+    \]
+    が得られる（？）
 \end{itemize}
 \end{frame}
 
@@ -522,9 +603,25 @@ $n$変数関数$f:\mathbb{R}^n \to \mathbb{R}$と, 独立な確率変数列$\{X_
 \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}{}{}
+{\bf Example 3.12} (L\'evy concentration on $\mathbb{S}^{n-1}$)
 \begin{itemize}
-    \item Example 3.12はとりあえず省略.
+    \item Example 3.10の$(\mathbb{S}^{n-1}, \rho, \mathbb{P})$において, concentration functionの上限は以下で得られた.
+    \[
+        \alpha_{\mathbb{S}^{n-1}}(\epsilon) \le \sqrt{\frac{\pi}{2}}e^{-\frac{n\epsilon^2}{2}}.
+    \]
+    \item したがって, 任意の$1$-Lipschitz関数$f:\mathbb{S}^{n-1}\to\mathbb{R}$に対して,
+    \[
+        \mathbb{P}[|f(X)-m_f| \ge \epsilon] \le \sqrt{2\pi}e^{-\frac{n\epsilon^2}{2}}
+    \tag{3.40}\label{3.40}
+    \]
+    となる.
+    \item さらに, Exercise 2.14(d)より, 以下も成り立つ.
+    \[
+        \mathbb{P}[|f(X) - \ex[f(X)]| \ge \epsilon] \le 2\sqrt{2\pi}e^{-\frac{n\epsilon^2}{8}}.
+        \tag{3.41}\label{3.41}
+    \]
+    \endexample
 \end{itemize}
 \end{frame}
 
@@ -577,7 +674,7 @@ $n$変数関数$f:\mathbb{R}^n \to \mathbb{R}$と, 独立な確率変数列$\{X_
 \begin{frame}{3.2.3 From geometry to concentration}
 \begin{itemize}
     \item これらの幾何的な面は, 凸幾何学とconcentration of measureの関連性を示唆する.
-    \item Brunn-Minkowski theorem
+    \item たとえば, 次のBrunn-Minkowski inequalityを考えてみよう:
     \begin{itemize}
         \item $\mathrm{R}^n$上の任意の2つのcompact set $C, D \subset \mathbb{R}^n$に対し, 以下が成り立つ.
         {\footnotesize\[ \operatorname{vol}(\lambda C+(1-\lambda) D)
@@ -587,14 +684,43 @@ $n$変数関数$f:\mathbb{R}^n \to \mathbb{R}$と, 独立な確率変数列$\{X_
          ただし, $\operatorname{vol}$はvolume, つまり$\mathrm{R}^n$上のLebesgue測度で, 
          \[\lambda C+(1-\lambda)D = \left\{\lambda c + (1-\lambda)d\mid c\in C,\ d\in D\right\}.\]
     \end{itemize}
-    には, 次のfunctional-analytic generalizationが知られている.
-    \begin{itemize}
-        \item Example 3.14 省略.
-    \end{itemize}
+    \item Concentration functionは$\mathbb{P}[A]\ge 1/2$のもとでの$1-\mathbb{P}[A^\epsilon]$の$\sup$だが,
+    $\mathrm{vol}$を(正規化されていない)確率測度とみると, Brunn-Minkowski inequalityはこの上限の導出に使える.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+{\bf Example 3.14} (Classical isoperimetric inequality in $\mathbb{R}^n$)
+\begin{itemize}
+    \item $\mathbb{B}_2^n$を$\mathbb{R}^n$上のEuclidean sphereとする,
+    つまり$\mathbb{B}_2^n:=\{x\in\mathbb{R}^n\mid \|x\|_2\le 1\}$.
+    \item $A$は$\mathrm{vol}(A) = \mathrm{vol}(\mathbb{B}_2^n)$を満たす任意の集合$A\subset \mathbb{R}^n$とする.
+    \item このとき, Brunn-Minkowski inequalityにおいて$\lambda, C, D$を適切に選ぶことで
+    \[
+        \left[\operatorname{vol}\left(A^{\epsilon}\right)\right]^{1 / n}
+        =\left[\operatorname{vol}\left(A+\epsilon \mathbb{B}_{2}^{n}\right)\right]^{1 / n}
+        \geq[\operatorname{vol}(A)]^{1 / n}+\left[\operatorname{vol}\left(\epsilon \mathbb{B}_{2}^{n}\right)\right]^{1 / n}
+    \]
+    となる(see Exercise 3.10).
+    \item さらに, $\mathrm{vol}(A) = \mathrm{vol}(\mathbb{B}_2^n)$と$[\mathrm{vol}(\epsilon\mathbb{B}_2^n)]^{1/n} = \epsilon\mathrm{vol}(\mathbb{B}_2^n)^{1/n}$より\footnote{ここテキストでは$[\mathrm{vol}(\epsilon\mathbb{B}_2^n)]^{1/n} = \epsilon\mathrm{vol}(\mathbb{B}_2^n)$となっているがおそらくタイポ.},
+    \[ 
+        \mathrm{vol}(A^\epsilon)^{1/n}
+        \ge (1+\epsilon) \mathrm{vol}(\mathbb{B}_2^n)^{1/n}
+        = [\mathrm{vol}((\mathbb{B}_2^n)^\epsilon)]^{1/n}
+    \]
+    となるので, したがって
+    \[
+        \mathrm{vol}(A^\epsilon) \ge \mathrm{vol}([\mathbb{B}_2^n]^\epsilon).
+        \tag{3.44}\label{3.44}
+    \]
+    \endexample
 \end{itemize}
 \end{frame}
 
 \begin{frame}
+    \begin{itemize}
+        \item Brunn-Minkowski inequalityは, 次のfunctional-analytic generalizationが知られている.
+    \end{itemize}
     \begin{block}{Theorem 3.15 (Pr\'ekopa-Leindler inequality)}
         $u,v,w$は非負可積分関数で, ある$\lambda \in [0, 1]$が存在して,
         \[ w(\lambda x + (1-\lambda)y) \ge u(x)^\lambda v(y)^{1-\lambda}
