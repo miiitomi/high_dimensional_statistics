@@ -828,4 +828,64 @@ $n$変数関数$f:\mathbb{R}^n \to \mathbb{R}$と, 独立な確率変数列$\{X_
 \end{itemize}
 \end{frame}
 
+\section{3.3 Wasserstein distances and information inequalities}
+\begin{frame}{3.3 Wasserstein distances and information inequalities}
+\begin{itemize}
+    \item Wasserstein distancesとinformation inequalities (transportation cost inequalities)について
+\end{itemize}
+\end{frame}
+
+\subsection{3.3.1 Wasserstein distances}
+\begin{frame}{3.3.1 Wasserstein distances}
+    \begin{itemize}
+        \item 距離空間$(\mathcal{X}, \rho)$は所与とし,
+        関数$f:\mathcal{X} \to \mathbb{R}$のノルム$\|f\|_{\mathrm{Lip}}$を
+        \[
+            \|f\|_{\mathrm{Lip}} := \inf \{ L \ge 0 : |f(x)-f(x')| \le L \rho(x, x') \ \forall x, x'\in\mathcal{X} \}
+        \]
+        で定義する. つまり$\|f\|_{\mathrm{Lip}}$は$f$が$L$-Lipschitzであるような最小の$L$.
+        \item $\mathcal{X}$上の確率分布$\mathbb{Q}, \mathbb{P},$の距離$W_\rho(\mathbb{Q})$を
+        \[
+            W_\rho(\mathbb{Q}, \mathbb{P})
+            = \sup_{f\mathrm{\ s.t.}\ \|f\|_\mathrm{Lip}\le 1}
+            \left[\int fd\mathbb{Q}-\int fd\mathbb{P}\right]
+            \tag{3.52}\label{3.52}
+        \]
+        で定義し, これをWasserstein metric induced by $\rho$とよぶ.
+        \begin{itemize}
+            \item 任意の$\rho$に対しこれが確率分布空間上の距離になることは確かめられる.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+{\bf Example 3.17} (Hamming metric and total variation distance)
+\begin{itemize}
+    \item Hamming metric $\rho(x, x') = \mathbb{I}[x \ne x']$を考える.
+    \item このときWasserstein distanceは, 以下で定義されるtotal variation distanceと等しい.
+    \[
+        \|\mathbb{Q} - \mathbb{P}\|_{\mathrm{TV}}
+        := \sup_{A \subseteq \mathcal{X}}|\mathbb{Q}(A) -\mathbb{P}(A)|
+        \tag{3.53}\label{3.53}
+    \]
+    \item Hamming距離のもとでは,
+    $\|f\|_{\mathrm{Lip}}\le 1$は$|f(x)-f'(x)|\le 1\ (\forall x,x')$と同値.
+    \item (\ref{3.52})において$f$の定数移動は影響を与えないので$f(x) \in [0,1]$に限定してよい,
+    よって
+    \[
+        W_\mathrm{Ham}(\mathbb{Q},\mathbb{P})
+        = \sup_{f : \mathcal{X} \to [0,1]}\int f \left(d\mathbb{Q}-d\mathbb{P}\right)
+        \stackrel{\mathrm{(i)}}{=} \| \mathbb{Q}-\mathbb{P} \|_{\mathrm{TV}}
+    \]
+    となる, ただし$\mathrm{(i)}$はExercise 3.13参照.
+    \item それぞれ$\nu$をbase measureとしたときのdensity $p, q$が存在するとすると,\footnote{$\nu = \frac{1}{2}(\mathbb{P}+\mathbb{Q})$とすると$\mathbb{P},\mathbb{Q}$はdensityをもつので, これは一般性を失わない.}
+    \[
+        W_{\mathrm{Ham}}(\mathbb{Q}, \mathbb{P})
+         = \|\mathbb{Q}-\mathbb{P}\|_{\mathrm{TV}}
+         = \frac{1}{2}\int |p(x) - q(x)| \nu(dx)
+    \]
+    となり, $L^1(\nu)$-normの$1/2$にも一致する(see Exercise 3.13).\endexample
+\end{itemize}
+\end{frame}
+
 \end{document}
