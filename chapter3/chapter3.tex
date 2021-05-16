@@ -7,6 +7,8 @@
 \def\endexample{\hfill $\clubsuit$}
 \newcommand{\ex}{\mathbb{E}}
 \newcommand{\var}{\mathrm{var}}
+\newcommand{\bb}{\mathbb}
+\newcommand{\cc}{\mathcal}
 
 \title{3. Concentration of measure}
 \author{Yoji Tomita}
@@ -885,6 +887,72 @@ $n$変数関数$f:\mathbb{R}^n \to \mathbb{R}$と, 独立な確率変数列$\{X_
          = \frac{1}{2}\int |p(x) - q(x)| \nu(dx)
     \]
     となり, $L^1(\nu)$-normの$1/2$にも一致する(see Exercise 3.13).\endexample
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+    \begin{itemize}
+        \item Wasserstein distanceにはcouplingを用いた同値な定義がある.
+        \item Product space $\cc{X}\otimes\cc{X}$上の分布$\bb{M}$がペア$(\bb{Q},\bb{P})$のcouplingであるとは,
+        そのmarginal distributionが$\bb{Q},\bb{P}$に一致するときをいう.
+        \item $f:\cc{X}\to\bb{R}$を$1$-Lipschitz関数とすると,
+        \[
+            \int \rho\left(x, x^{\prime}\right) d \bb{M}\left(x, x^{\prime}\right)
+            \stackrel{(\mathrm{i})}{\geq} \int\left(f(x)-f\left(x^{\prime}\right)\right) d \bb{M}\left(x, x^{\prime}\right)
+            \stackrel{(\mathrm{ii})}{=} \int f(d \mathbb{P}-d \mathbb{Q})
+            \tag{3.54}\label{3.54}
+        \]
+        が成り立つ, ただし$\mathrm{(i)}$はLipschitz性, $\mathrm{(ii)}$は$\bb{M}$がcouplingであることより.
+        \item {\it Kantorovich-Rubinstein duality}によると,
+        couplingについてminimumをとると次の同値性が成り立つ:
+        \[
+            \underbrace{\sup _{\|f\|_{\mathrm{Lip}} \leq 1} \int f(d \mathbb{Q}-d \mathbb{P})}_{W_{\rho}(\mathbb{P}, \mathbb{Q})}
+            =\inf_{\bb{M}} \int_{\cc{X} \times \cc{X}} \rho\left(x, x^{\prime}\right) d \bb{M}\left(x, x^{\prime}\right)
+            =\inf_{\bb{M}} \mathbb{E}_{\bb{M}}\left[\rho\left(X, X^{\prime}\right)\right]
+            \tag{3.55}\label{3.55}
+        \]
+        ただし, infimumはペア$(\bb{P},\bb{Q})$のすべてのcouplingについてとる.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \begin{itemize}
+        \item Wasserstein distanceはこのcouplingによる表現から``transportation cost''とも呼ばれる.
+        \item $\bb{P}, \bb{Q}$は$\cc{X}$上のLebesgue measureをbaseとしてdensity $p, q$を持つとし,
+        $p(x), q(x)$は点$x\in\cc{X}$に堆積した土の量と解釈する.
+        \item そして土を移動させることで, 土の堆積状態を$p$から$q$へ変化させること考える.
+        \item ただし点$x$から点$x'$へ土を1単位移動させるにはコスト$\rho(x, x')$がかかる.
+        \item joint distribution $m(x, x')$を$x$から$x'$へ移す土の量とみると, $m$は$p$から$q$へのtransportation planと解釈できる.
+        \item このtransportation planにかかるコストは
+        \[ \int_{\cc{X}\times\cc{X}}\rho(x, x') m(x, x') dx dx'\]
+        となるので, Wasserstein distance(\ref{3.55})は最小のtransportation costと考えられる.
+    \end{itemize}
+\end{frame}
+
+\subsection{3.3.2 Transportation cost and concentration inequalities}
+\begin{frame}{3.3.2 Transportation cost and concentration inequalities}
+\begin{itemize}
+    \item Transportation cost inequalityとそのconcentration inequalitiesへの応用の議論に移る.
+    \item {\it Kullback-Leibler(KL) divergence}:
+            2つの分布$\bb{Q},\bb{P}$に対し, それらのKL-divergenceは以下で与えられる.
+            \[
+                D(\bb{Q}\|\bb{P}) :=
+                \begin{cases}
+                    \ex_{\bb{Q}}\left[\log \frac{d\bb{Q}}{d\bb{P}}\right]
+                    & \text{when $\bb{Q}$は$\bb{P}$に関して絶対連続,}\\
+                    + \infty
+                    & \text{otherwise.}
+                \end{cases}
+                \tag{3.56}\label{3.56}
+            \]
+    \item もし$\bb{Q}, \bb{P}$がbase measure $\nu$に関してdensity $q, p$をもつなら,
+    KL-divergenceは以下でかける.
+    \[
+        D(\bb{Q}\|\bb{P}) = \int_{\cc{X}}q(x)\log\frac{q(x)}{p(x)}\nu(dx).
+        \tag{3.57}\label{3.57}
+    \]
+    \item KL-divergenceは分布の差異を表すものと解釈できるが,
+    対称でないのでmetricではない.
 \end{itemize}
 \end{frame}
 
