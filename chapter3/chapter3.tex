@@ -956,4 +956,161 @@ $n$変数関数$f:\mathbb{R}^n \to \mathbb{R}$と, 独立な確率変数列$\{X_
 \end{itemize}
 \end{frame}
 
+\begin{frame}
+\begin{block}{Definition 3.18 (information inequalities)}
+    確率測度$\bb{P}$が$\rho$-transportation cost inequality with parameter $\gamma > 0$を満たすとは,
+    任意の確率測度$\bb{Q}$に対して
+    \[
+        W_\rho(\bb{Q},\bb{P}) \le \sqrt{2\gamma D(\bb{Q}\|\bb{P})}
+        \tag{3.58}\label{3.58}
+    \]
+    を満たすことをいう.
+\end{block}
+\begin{itemize}
+    \item 例 {\it Pinsker–Csisz\'ar–Kullback inequality}:
+        任意の確率分布$\bb{P}, \bb{Q}$に対し以下が成り立つ.
+        \[
+            \|\bb{P} - \bb{Q}\|_\mathrm{TV}
+            \le \sqrt{\frac{1}{2}D(\bb{Q}\|\bb{P})}
+            \tag{3.59}\label{3.59}
+        \]
+        Example 3.17より, Hamming metric $\rho(x,x')=\bb{I}[x\ne x']$のもとで(\ref{3.59})は$\gamma = 1/4$のinformation inequalityに対応する.
+    \item 次の定理でinformation inequalityはLipschitz関数のconcentration boundを導く.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Theorem 3.19 (From transportation cost to concentration)}
+距離測度空間$(\bb{P},\cc{X},\rho)$において,
+$\bb{P}$は$\rho$-transportation cost inequality (\ref{3.58})をパラメータ$\gamma>0$で満たすとする.
+このとき, concentraion functionは以下のboundをもつ.
+\[
+    \alpha_{\bb{P}, (\cc{X},\rho)}(t)
+    \le 2 \exp\left(-\frac{t^2}{2\gamma}\right)
+    \tag{3.60}\label{3.60}
+\]
+さらに, 確率変数$X\sim \bb{P}$と$L$-Lipschitz関数$f:\cc{X}\to\bb{R}$に対し,
+次のconcentration inequalityが成り立つ.
+\[
+    \bb{P}\left[ |f(X) - \ex[f(X)]| \ge t\right]
+    \le 2 \exp\left( -\frac{t^2}{2\gamma L^2} \right).
+    \tag{3.61}\label{3.61}
+\]
+\end{block}
+{Remarks:}
+\begin{itemize}
+    \item Proposition 3.11より,
+        (\ref{3.60})は$f$のメディアン$m_f$周りの以下のconcentration inequalityも導く.
+        \[
+            \bb{P}\left[ |f(X) - m_f| \ge t\right]
+            \le 2 \exp\left( -\frac{t^2}{2\gamma L^2} \right).
+            \tag{3.62}\label{3.62}
+        \]
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+{\bf Proof.}\\
+{(前半)}
+\begin{itemize}
+    \item $A \subset \cc{X}$ with $\bb{P}[A]\ge 1/2$を任意にとり,
+    $\epsilon >0$に対し次の集合$B$を考える.
+    \[
+        B := (A^\epsilon)^c = \{ y \in \cc{X} \mid \rho(x,y)\ge \epsilon \ \forall x \in A \}.
+    \]
+    \item まず定義より$\rho(A, B) := \inf_{x\in A}\inf_{y \in B} \rho(x,y) \ge \epsilon$.
+    \item $\bb{P}_A, \bb{P}_B$は, $\bb{P}$を$A, B$に条件づけた分布とする.
+    \item $(\bb{P}_A, \bb{P}_B)$の任意のcoupling $\bb{M}$に対し, $\rho(A, B) \le \int \rho(x, x')d\bb{M}(x, x')$.
+    \item $\bb{M}$について$\inf$をとると, $\epsilon \le \rho(A, B) \le W_\rho(\bb{P}_A,\bb{P}_B)$.
+    \item よって,      
+        \begin{align*}
+            \epsilon
+            \stackrel{\mathrm{(i)}}{\leq} W_{\rho}\left(\mathbb{P}_{A}, \mathbb{P}_{B}\right)
+            \leq W_{\rho}\left(\mathbb{P}, \mathbb{P}_{A}\right)+W_{\rho}\left(\mathbb{P}, \mathbb{P}_{B}\right)
+            & \stackrel{\mathrm{(ii)}}{\leq}\sqrt{\gamma D\left(\mathbb{P}_{A} \| \mathbb{P}\right)}+\sqrt{\gamma D\left(\mathbb{P}_{B} \| \mathbb{P}\right)} \\
+            & \stackrel{\mathrm{(iii)}}{\leq}\sqrt{2 \gamma}\left\{D\left(\mathbb{P}_{A} \| \mathbb{P}\right)+D\left(\mathbb{P}_{B} \| \mathbb{P}\right)\right\}^{1 / 2}
+          \end{align*}
+          となる,
+          ただし$\mathrm{(i)}$は三角不等式,
+          $\mathrm{(ii)}$はtransportation cost inequalityの仮定,
+          $\mathrm{(iii)}$は$(a+b)^2 \le 2a^2+2b^2$より.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+    \item また, KL-divergenceは$D(\bb{P}_A\|\bb{P}) = \log\frac{1}{\bb{P}(A)}, D(\bb{P}_B\|\bb{P}) = \log\frac{1}{\bb{P}(B)}$となる.
+        \begin{itemize}
+            \item なぜなら, $\bb{P}, \bb{P}_A$のdensity $p, p_A$が存在するなら,
+            \[
+                \frac{d \bb{P}_A}{d \bb{P}}(x)
+                = \frac{p_A(x)}{p(x)}
+                = \frac{(\bb{I}[x \in A] \cdot p(x)/\bb{P}(A))}{p(x)}
+                = \frac{\bb{I}[x \in A]}{\bb{P}(A)}
+            \]
+            より,
+            \[
+                D(\bb{P}_A\| \bb{P})
+                = \ex_{\bb{P}_A}\left[\log \frac{d \bb{P}_A}{d \bb{P}}\right]
+                = \int_{x \in \cc{X}} \log \frac{\bb{I}[x \in A]}{\bb{P} (A)} \bb{P}_A(dx)
+                = \int_{x \in A} \log \frac{1}{\bb{P}(A)} \bb{P}_A(dx)
+                = \frac{1}{\bb{P}(A)}.
+            \]
+        \end{itemize}
+        \item よって,
+            \[
+                \epsilon^2
+                \le 2\gamma\{\log(1/\bb{P}(A))+\log(1/\bb{P}(B))\}
+                = 2\gamma \log\left(\frac{1}{\bb{P}(A)\bb{P}(B)}\right)
+            \]
+        \item したがって, $\bb{P}(B) \le \exp(-\epsilon^2/2\gamma) / \bb{P}(A) \le 2 \exp(-\epsilon^2/2\gamma)$となる($\bb{P}(A) \ge 1/2$より).
+        \item $A \subset \cc{X}$は$\bb{P}(A)\ge 1/2$なる任意の集合で, $B = (A^\epsilon)^c$だったので, $(\ref{3.60})$が成り立つ.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+(後半)
+\begin{itemize}
+    \item $f:\cc{X} \to \bb{R}$は$L$-Lipschitz関数, $\bb{Q}$は任意の分布とする.
+    \item $f$のLipschitz性, Wassersteinの定義とinformation inequalityより,
+    \[
+        \int f (d\bb{Q}-d\bb{P})
+        \le L W_\rho(\bb{Q},\bb{P}) 
+        \le \sqrt{2 L^2 \gamma D(\bb{Q} \| \bb{P})}
+    \]
+    \item 任意の$u, v, \lambda > 0$に対し$\sqrt{2uv} \le \frac{u}{2}\lambda + \frac{v}{\lambda}$なので,
+    $u = L^2 \gamma, v = D(\bb{Q}\| \bb{P})$とすると
+    \[ 
+        \int f (d\bb{Q} - d\bb{P})
+        \le \frac{\lambda \gamma L^2}{2} + \frac{D(\bb{Q}\| \bb{P})}{\lambda}
+        \quad \mathrm{for\ all}\ \lambda > 0.
+        \tag{3.63}\label{3.63}
+    \]
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+    \item 分布$\bb{Q}$として,
+    Radon-Nikodym derivativeが$\frac{d\bb{Q}}{d\bb{P}}(x) = e^{g(x)}/\ex_{\bb{P}}[e^{g(X)}]$,
+    where $g(x) = \lambda (f(x)-\ex_{\bb{P}}[f(X)]) - L^2\gamma \lambda^2 /2$となるものを考えると,
+    \[
+        D(\bb{Q}\|\bb{P})
+        = \ex_{\bb{Q}}\left[\log\left(\frac{e^{g(X)}}{\ex_\bb{P}[e^{g(X)}]}\right)\right]
+        = \lambda \underbrace{\{\ex_\bb{Q}[f(X)] - \ex_\bb{P}[f(X)]\}}_{\int f (d\bb{Q}-d\bb{P})} - \frac{\gamma L^2 \lambda^2}{2} - \log \ex_{\bb{P}}[e^{g(X)}].
+    \]
+    となるので, (\ref{3.63})にいれると$\log \ex_{\bb{P}} [e^{g(X)}] \le 0$, つまり
+    \[  \ex_{\bb{P}}[e^{\lambda(f(X) - \ex_{\bb{P}}[f(X')])}] \le e^{\frac{\lambda^2 \gamma L^2}{2}}.\]
+    \item よってChernoff boundよりupper tail boundが得られる.
+    \item 同じ議論を$-f$に対して行えばlower tail boundも得られる.\qed
+\end{itemize}
+\end{frame}
+
+\subsection{3.3.3 Tensorization for transportation cost}
+\begin{frame}{3.3.3 Tensorization for transportation cost}
+\begin{itemize}
+    \item 
+\end{itemize}
+\end{frame}
+
 \end{document}
