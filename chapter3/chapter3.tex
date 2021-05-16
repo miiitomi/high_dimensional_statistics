@@ -1041,7 +1041,7 @@ $\bb{P}$は$\rho$-transportation cost inequality (\ref{3.58})をパラメータ$
 \begin{itemize}
     \item また, KL-divergenceは$D(\bb{P}_A\|\bb{P}) = \log\frac{1}{\bb{P}(A)}, D(\bb{P}_B\|\bb{P}) = \log\frac{1}{\bb{P}(B)}$となる.
         \begin{itemize}
-            \item なぜなら, $\bb{P}, \bb{P}_A$のdensity $p, p_A$が存在するなら,
+            \item なぜなら, 適当なbase measureのもとで$\bb{P}, \bb{P}_A$はdensity $p, p_A$をもち,
             \[
                 \frac{d \bb{P}_A}{d \bb{P}}(x)
                 = \frac{p_A(x)}{p(x)}
@@ -1054,7 +1054,7 @@ $\bb{P}$は$\rho$-transportation cost inequality (\ref{3.58})をパラメータ$
                 = \ex_{\bb{P}_A}\left[\log \frac{d \bb{P}_A}{d \bb{P}}\right]
                 = \int_{x \in \cc{X}} \log \frac{\bb{I}[x \in A]}{\bb{P} (A)} \bb{P}_A(dx)
                 = \int_{x \in A} \log \frac{1}{\bb{P}(A)} \bb{P}_A(dx)
-                = \frac{1}{\bb{P}(A)}.
+                = \log \frac{1}{\bb{P}(A)}.
             \]
         \end{itemize}
         \item よって,
