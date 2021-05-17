@@ -247,7 +247,7 @@ Remarks:
     \begin{itemize}
         \item 有界部分集合$\mathcal{A}\in\mathbb{R}^n$は所与とし,
         確率変数$Z = \sup_{a\in\mathcal{A}}\sum_{k=1}^na_k\epsilon_k$を考える.
-        \item $\epsilon_k \in \{\-1,1\}$はi.i.d.なRademacher variables.
+        \item $\epsilon_k \in \{ -1,1\}$はi.i.d.なRademacher variables.
         \item $Z$は線形関数の$\sup$をとったものなのでjointly (したがってseparately) convex.
         \item 別の$Z' = Z(\epsilon')$に対し, 任意の$a\in\mathcal{A}$について
         \[
@@ -1108,6 +1108,323 @@ $\bb{P}$は$\rho$-transportation cost inequality (\ref{3.58})をパラメータ$
 
 \subsection{3.3.3 Tensorization for transportation cost}
 \begin{frame}{3.3.3 Tensorization for transportation cost}
+\begin{itemize}
+    \item Transportation cost inequalityを満たす確率分布のproductはTransportation cost inequalityを満たす.
+\end{itemize}
+\begin{block}{Proposition 3.20}
+    各$k=1,2,\dots,n$に対し, 1変数分布$\bb{P}_k$は距離$\rho_k$のもとでパラメータ$\gamma_k$で$\rho_k$-transportation cost inequalityを満たすとする.
+    Product distribution $\bb{P} = \otimes_{k=1}^n \bb{P}_k$はtransportation cost inequality
+    \[
+        W_\rho(\bb{Q}, \bb{P}) \le \sqrt{2 \left(\sum_{k=1}^n \gamma_k\right) D(\bb{Q}\| \bb{P})}
+        \quad \mathrm{for\ all\ distributions\ } \bb{Q}
+        \tag{3.64}\label{3.64}
+    \]
+    を満たす, ただし距離は$\rho(x, y) := \sum_{k=1}^n \rho_k(x_k, y_k)$.
+\end{block}
+\end{frame}
+
+\begin{frame}{}{}
+{\bf Example 3.21} (Bounded differences inequality)
+\begin{itemize}
+    \item $f$はbounded differences inequalityを各coordinate $k$についてパラメータ$L_k$で満たす.
+    \begin{itemize}
+        \item つまり, $f:\bb{R}^n\to\bb{R}$は各$k = 1,\dots,n$について
+        \[
+            |f(x_1,\dots,x_{k-1},x_k, x_{k+1},\dots,x_n) - f(x_1,\dots,x_{k-1},x_k', x_{k+1},\dots,x_n)|
+            \le L_k.
+            \quad \mathrm{for\ all\ } x, x_k'
+        \]
+    \end{itemize}
+    \item このとき, $f$はrescaled Hamming metric
+        \[
+            \rho(x,y) := \sum_{k=1}^n \rho_k(x_k, y_k),
+            \quad \mathrm{where\ } \rho_k(x_k, y_k) := L_k \bb{I}[x_k \ne y_k]
+        \]
+        に関して$1$-Lipschitzであることが確かめられる.
+    \item Pinsker-Csisz\'ar-Kullback inequality (\ref{3.59})より,
+    各$\bb{P}_k$はパラメータ$\gamma_k = L_k^2/4$で$\rho_k$-transportation cost inequalityを満たす.
+    \item よってProposition 3.20より$\bb{P}=\otimes_{k=1}^n \bb{P}_k$はパラメータ$\gamma := \frac{1}{4}\sum_{k=1}^n L_k^2$で$\rho$-transportation cost inequalityを満たすので,
+    $f$のLipschitz性とTheorem 3.19より
+    \[
+        \bb{P}[|f(X) - \ex[f(X)]| \ge t]
+        \le 2 \exp\left(-\frac{2t^2}{\sum_{k=1}^n L_k^2}\right)
+        \tag{3.65}\label{3.65}
+    \]\endexample
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+{\bf Proof of Proposition 3.20}
+\begin{itemize}
+    \item $\bb{Q}$を$\cc{X}^n$上の任意の分布とする.
+    \item ペア$(\bb{P}, \bb{Q})$のカップリング$\bb{M}$に対し,
+    $\bb{M}_1^j$を$(X_1^j, Y_1^j) = (X_1,\dots,X_j, Y_1,\dots,Y_j)$のjoint distribution,
+    $\bb{M}_{j\mid j-1}$を$(X_1^{j-1}, Y_1^{j-1})$に条件づけた$(X_j, Y_j)$の条件付き分布とする.
+    \item Wasserstein metricのcoupling表現(\ref{3.55})より,
+    \[
+        W_\rho(\bb{Q}, \bb{P})
+        \le \ex_{\bb{M}} [\rho (X, Y)]
+        = \ex_{\bb{M}_1}[\rho_1(X_1, Y_1)] + \sum_{j=2}^n\ex_{\bb{M}_1^{j-1}}\left[\ex_{\bb{M}_{j\mid j-1}}[\rho_j(X_j, Y_j)]\right].
+     \]
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+    \item Coupling $\bb{M}$を次のように構成していく:
+    \item $\bb{M}_1$をペア$(\bb{P}_1, \bb{Q}_1)$に対するoptimal-couplingとすると,
+    \[
+        \mathbb{E}_{M_{1}}\left[\rho_{1}\left(X_{1}, Y_{1}\right)\right]
+        \stackrel{(\mathrm{i})}{=} W_{\rho_1}\left(Q_{1}, \mathbb{P}_{1}\right)
+        \stackrel{(\mathrm{ii})} \leq \sqrt{2 \gamma_{1} D\left(\mathbb{Q}_{1} \| \mathbb{P}_{1}\right)}
+    \]
+    ただし$\mathrm{(i)}$はcouplingのoptimality, $\mathrm{(ii)}$はtransportation-cost inequalityの仮定より.
+    \item 次に$(X_1^{j-1}, Y_1^{j-1})$のjoint distribution $\bb{M}_1^{j-1}$が定義されてる時に,
+    $(X_j, Y_j)$の条件付き分布$\bb{M}_{j\mid j-1}(\cdot \mid x_1^{j-1}, y_1^{j-1})$を,
+    ペア$(\bb{P}_j, \bb{Q}_{j\mid j-1}(\cdot \mid y_1^{j-1}))$のoptimal couplingで定義する.
+    \item すると, 各$y_1^{j-1}$に対して
+    \[
+        \ex_{\bb{M}_{j\mid j-1}}[\rho_j(X_j, Y_j)]
+        = W_{\rho_j}\left( \bb{Q}_{j\mid j-1}, \bb{P}_j \right)
+        \le \sqrt{2 \gamma_j D(\bb{Q}_{j \mid j-1} \| \bb{P}_j)}.
+    \]
+    \item $Y_1^j \sim \bb{Q}_1^{j-1}$について期待値をとると, $\sqrt{\cdot}$のconcavityとJensenの不等式から,
+    \[
+        \ex_{\bb{M}_1^{j-1}}\left[\ex_{\bb{M}_{j\mid j-1}}[\rho_j(X_j, Y_j)]\right]
+        \le \sqrt{2 \gamma_j \ex_{\bb{Q}_{1}^{j-1}}D(\bb{Q}_{j \mid j-1}(\cdot \mid Y_1^j)\| \bb{P}_j) }.
+    \]
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+    \item したがって,
+    \begin{align*}
+        W_{\rho}(\mathbb{Q}, \mathbb{P})
+        & \leq \sqrt{2 \gamma_{1} D\left(\mathbb{Q}_{1} \| \mathbb{P}_{1}\right)}+\sum_{j=2}^{n} \sqrt{2 \gamma_{j} \mathbb{E}_{Q_{1}^{j-1}}\left[D\left(\mathbb{Q}_{j \mid j-1}\left(\cdot \mid Y_{1}^{j-1}\right) \| \mathbb{P}_{j}\right)\right]} \\
+        & \stackrel{(\mathrm{i})}{\leq} \sqrt{2\left(\sum_{j=1}^{n} \gamma_{j}\right)} \sqrt{D\left(\mathbb{Q}_{1} \| \mathbb{P}_{1}\right)+\sum_{j=2}^{n} \mathbb{E}_{\mathbb{Q}_{1}^{j-1}}\left[D\left(\mathbb{Q}_{j \mid j-1}\left(\cdot \mid Y_{1}^{j-1}\right) \| \mathbb{P}_{j}\right)\right]} \\
+        & \stackrel{(\mathrm{ii})}{=} \sqrt{2\left(\sum_{j=1}^{n} \gamma_{j}\right) D(\mathbb{Q} \| \mathbb{P})},
+    \end{align*}
+    となる, ただし$\mathrm{(i)}$はCauchy-Schwarz, $\mathrm{(ii)}$はKL-divergenceのchain ruleより(see Exercise 3.2).\qed
+\end{itemize}
+\end{frame}
+
+\subsection{3.3.4 Transportation cost inequalities for Markov chains}
+\begin{frame}{3.3.4 Transportation cost inequalities for Markov chains}
+    \begin{itemize}
+        \item ここではdependent random variablesのLipschitz関数への応用,
+        特にMarkov chainについて考える.
+        \item $(X_1, \dots, X_n)$はMarkov chainから発生するrandom vectorとする, ただし$X_i \in \cc{X}$で$\cc{X}$はcountable.
+        \item その分布$\bb{P}$ over $\cc{X}^n$は, initial distribution $X_1 \sim \bb{P}_1$と, transition kernels
+        \[
+            \bb{K}_{i+1}(x_{i+1} \mid x_i) = \bb{P}(X_{i+1} = x_{i+1} \mid X_i = x_i)
+            \tag{3.66}\label{3.66}
+        \]
+        によって定義される.
+        \item discrete state Markov chainが$\beta$-contractiveであるとは, $\beta \in [0, 1)$に対して
+        \[
+            \max_{i = 1,\dots, n-1} \sup_{x_i, x_i'} \| \bb{K}_{i+1}(\cdot\mid x_i) - \bb{K}_{i+1}(\cdot\mid x_i') \|_{\mathrm{TV}}
+            \le \beta
+            \tag{3.67}\label{3.67}
+        \]
+        となることをいう.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+\begin{block}{Theorem 3.22}
+    $\bb{P}$は, discrete space $\cc{X}^n$上の$\beta$-cntractiveなMarkov chainの分布とする.
+    このとき, 任意の分布$\bb{Q}$ over $\cc{X}^n$に対して,
+    \[
+        W_\rho(\bb{Q}, \bb{P}) \le \frac{1}{1-\beta}\sqrt{\frac{n}{2}D(\bb{Q} \| \bb{P})}
+        \tag{3.68}\label{3.68}
+    \]
+    が成り立つ, ただし$\rho$はHamming metric $\rho(x, y) = \sum_{i=1}^n \bb{I}[x_i \ne y_i]$.
+\end{block}
+{Remark:}
+\begin{itemize}
+    \item 証明は省略(see Marton (1996b)).
+    \item このとき, Theorem 3.19より, Hamming metricに関して$L$-Lipschitzな関数$f:\cc{X}^n \to \bb{R}$について, 
+    \[
+        \bb{P}\left[|f(X)-\ex[f(X)]| \ge t\right]
+        \le 2 \exp\left(\frac{2(1-\beta)^2 t^2}{nL^2}\right).
+        \tag{3.69}\label{3.69}
+    \]
+    \item independent random variablesのbounded differences inequalityを満たす関数についての結果(Example 3.21, $\beta = 0$のときに対応)の一般化とみなせる.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+{\bf Example 3.23} (Parameter estimation for a binary Markov chain)
+\begin{itemize}
+    \item 二値変数$X_i \in \{0, 1\}$のMarkov chainで, 
+    初期分布は$\bb{P}_1$はuniform,
+    transition kernelは
+    \[
+        \bb{K}_{i+1}(x_{i+1}\mid x_i)
+        = \begin{cases}
+            \frac{1+\delta}{2} &\mathrm{if\ } x_{i+1} = x_{i}\\
+            \frac{1-\delta}{2} &\mathrm{if\ } x_{i+1} \ne x_{i}
+          \end{cases}
+    \]
+    なるものを考える, ただし$\delta \in [0, 1]$は``stickness''parameterとよぶ.
+    \item 長さ$n$のベクトル$(X_1, \dots, X_n)$からこのパラメータ$\delta$を推定する.
+    \item $\frac{1+\delta}{2}$の不偏推定量は次の関数である:
+          \[
+              f(X_1,\dots,X_n)
+              := \frac{1}{n-1}\sum_{i=1}^n \bb{I}[X_i = X_{i+1}].
+          \]
+    \item このとき, このMarkov chainは$\beta = \delta$で$\beta$-cntractiveであり,
+    $f$はHamming metricに関して$\frac{2}{n-1}$-Lipschitzなので,
+    Theorem 3.22から$f$のconcentration inequality
+          {\small \[
+              \bb{P}\left[\left|f(X) - \frac{1+\delta}{2}\right| \ge t\right]
+              \le 2 \exp\left(- \frac{(n-1)^2(1-\delta)^2 t^2}{2n}\right)
+              \le 2 \exp\left(-\frac{(n-1)(1-\delta)^2 t^2}{4}\right)
+              \tag{3.70}
+              \label{3.70}
+          \]}
+          が得られる.\endexample
+\end{itemize}
+\end{frame}
+
+\subsection{3.3.5 Asymmetric coupling cost}
+\begin{frame}{3.3.5 Asymmetric coupling cost}
+    \begin{itemize}
+        \item 次の(非対称な)確率分布の距離を考える:
+        \[
+            \cc{C}(\bb{Q}, \bb{P}) 
+            := \inf_{\mathrm{coupling\ }\bb{M}}\sqrt{\int\sum_{j=1}^n\left( \bb{M}[Y_i \ne x_i \mid X_i = x_i] \right)^2 d\bb{P}(x)}
+            \tag{3.71}\label{3.71}
+        \]
+        \item これは, product distributionに関するPinsker-type inequalityを満たす:\\
+              任意の$n$変数のproduct distribution $\bb{P}$に対して,
+              \[
+                  \max\{\cc{C}(\bb{Q}, \bb{P}), \cc{C}(\bb{P}, \bb{Q})\}
+                  \le \sqrt{2 D(\bb{Q} \| \bb{P})}
+                  \label{3.73}\tag{3.73}
+              \]
+              が全ての$n$-次元分布$\bb{Q}$について成り立つ(see Samson (2000)).
+        \item この距離を用いて, convexかつLipschitzな関数の次のconcentration inequalityが示される.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Theorem 3.24}
+    独立な確率変数列$(X_1, \dots, X_n)$ with $X_i \in [0,1]$を考える.
+    $f: \mathbb{R}^n \to \mathbb{R}$はconvexかつEuclidean normに関して$L$-Lipschitzとする.
+    このとき, 任意の$t \ge 0$に対して,
+    \[
+        \bb{P}[|f(X) - \ex[f(X)]| \ge t]
+        \le 2 \exp\left(-\frac{t^2}{2L^2}\right).
+        \tag{3.74}\label{3.74}
+    \]
+\end{block}
+{Remark}:
+\begin{itemize}
+    \item 同じboundがconcaveかつLipschitz関数についても成り立つ.
+    \item Theorem 3.4で弱い条件(separate convexity)のもとでupper tail boundを求めたが,
+        ここではより強い条件(jointly convex or concave)のもとで両側boundを求める.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+{\bf Example 3.25} (Rademacher revisited)
+\begin{itemize}
+    \item Example 3.5でみたように, Rademacher complexity of $\cc{A} \subseteq \bb{R}^n$
+    \[ 
+        Z \equiv Z(\epsilon_1, \dots, \epsilon_n) := \sup_{a \in \cc{A}}\sum_{k=1}^n a_k \epsilon_k
+    \]
+    を考える, ただし$\epsilon_k \in \{1, -1\}$はi.i.d.なRademacher変数列.
+    \item Example 3.5より,
+    $Z$はjointly convexかつEucledean normに関してパラメータ$\cc{W}(\cc{A}) := \sup_{a \in \cc{A}}\|a\|_2$でLipschitz.
+    \item よってTheorem 3.24より,
+    \[
+        \bb{P}[|Z - \ex[Z]| \ge t]
+        \le 2 \exp\left(-\frac{t^2}{2 \cc{W}^2(\cc{A})}\right)
+        \tag{3.75}\label{3.75}
+    \]
+    が成り立ち, このboundはExample 3.5で求めたもの(\ref{3.17})より強い.\endexample
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+{\bf Proof of Theorem 3.24}
+\begin{itemize}
+    \item $f$はconvexなので$f(x) \ge f(y) + \langle \nabla f(y) , x-y \rangle$であり, また$x_j,y_j\in [0,1]$より$|x_j - y_j| \le \bb{I}[x_j \ne y_j]$なので,
+            \[ f(y) - f(x) \le \sum_{j=1}^n \left|\frac{\partial f}{\partial y_j}(y)\right| \bb{I}[x_j \ne y_j]. \]
+    \item ペア$(\bb{P}, \bb{Q})$の任意のcoupling $\bb{M}$について, $(X, Y) \sim \bb{M}$として上の期待値をとると
+        \begin{align*}
+            \int f(y) d \mathbb{Q}(y)-\int f(x) d \mathbb{P}(x)
+            & \leq \int \sum_{j=1}^{n}\left|\frac{\partial f}{\partial y_{j}}(y)\right| \bb{I}\left[x_{j} \neq y_{j}\right] d \mathbb{M}(x, y) \\
+            &=\int \sum_{j=1}^{n}\left|\frac{\partial f}{\partial y_{j}}(y)\right| \mathbb{M}\left[X_{j} \neq y_{j} \mid Y_{j}=y_{j}\right] d \mathbb{Q}(y) \\
+            & \leq \int\|\nabla f(y)\|_{2} \sqrt{\sum_{j=1}^{n} \bb{M}^{2}\left[X_{j} \neq y_{j} \mid Y_{j}=y_{j}\right]} d \mathbb{Q}(y),
+        \end{align*}
+        となる, ただし最後の不等号はCauchy-Schwarzより.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+    \item Lipschitz性とconvexityより$\|\nabla f(y)\|_2 \le L$ almost everywhere, よって
+    \begin{align*}
+        \int f(y) d \mathbb{Q}(y)-\int f(x) d \mathbb{P}(x) & \leq L \int\left\{\sum_{j=1}^{n} \bb{M}^{2}\left[X_{j} \neq y_{j} \mid Y_{j}=y_{j}\right]\right\}^{1 / 2} d \mathbb{Q}(y) \\
+        & \leq L\left[\int \sum_{j=1}^{n} \bb{M}^{2}\left[X_{j} \neq y_{j} \mid Y_{j}=y_{j}\right] d \mathbb{Q}(y)\right]^{1 / 2} \\
+        &=L \cc{C}(\mathbb{P}, \mathbb{Q})\\
+        &\le L \sqrt{2 D(\bb{Q}\|\bb{P})}
+    \end{align*}
+    となる, ただし最後の不等号は(\ref{3.73})より.
+    \item 以下, Theorem 3.19の後半の証明と同様にすれば, $f$のupper tail boundが得られる.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+    \item convex関数のlower tail boundを求めるには, concave関数のupper boundを求められればよい.
+    \item $g:[0,1]^n \to \bb{R}$はconcaveかつ$L$-Lipschitzとする.
+    \item このとき,
+    \[
+        g(y)
+        \le g(x) + \langle\nabla g(x), y-x \rangle
+        \le g(x) + \sum_{j=1}^n \left|\frac{\partial g(x)}{\partial x_j}\right|\bb{I}[x_j \ne y_j]
+    \]
+    より, 先ほどと同様にして
+    \[
+        \int g d\bb{Q}(y) - \int g d\bb{P}(x)
+        \le \int \sum_{j=1}^n \left|\frac{\partial g(x)}{\partial x_j}\right|\bb{I}[x_j \ne y_j]d\bb{M}(x, y)
+        \le L \cc{C}(\bb{Q}, \bb{P})
+    \]
+     となり, $g$のupper boundが得られる.\qed
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+    \item Theorem 3.24はindependent random variablesについて述べたが,
+          独立性はinformation inequality $(\ref{3.73})$を用いるときにしか使っていない.
+    \item しかし, (\ref{3.73})は必ずしも独立でない多くの確率変数列について成り立つ.
+    \item よって, $n$-次元分布$\bb{P}$についてある$\gamma > 0$が存在して任意の分布$\bb{Q}$について
+    \[
+        \max\{\cc{C}(\bb{Q}, \bb{P}), \cc{C}(\bb{P}, \bb{Q})\}
+        \le \sqrt{2 \gamma D(\bb{Q} \| \bb{P})}
+        \tag{3.76}\label{3.76}
+    \]
+    が成り立つなら, 同じ証明により任意のconvex Lipschitz関数について以下が成り立つ.
+    \[
+        \bb{P}[|f(X) - \ex[f(X)]| \ge t] \le 2 \exp\left( - \frac{t^2}{2\gamma L^2}\right).
+        \label{3.77}\tag{3.77} 
+    \]
+    \item 例えば, $\beta$-contractiveなMarkov chainは(\ref{3.76})を$\gamma =\left(\frac{1}{1-\sqrt{\beta}}\right)^2$で満たすので,
+    \[
+        \bb{P}[|f(X) - \ex[f(X)]| \ge t] \le 2 \exp\left( - \frac{ (1 - \sqrt{\beta})^2 t^2}{2 L^2}\right).
+        \label{3.78}\tag{3.78} 
+    \]
+    が成り立ち, これは(\ref{3.76})と異なりdimension-independentとなっている.
+\end{itemize}
+\end{frame}
+
+\section{3.4 Tail bounds for empirical processes}
+\begin{frame}{3.4 Tail bounds for empirical processes}
 \begin{itemize}
     \item 
 \end{itemize}
