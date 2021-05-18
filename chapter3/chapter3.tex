@@ -1485,4 +1485,189 @@ $\bb{P}$は$\rho$-transportation cost inequality (\ref{3.58})をパラメータ$
     \end{itemize}
 \end{frame}
 
+\begin{frame}{}{}
+{\bf Proof of Theorem 3.26}
+\begin{itemize}
+    \item 有限な$\cc{F}$について示ばよい.
+    \begin{itemize}
+        \item General resultは有限集合の増加列のlimitをとれば示される.
+    \end{itemize}
+    \item また, まずは$Z$のunrescaled version $Z = \sup_{f \in \cc{F}} \sum_{i=1}^n f(X_i)$について考える.
+    \item 各$j = 1,\dots,n$について, random function $Z_j$を以下で定義する.
+    \[ x_j \mapsto Z_j(x_j) = Z(X_1,\dots,X_{j-1}, x_j, X_{j+1},\dots,X_n). \]
+    \item Entropyのtensorization Lemma 3.8とLemma 3.7のboundより,
+    \[
+        \bb{H}(e^{\lambda Z(X)})
+        \le \lambda^2 \ex\left[ \sum_{j=1}^n \ex\left[(Z_j(X_j)-Z_j(Y_j))^2\bb{I}[Z_j(X_j) \ge Z_j(Y_j)]e^{\lambda Z(X)} \mid X^{\setminus j}\right] \right].
+        \tag{3.81}\label{3.81}
+    \]
+    \item 各$f \in \cc{F}$について,
+    $\cc{A}(f) := \{(x_1,\dots,x_n)\in\bb{R}\mid Z = \sum_{i=1}^n f(x_i)\}$とする.
+    \begin{itemize}
+        \item つまり, $Z$のmaximumの部分を$f$が達成するような$x$の集合.
+        \item tieがある場合には, 適当に決めて$\cc{A}(f)$がdisjointになるようにする.
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+    \begin{itemize}
+        \item 各$x$について, ある$f$が存在して$x \in \cc{A}(f)$で, 
+        \[
+            Z_{j} (x_{j})-Z_{j}(y_{j})
+            = f(x_{j})+\sum_{i \ne j}^{n} f(x_{i})-\max_{\tilde{f} \in \cc{F}}\left\{\tilde{f}(y_{j})+\sum_{i \ne j}^{n} \tilde{f}(x_{i})\right\}
+            \leq f\left(x_{j}\right)-f\left(y_{j}\right).
+        \]
+        \item $Z_j(x_j) \ge Z_j(y_j)$である限り, 両辺の2乗についても同じ不等号が成り立つ.
+        \item $\cc{A}(f)$は$\cc{X}$のdisjointな分割となっているので,
+        \[
+            \left(Z_{j}(x_{j})-Z_{j}(y_{j})\right)^{2} \bb{I}[Z_{j}(x_{j}) \geq Z_{j}(y_{j})]
+            \leq \sum_{f \in \cc{F}} \bb{I}[x \in \mathcal{A}(f)]\left(f\left(x_{j}\right)-f\left(y_{j}\right)\right)^{2}.
+            \tag{3.82}\label{3.82}
+        \]
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+    \item $(f(x_j)-f(y_j))^2 \le (b_{j,f}-a_{j,f})^2$より, $j$について足しあげると
+    {\small
+        \begin{align*}
+            \sum_{j=1}^{n}\left(Z_{j}\left(x_{j}\right)-Z_{j}\left(y_{j}\right)\right)^{2} \bb{I}\left[Z_{j}\left(x_{j}\right)\geq Z_{j}\left(y_{j}\right)\right] e^{\lambda Z(x)}
+            \leq &\sum_{h \in \cc{F}} \bb{I}[x \in \mathcal{A}(h)] \sum_{k=1}^{n}\left(b_{k, h}-a_{k, h}\right)^{2} e^{\lambda Z(x)} \\
+            \leq &\sup _{f \in \cc{F}} \sum_{j=1}^{n}\left(b_{j, f}-a_{j, f}\right)^{2} e^{\lambda Z(x)} \\
+            =&n L^{2} e^{\lambda Z(x)} .
+        \end{align*}
+    }
+    \item (\ref{3.81})に入れると,
+    \[ \bb{H}(e^{\lambda Z(X)}) \le nL^2\lambda^2\ex[e^{\lambda Z(X)}]. \]
+    \item よってProposition 3.2より, 
+    \[
+        \bb{P}[Z \ge \ex{Z} + t] \le \exp\left(-\frac{t^2}{4nL^2}\right).
+    \]
+    \item $(\ref{3.80})$のrescaled versionの$Z$については, $t = n\delta$とすれば良い.\qed
+\end{itemize}
+\end{frame}
+
+\subsection{3.4.2 A functional Bernstein inequality}
+\begin{frame}{3.4.2 A functional Bernstein inequality}
+    \begin{itemize}
+        \item 次はBernstein type bound.
+        \item ここでは$\cc{F}$はcountableかつuniformly bounded by $b$ (i.e., $\forall f\in\cc{F},\ \forall x\in \cc{X},\ |f(x)|\le b$)とする.
+    \end{itemize}
+    \begin{block}{Theorem 3.27 (Talagrand concentration for empirical processes)}
+        $\cc{F}$はcountableかつuniformly bound by $b$とする.
+        このとき, 任意の$\delta > 0$について, 
+        \[
+            \bb{P}[Z \ge \ex[Z] +\delta]
+            \le 2 \exp\left(-\frac{n\delta^2}{8e\ex[\Sigma^2] + 4b\delta} \right)
+            \tag{3.83}\label{3.83}
+        \]
+        が成り立つ, ただし$\Sigma^2 = \sup_{f\in\cc{F}} \frac{1}{n}\sum_{i=1}^n f^2(X_i)$.
+    \end{block}
+\end{frame}
+
+\begin{frame}
+Remark:
+\begin{itemize}
+    \item $\ex[\Sigma^2]$のupper boundから, よりsimpleなboundが得られる.
+    \item Chapter 4のsymmetrization techniquesより, 以下が示される.
+    \[
+        \ex[\Sigma^2]
+        \le \sigma^2 + 2b\ex[Z],
+        \tag{3.84}\label{3.84}
+    \]
+    ただし, $\sigma^2 = \sup_{f \in \cc{F}} \ex[f^2(X)]$ ($\leftarrow$これなに？).
+    \item これを使うと, 以下を満たすある正定数$(c_0, c_1)$があることが示される.
+    \[
+        \bb{P}[Z \ge \ex[Z] + c_0 \gamma \sqrt{t} + c_1 bt]
+        \le e^{-nt}
+        \quad \mathrm{for\ all}\ t > 0,
+        \tag{3.85}\label{3.85}
+    \]
+    ただし, $\gamma^2 = \sigma^2 + 2b\ex[Z]$ (see Exercise 3.16).
+    \item 今知られているbestは, $c_0 = \sqrt{2}, c_1 = 1/3$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+{\bf Proof of Theorem 3.27}
+\begin{itemize}
+    \item 一般の$b$についてはrescalingできるので, $b=1$として良い.
+    \item また, unrescaled versionの$Z = \sup_{f \in \cc{F}}\sum_{i=1}^n f(X_i)$について考える.
+    \item Theorem 3.26の証明中の$(\ref{3.81})$と$(\ref{3.82})$より,
+    \[
+        \mathbb{H}\left(e^{\lambda Z}\right)
+        \leq \lambda^{2} \mathbb{E}\left[\sum_{j=1}^{n} \mathbb{E}\left[\sum_{f \in \mathcal{F}} \mathbb{I}[x \in \mathcal{A}(f)]\left(f\left(X_{j}\right)-f\left(Y_{j}\right)\right)^{2} e^{\lambda Z} \mid X^{\backslash j}\right]\right].
+    \]
+    \item ここで,
+    \begin{align*}
+        \sum_{i=1}^{n} \sum_{f \in \mathcal{F}} \mathbb{I}[ X \in \mathcal { A } ( f ) ]\left(f\left(X_{j}\right)-f\left(Y_{j}\right)\right)^{2}
+        & \leq 2 \sup _{f \in \mathcal{F}} \sum_{i=1}^{n} f^{2}\left(X_{i}\right)+2 \sup _{f \in \mathcal{F}} \sum_{i=1}^{n} f^{2}\left(Y_{i}\right) \\
+        &=2\{\Gamma(X)+\Gamma(Y)\},
+    \end{align*}
+    となる, ただし$\Gamma(X) := \sup_{f \in \cc{F}} \sum_{i=1}^nf^2(X_i)$は$\Sigma^2$のunrescaled version.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+    \begin{itemize}
+        \item この2式を合わせると, 
+        \[
+            \bb{H}(e^{\lambda Z})
+            \le 2 \lambda^2 \{\ex[\Gamma e^{\lambda Z}] + \ex[\Gamma]\ex[e^{\lambda Z}]\}.
+            \tag{3.87}\label{3.87}
+        \]
+        \item $\bb{H}(e^{\lambda(Z + c)}) = e^{\lambda c}\bb{H}(e^{\lambda Z})$なので(see Exercise 3.4),
+              同じ式が$\widetilde{Z} = Z - \ex[Z]$でも成り立つ.
+        \item ここで次のlemmaを使う（証明はあとで）.
+    \end{itemize}
+    \begin{block}{Lemma 3.28 (Controlling the random variance)}
+        任意の$\lambda > 0$に対し,
+        \[
+            \mathbb{E}[\Gamma e^{\lambda \tilde{Z}}]
+            \leq (e-1)\mathbb{E}[\Gamma] \mathbb{E}[e^{\lambda \widetilde{Z}}]+\mathbb{E}[\widetilde{Z} e^{\lambda \widetilde{Z}}].
+            \tag{3.88}\label{3.88}
+        \]
+    \end{block}
+    \begin{itemize}
+        \item (\ref{3.88})と(\ref{3.87}) for $\widetilde{Z}$より,
+        \[
+            \bb{H}[e^{\lambda \widetilde{Z}}]
+            \le \lambda^2 \{2e\ex[\Gamma]\varphi(\lambda) + 2\varphi'(\lambda)\}
+            \quad \mathrm{for\ all}\ \lambda > 0,
+        \]
+        ただし$\varphi(\lambda) := \ex[e^{\lambda \widetilde{Z}}]$のmoment generating function.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \begin{itemize}
+        \item $\ex[\widetilde{Z}] = 0$なので, これは$b = 2,\ \sigma^2 = 2e\ex[\Gamma]$のBernstein formのentropy bound (\ref{3.10})となっているので,
+        Proposition 3.3より
+        \[
+            \bb{P}\left[\widetilde{Z} \ge \ex[\widetilde{Z}] +\delta\right]
+            \le 2 \exp\left(-\frac{\delta^2}{8e\ex[\Gamma] + 4\delta} \right)
+            \quad \mathrm{\ for\ all\ } \delta \ge 0.
+        \]
+        \item $\Gamma$の定義に注意して$1/n$でrescalingすれば, theoremのstatementが示される.\qed
+    \end{itemize}
+　\\
+{\bf Proof of Lemma 3.28}
+\begin{itemize}
+    \item 関数$g(t) = e^t$を考えると, conjugate dualは$g^*(s) = s\log s - s\ (\mathrm{for\ }s>0)$.
+        \begin{itemize}
+            \item 関数$h:\bb{R}^k\to\bb{R}$のconjugate dualは, $h^*(y) = \sup_{x}\left(\langle y, x\rangle - h(x) \right)$.
+        \end{itemize}
+    \item すると定義より, 任意の$s > 0,\ t\in \bb{R}$について$st \le s\log s - s + e^t$.
+    \item $s = e^{\lambda \widetilde{Z}}, t = \Gamma - (e-1) \ex[\Gamma]$として期待値をとると,
+    \[
+        \ex[\Gamma e^{\lambda \widetilde{Z}}] - (e-1) \ex[e^{\lambda \widetilde{Z}}]\ex[\Gamma]
+        \le \lambda\ex[\widetilde{Z} e^{\lambda \widetilde{Z}}] - \ex[e^{\lambda \widetilde{Z}}] + \ex[e^{\Gamma - (e-1) \ex[\Gamma]}].
+    \]
+    \item $\ex[e^{\Gamma - (e-1)\ex[\Gamma]}] \le 1$ (by Exercise 3.15)と$\ex[e^{\lambda \widetilde{Z}}] \ge e^{\lambda \ex[\widetilde{Z}]} = 1$ (by Jensen's inequality)を入れると, (\ref{3.88})を得る？ (右辺$\lambda\ex[\widetilde{Z} e^{\lambda \widetilde{Z}}]$の$\lambda$が一致しなくない？)
+    \qed
+\end{itemize}
+\end{frame}
+
 \end{document}
