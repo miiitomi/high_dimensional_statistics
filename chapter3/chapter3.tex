@@ -517,9 +517,9 @@ $n$変数関数$f:\mathbb{R}^n \to \mathbb{R}$と, 独立な確率変数列$\{X_
         \tag{3.31}\label{3.31}
     \]
 \end{itemize}
-\begin{center}
-    \includegraphics[width=8cm]{figure_3_1.png}
-\end{center}
+% \begin{center}
+%     \includegraphics[width=8cm]{figure_3_1.png}
+% \end{center}
 \end{frame}
 
 \begin{frame}{}{}
@@ -1426,8 +1426,63 @@ $\bb{P}$は$\rho$-transportation cost inequality (\ref{3.58})をパラメータ$
 \section{3.4 Tail bounds for empirical processes}
 \begin{frame}{3.4 Tail bounds for empirical processes}
 \begin{itemize}
-    \item 
+    \item この章で紹介したconcentration inequalityのempirical processesへの応用を紹介する.
+    \item この節の例は, Chapter4の議論からstatistical motivationが得られる.\\
+    　
+    \item $\cc{F}$は, 関数$f: \cc{X} \to \bb{R}$の集合.
+    \item $(X_1, \dots, X_n)$はproduct distribution $\bb{P} = \otimes_{i=1}^n \bb{P}_i$からひかれる.
+    \item $\bb{P}_i$のサポートは$\cc{X}_i (\subseteq \cc{X})$に含まれるとする.
+    \item 次の確率変数$Z$を考える.
+    \[
+        Z = \sup_{f \in \cc{F}} \left\{ \frac{1}{n}\sum_{i=1}^n f(X_i)  \right\}.
+        \tag{3.79}\label{3.79}
+    \]
+    \item 目標は, tail event $\{Z \ge \ex[Z] + \delta\}$のupper boundを求めこと.\\
+    　
+    \item Remark: $\sup_{f\in\cc{F}}|\frac{1}{n}\sum_{i=1}^n f(X_i)|$について考えたいなら,
+    (\ref{3.79})で$\tilde{\cc{F}} = \cc{F} \cup \{-\cc{F}\}$とすれば良い.
 \end{itemize}
+\end{frame}
+
+\subsection{3.4.1 A functional Hoeffding inequality}
+\begin{frame}{3.4.1 A functional Hoeffding inequality}
+    \begin{itemize}
+        \item Hoeffding type boundの議論から始める.
+    \end{itemize}
+    \begin{block}{Theorem 3.26 (Functional Hoeffding theorem)}
+        各$f\in\cc{F}$と$i = 1,\dots,n$について,
+        ある実数$a_{i,f}\le b_{i,f}$が存在して,
+        $f(x) \in [a_{i,f}, b_{i,f}]\ \forall x \in \cc{X}_i$が成り立つとする.
+        このとき, 任意の$\delta \ge 0$に対して以下が成り立つ.
+        \[
+            \bb{P}[Z \ge \ex[Z] +\delta]
+            \le \exp\left(-\frac{n\delta^2}{4L^2}\right),
+            \tag{3.80}\label{3.80}
+        \]
+        ただし, $L^2 := \sup_{f \in \cc{F}} \{\frac{1}{n}\sum_{i=1}^n (b_{i,f} - a_{i,f})^2\}$.
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    Remark:
+    \begin{itemize}
+        \item $\cc{F} = \{f\}$ with $f(x) = x$なら$Z = \frac{1}{n}\sum X_i$となり,
+        $x_i \in [a_i, b_i]$に対しTheorem 3.26は
+        \[
+            \bb{P} \left[\frac{1}{n}\sum_{i=1}^n (X_i - \ex[X_i]) \ge \delta\right]
+            \le \exp\left(-\frac{n\delta^2}{4L^2}\right)
+            \quad \mathrm{where\ } L^2 = \frac{1}{n}\sum_{i=1}^n (b_i-a_i)^2
+        \]
+        とclassical Hoeffding theorem(ただし定数項はoptimalでない)を導く.\\
+        　
+        \item 関数$(x_1, \dots, x_n) \mapsto Z(x_1,\dots,x_n)$はパラメータ$L_i := \sup_{f \in \cc{F}}|b_{i,f}-a_{i,f}|\ \mathrm{(for\ each\ } i\mathrm{)}$のbounded difference inequalityを満たすので,
+        Corollary 2.21からsub-Gaussian tail boundを得られるが, そのときのパラメータは
+        \[
+            \tilde{L}^2 
+            = \frac{1}{n}\sum_{i=1}^n \sup_{f \in \cc{F}} (b_{i,f} - a_{i,f})^2.
+        \]
+        各$i$について別々に$f$の$\sup$をとっているので, Theorem 3.26の$L^2$の方がずっと小さい.
+    \end{itemize}
 \end{frame}
 
 \end{document}
