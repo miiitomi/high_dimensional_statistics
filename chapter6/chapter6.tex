@@ -1,15 +1,27 @@
 \documentclass[unicode,aspectratio=169,11pt]{beamer}
-\usepackage{amsmath, amssymb, amsthm, color, latexsym}
+\usepackage{amsmath, amssymb, amsthm, color, latexsym, mathrsfs, bm}
 \usefonttheme{professionalfonts}
 \usepackage{luatexja}
 \usepackage[ipaex]{luatexja-preset}
 \renewcommand{\kanjifamilydefault}{\gtdefault}
 
-\usetheme{metropolis}
+\usetheme[
+  sectionpage=none,
+  numbering=fraction,
+  block=fill
+  ]{metropolis}
+
+\def\qed{\hfill $\Box$}
+\def\endexample{\hfill $\clubsuit$}
+\newcommand{\ex}{\mathbb{E}}
+\newcommand{\var}{\mathrm{var}}
+\newcommand{\bb}{\mathbb}
+\newcommand{\cc}{\mathcal}
 
 \title{6. Random matrices and covariance estimation}
 \author{担当：みーとみ}
 \date{2021年6月30日, 7月7日}
+
 
 \begin{document}
 
