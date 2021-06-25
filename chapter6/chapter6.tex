@@ -17,6 +17,9 @@
 \newcommand{\var}{\mathrm{var}}
 \newcommand{\bb}{\mathbb}
 \newcommand{\cc}{\mathcal}
+\newcommand{\tr}{\mathrm{T}}
+\newcommand{\trace}{\mathrm{tr}}
+
 
 \title{6. Random matrices and covariance estimation}
 \author{担当：みーとみ}
@@ -31,6 +34,69 @@
     \begin{itemize}
         \item 
     \end{itemize}
+\end{frame}
+
+\section{6.2 Wishart matrices and their behavior}
+\begin{frame}{6.2 Wishart matrices and their behavior}
+  \begin{itemize}
+    \item サンプル $x_i$ は, $d$-次元正規分布 $\mathcal{N}(0, \Sigma)$ から i.i.d. で引かれるとする.
+    \item このとき,
+    \[
+      X =
+      \begin{pmatrix}
+        x_1^\tr\\
+        \vdots\\
+        x_n^\tr
+      \end{pmatrix} \in \bb{R}^{n \times d}
+    \]
+    は, {\it $\Sigma$-Gaussian ensemble} から引かれると言う.
+    \item Sample covariance $\widehat{\Sigma} = \frac{1}{n}X^\tr X$ は, {a multivariate Wishart distribution} に従う.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+  \begin{block}{Theorem 6.1}
+    $X \in \mathbb{R}^{n \times d}$ は $\Sigma$-Gaussian ensembleから引かれるとする.
+    このとき, 任意の $\delta > 0$ に対し, 最大特異値 $\sigma_{\max}(X)$ は以下のupper deviation inequalityを満たす:
+    \[
+      \bb{P} \left[
+        \frac{\sigma_{\max}(X)}{\sqrt{n}}
+        \ge \gamma_{\max}\left(\sqrt{\Sigma}\right) (1+\delta) + \sqrt{\frac{\trace(\Sigma)}{n}}
+      \right]
+      \le \exp\left(-\frac{n\delta^2}{2}\right).
+      \tag{6.8}
+    \]
+    さらに$n \ge d$なら, 最小特異値 $\sigma_{\min}(X)$ は以下のlower deviation inequalityを満たす:
+    \[
+        \bb{P} \left[
+        \frac{\sigma_{\min}(X)}{\sqrt{n}}
+        \le \gamma_{\min}\left(\sqrt{\Sigma}\right) (1-\delta) - \sqrt{\frac{\trace(\Sigma)}{n}}
+      \right]
+      \le \exp\left(-\frac{n\delta^2}{2}\right).
+      \tag{6.9}
+    \]
+  \end{block}
+\end{frame}
+
+\begin{frame}{}{}
+　\\
+{\bf Example 6.2} (Operator norm bounds for the standard Gaussian ensemble)
+\begin{itemize}
+  \item $W \in \bb{R}^{n \times d}$ は各成分が$\cc{N} (0,1)$ i.i.d.で引かれるrandom matrixとする（$\Sigma = I_d$）.
+  \item Thm 6.1より, $n \ge d$ なら, 確率 $1 - 2 \exp\left(-\frac{n\delta^2}{2}\right)$ 以上で
+  \[\frac{\sigma_{\max}(W)}{\sqrt{n}} \le 1 + \delta + \sqrt{\frac{d}{n}}
+  \quad \mathrm{and} \quad
+  \frac{\sigma_{\min}(W)}{\sqrt{n}} \ge 1 - \delta - \sqrt{\frac{d}{n}}
+  \tag{6.10}
+  \]
+  となる.
+  \item よって, 同じ確率で
+  \[ \Bigg|\Bigg|\Bigg| \frac{1}{n}W^\tr W - I_d \Bigg|\Bigg|\Bigg|_2 \le 2\epsilon + \epsilon^2,
+  \quad \mathrm{where} \epsilon = \sqrt{\frac{d}{n}} + \delta.
+  \tag{6.11} \]
+  \item したがって, $d/n \to 0$ なら, sample covariance $\widehat{\Sigma} = \frac{1}{n}W^\tr W$ はidentiry matrix $I_d$ の一致推定量となる.
+\end{itemize}
+\endexample
 \end{frame}
 
 \end{document}
