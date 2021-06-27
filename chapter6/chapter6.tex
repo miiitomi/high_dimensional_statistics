@@ -96,9 +96,71 @@
   \[ \Bigg|\Bigg|\Bigg| \frac{1}{n}W^\tr W - I_d \Bigg|\Bigg|\Bigg|_2 \le 2\epsilon + \epsilon^2,
   \quad \mathrm{where} \epsilon = \sqrt{\frac{d}{n}} + \delta.
   \tag{6.11} \]
-  \item したがって, $d/n \to 0$ なら, sample covariance $\widehat{\Sigma} = \frac{1}{n}W^\tr W$ はidentiry matrix $I_d$ の一致推定量となる.
+  \item したがって, $d/n \to 0$ なら, sample covariance $\widehat{\Sigma} = \frac{1}{n}W^\tr W$ はidentiry matrix $I_d$ の一致推定量となる.\endexample
 \end{itemize}
-\endexample
+\end{frame}
+
+\begin{frame}{}{}
+　\\
+{\bf Example 6.3} (Gaussian covariance estimation)
+\begin{itemize}
+  \item $X \in \bb{R}^{n \times d}$ は$\Sigma$-Gaussian ensembleからのrandom matrixとする.
+  \item このとき $X = W \sqrt{\Sigma}$ と書ける（$W \in \bb{R}^{n\times d}$はstandard Gaussian random matrix）ので,
+          \[
+              \Bigg|\Bigg|\Bigg| \frac{1}{n} X^\tr X - \Sigma \Bigg|\Bigg|\Bigg|_2
+              = \Bigg|\Bigg|\Bigg|\sqrt{\Sigma}\left(\frac{1}{n}W^\tr W - I_d\right) \Bigg|\Bigg|\Bigg|_2
+              \le |||\Sigma|||_2 \Bigg|\Bigg|\Bigg| \frac{1}{n} W^\tr W - I_d \Bigg|\Bigg|\Bigg|_2.
+          \]
+  \item したがって (6.11) より, 任意の $\delta > 0$ に対して確率 $1 - 2\exp\left(-\frac{n \delta^2}{2}\right)$ で
+          \[
+            \frac{||| \widehat{\Sigma} - \Sigma |||_2}{|||\Sigma|||_2}
+            \le 2 \sqrt{\frac{d}{n}} + 2\delta + \left(\sqrt{\frac{d}{n}} + \delta\right)^2.
+            \tag{6.12} 
+          \]
+  \item よって, $||| \widehat{\Sigma} - \Sigma |||_2 / |||\Sigma|||_2$ は $d/n \to 0$ である限り $0$ に収束する.\endexample
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+　\\
+{\bf Example 6.4} (Faster rates under trace constraints)
+\begin{itemize}
+  \item $\{ \gamma_j(\Sigma)\}_{j = 1}^d$ は$\Sigma$の固有値列で, $\gamma_1(\Sigma)$ がそのうち最大のもの.
+  \item $\Sigma$は, 次元に対して独立な定数 $C$ に対し, 次の ``trace constraint'' を満たすとする:
+        \[
+            \frac{\trace(\Sigma)}{|||\Sigma|||_2}
+            = \frac{\sum_{j=1}^d \gamma_j(\Sigma)}{\gamma_1(\Sigma)}
+            \le C.
+            \tag{6.13}
+        \]
+  \item $C$は$\Sigma$の（実質的な）rankと見なせる（$\because$ (6.13) は$C = \mathrm{rank}(\Sigma)$では常に成立. ）
+  \item パラメータ $q \in [0,1]$と半径 $R_q >0$ のthe Schatten $q$-``balls''を, 以下で定義する:
+        \[
+          \bb{B}_q(R_q)
+          := \left\{ \Sigma\in S^{d \times d} \Bigg| \sum_{j=1}^d|\gamma_j(\Sigma)|^q \le R_q \right\}.
+          \tag{6.14}
+        \]
+        \begin{itemize}
+          \item $q = 0$なら, rank $R_q$ 以下の対称行列の集合.
+          \item $q = 1$なら, trace constraintになる.
+        \end{itemize}
+  \item 任意の非零行列 $\Sigma \in \bb{B}_q(R_q)$ は, (6.13) を $C = R_q / (\gamma_1(\Sigma))^q$ で満たす.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\begin{itemize}
+  \item (6.13) を満たす任意の$\Sigma$に対し, Thm 6.1は高確率で$X$の最大特異値が次のように抑えられることを保証する:
+  \[
+      \frac{\sigma_{\max}(X)}{\sqrt{n}} \le \gamma_{\max}(\sqrt{\Sigma}) \left(1 + \delta + \sqrt{\frac{C}{n}}\right).
+      \tag{6.15}
+  \]
+  \item $\Sigma = I_d$のときのbound (6.10) と比べると, $C$ が $d$ に置き換わって``実行的なrank''となっている.\endexample
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+{\bf Proof of Theorem 6.1.}
 \end{frame}
 
 \end{document}
