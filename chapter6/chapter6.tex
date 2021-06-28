@@ -50,8 +50,8 @@
     \[ \sigma_{\max}(A) = \sigma_1(A) \ge \sigma_2(A) \ge \dots \ge \sigma_m(A) = \sigma_{\min}(A) \ge 0 \]
     と書く.
     \item 最小・最大特異値は次のようにcharacterizeされる:
-    \[ \sigma_{\max}(A) = \max_{\nu \in \bb{S}^{m-1}}\| A\nu \|_2 \quad \mathrm{and} \quad \sigma_{\min}(A) = \min_{\nu \in \bb{S}^{m-1}}\|A\nu\|_2, \tag{6.1} \]
-    ただし $\bb{S}^{d-1} := \left\{ \nu \in \bb{R}^d \mid \|\nu\|_2 = 1 \right\}$ は $\bb{R}^d$ 上のEuclidean unit sphere.
+    \[ \sigma_{\max}(A) = \max_{v \in \bb{S}^{m-1}}\| Av \|_2 \quad \mathrm{and} \quad \sigma_{\min}(A) = \min_{v \in \bb{S}^{m-1}}\|Av\|_2, \tag{6.1} \]
+    ただし $\bb{S}^{d-1} := \left\{ v \in \bb{R}^d \mid \|v\|_2 = 1 \right\}$ は $\bb{R}^d$ 上のEuclidean unit sphere.
     \item また次の同値性が成り立つ: $||| A |||_2 = \sigma_{\max}(A)$.
   \end{itemize}
 \end{frame}
@@ -72,12 +72,12 @@
   \begin{itemize}
     \item 最小・最大固有値の ``Rayleigh–Ritz variational characterization'':
     \[
-        \gamma_{\max}(Q) = \max_{\nu \in \bb{S}^{d-1}} \nu^\tr Q \nu
+        \gamma_{\max}(Q) = \max_{v \in \bb{S}^{d-1}} v^\tr Q v
         \quad \mathrm{and} \quad
-        \gamma_{\min}(Q) = \min_{\nu \in \bb{S}^{d-1}} \nu^\tr Q \nu. \tag{6.3}
+        \gamma_{\min}(Q) = \min_{v \in \bb{S}^{d-1}} v^\tr Q v. \tag{6.3}
     \]
     \item 任意の対称行列 $Q$ に対し, その$\ell_2$-operator normは, 
-    \[ |||Q|||_2 = \max \left\{ \gamma_{\max}(Q), |\gamma_{\min}(Q)| \right\} = \max_{\nu \in \bb{S}^{d-1}}\left|\nu^\tr Q\nu\right|.\tag{6.4} \]
+    \[ |||Q|||_2 = \max \left\{ \gamma_{\max}(Q), |\gamma_{\min}(Q)| \right\} = \max_{v \in \bb{S}^{d-1}}\left|v^\tr Qv\right|.\tag{6.4} \]
     \item 最後に, 行列 $A \in \bb{R}^{n\times m}$ with $n \ge m$ に対し, $m$-次元対称行列 $R := A^\tr A$ を考えると, 
     \[ \gamma_j(R) = \left(\sigma_j(A)\right)^2 \quad \mathrm{for}\ j = 1, \dots, m. \]
   \end{itemize}
@@ -97,8 +97,8 @@
 \begin{frame}
   \begin{itemize}
     \item (6.4) の$\ell_2$-operator normの表現より, $|||\widehat{\Sigma}-\Sigma|||_2 \le \epsilon$ は以下と同値:
-    \[ \max_{\nu \in \bb{S}^{d-1}} \left|\frac{1}{n}\sum_{i=1}^n \langle x_i,\nu_i \rangle^2 - \nu^\tr \Sigma \nu\right| \le \epsilon. \tag{6.6}\]
-    \item つまり, $|||\widehat{\Sigma} - \Sigma|||_2$ をコントロールすることは, $\nu$ でindexedされた関数クラス $x \mapsto \langle x, \nu\rangle^2$ のuniform law of large numbersを示すことと同値になる.
+    \[ \max_{v \in \bb{S}^{d-1}} \left|\frac{1}{n}\sum_{i=1}^n \langle x_i,v_i \rangle^2 - v^\tr \Sigma v\right| \le \epsilon. \tag{6.6}\]
+    \item つまり, $|||\widehat{\Sigma} - \Sigma|||_2$ をコントロールすることは, $v$ でindexedされた関数クラス $x \mapsto \langle x, v\rangle^2$ のuniform law of large numbersを示すことと同値になる.
   \end{itemize}
 \end{frame}
 
@@ -246,6 +246,90 @@
 
 \begin{frame}{}{}
 {\bf Proof of Theorem 6.1.}
+\begin{itemize}
+  \item Notation: $\overline{\sigma}_{\max} = \gamma_{\max}(\sqrt{\Sigma}),\ \overline{\sigma}_{\min} = \gamma_{\min}(\sqrt{\Sigma})$.
+  \item 最大/最小特異値のupper/lower boundともに以下の2段階で示す:
+  \begin{enumerate}
+    \item 高確率で特異値が期待値に近いことをconcentration inequalityから示す（Ch.2）
+    \item その期待値のboundの導出にGaussian comparison inequalityを用いる（Ch.5）
+  \end{enumerate}
+  　\\
+  \item ここでは最大特異値のupper boundのみを示す.
+        （最小特異値のlower boundは大体似た方針で示せるがよりテクニカルなのでAppendix (Section 6.6)にまわす.）
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+  \begin{itemize}
+    \item $X = W \sqrt{\Sigma}$ と書ける, ただし $W \in \bb{R}^{n\times d}$ はi.i.d. $\cc{N}(0,1)$ entriesをもつ.
+    \item $W \mapsto \frac{\sigma_{\max}(W\sqrt{\Sigma})}{\sqrt{n}}$ を$\bb{R}^{nd}$上の実数値写像とみると, これは $L = \overline{\sigma}_{\max}/\sqrt{n}$でLipschitz w.r.t. Euclidean norm.（cf. Example 2.32）
+    \item Gaussian r.v. に対するLipschitz関数のconcentration inequality（Thm 2.26）より,
+          \[
+            \bb{P}\left[\sigma_{\max}(X) \ge \ex[\sigma_{\max}(X)] + \sqrt{n} \overline{\sigma}_{\max} \delta\right]
+            \le \exp\left(-\frac{n \delta^2}{2}\right).
+          \]
+    \item したがって, あとは以下を示せれば良い:
+          \[
+            \ex[\sigma_{\max}(X)] \le \sqrt{n} \overline{\sigma}_{\max} + \sqrt{\trace(\Sigma)}. \tag{6.16}
+          \]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \begin{itemize}
+    \item $\sigma_{\max}(X) = \max_{v' \in \bb{S}^{d-1}}\|Xv'\|_2$ で, $X = W\sqrt{\Sigma},\ v = \sqrt{\Sigma}v'$とすると次のように書ける:
+          \[
+            \sigma_{\max}(X) = \max_{v \in \bb{S}^{d-1}(\Sigma^{-1})} \|W v\|_2
+            = \max_{u \in \bb{S}^{d-1}} \max_{v \in \bb{S}^{d-1}(\Sigma^{-1})} \underbrace{u^\tr W v}_{Z_{u,v}},
+          \]
+          ただし $\bb{S}^{d-1}(\Sigma^{-1}) := \{v \in \bb{R}^d \mid \|\Sigma^{-\frac{1}{2}}v\|_2 = 1\}$.
+    \item $\{ Z_{u, v} ,\ (u, v) \in \bb{T}\}$ where $\bb{T} := \bb{S}^{d-1}\times \bb{S}^{d-1}(\Sigma^{-1})$はzero-mean Gaussian processとみなせる.\\
+    　\\
+    \item 別のGaussian process $\{Y_{u,v},\ (u,v)\in \bb{T}\}$ で $\ex[(Z_{u,v}-Z_{\tilde{u}\tilde{v}})^2] \le \ex[(Y_{u,v}-Y_{\tilde{u}\tilde{v}})^2]$
+          for all $(u,v), (u',v') \in \bb{T}$ となるようなものをconstructすることを考える.
+    \item すると Sudakov-Fernique comparison（Thm. 5.27）から以下が言える:
+          \[ \ex[\sigma_{\max}(X)] = \ex\left[\max_{(u,v)\in \bb{T}} Z_{u,v}\right] \le \ex\left[\max_{(u,v)\in \bb{T}} Y_{u,v}\right]. \tag{6.17}\]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \begin{itemize}
+    \item $(u, v), (\tilde{u}, \tilde{v}) \in \bb{T}$ をgivenとし, $\|v\|_2 \le \|\tilde{v}\|_2$とする.
+    \item まず$Z_{u,v} =u^\tr W v= \langle\langle W, uv^\tr \rangle\rangle$となる, where $\langle\langle A,B\rangle\rangle := \sum_{j=1}^n\sum_{k=1}^dA_{jk}B_{jk}$.
+    \item $W$ はi.i.d.$\cc{N}(0,1)$ entriesをもつので,
+          \[
+            \ex\left[(Z_{u,v} - Z_{\tilde{u}\tilde{v}})^2\right]
+            = \ex \left[\langle\langle W, uv^\tr-\tilde{u}\tilde{v}^\tr\rangle\rangle^2\right]
+            = |||uv^\tr - \tilde{u}\tilde{v}^\tr |||^2_F.
+          \]
+    \item Frobenius normを変形すると,
+          \begin{align*}
+             &|||uv^\tr - \tilde{u}\tilde{v}^\tr |||^2_F\\
+            =&|||u(v - \tilde{v})^\tr - (u-\tilde{u})\tilde{v}^\tr |||^2_F \\
+            =&|||(u-\tilde{u})\tilde{v}^\tr|||^2_F + |||u(v-\tilde{v})-\tr|||^2_F + 2\langle\langle u(v-\tilde{v})^\tr, (u-\tilde{u})\tilde{v}^\tr\rangle\rangle\\
+            \le& \|\tilde{v}\|_2^2\|u-\tilde{u}\|_2^2 + \|u\|_2^2\|v-\tilde{v}\|_2^2 + 2(\|u\|_2^2-\langle u,\tilde{u}\rangle)(\langle v,\tilde{v}\rangle-\|\tilde{v}\|_2^2).
+          \end{align*}
+    \item ここで, $\|u\|_2 = \|\tilde{u}\|_2 = 1$ より $\|u\|_2^2 - \langle u, \tilde{u}\rangle \ge 0$.
+    \item 一方, Cauchy-Schwarzと仮定$\|v\|_2 \le \|\tilde{v}\|_2$より, $|\langle v, \tilde{v}\rangle| \le \|v\|_2 \|\tilde{v}\|_2 \le \|\tilde{v}\|_2^2$.
+    \item したがって, 
+          \[|||uv^\tr - \tilde{u}\tilde{v}^\tr |||^2_F \le  \|\tilde{v}\|_2^2\|u-\tilde{u}\|_2^2 + \|v-\tilde{v}\|_2^2.\]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \begin{itemize}
+    \item $\bb{S}^{d-1}(\Sigma^{-1})$の定義より, $\|\tilde{v}\|_2 \le \overline{\sigma} = \gamma_{\max}(\sqrt{\Sigma})$ なので,
+            \[ \ex[(Z_{u,v} - Z_{\tilde{u}, \tilde{v}})^2] \le \overline{\sigma}^2_{\max} \|u-\tilde{u}\|_2^2 + \|v-\tilde{v}\|_2^2.\]
+    \item Gaussian process $Y_{u,v} := \overline{\sigma}_{\max}\langle g, u\rangle + \langle h, v\rangle$ を定義する（ただし $g\in\bb{R}^n, h \in \bb{R}^d$ はstandard Gaussian rv's）と,
+            \[ E[(Y_{u,v} - Y_{\tilde{u},\tilde{v}})^2] = \overline{\sigma}^2_{\max}\|u-\tilde{u}\|_2^2 + \|v - \tilde{v}\|_2^2. \]
+    \item よって Sudakov-Fernique bound (6.17) より,
+    \begin{align*}
+      \ex[\sigma_{\max}(X)] \le \ex\left[ \sup_{(u,v) \in \bb{T}} Y_{u,v}\right]
+      &= \overline{\sigma}_{\max}\ex\left[\sup_{u \in\bb{S}^{d-1}}\langle g, u \rangle\right] + \ex\left[ \sup_{v \in \bb{S}^{d-1}(\Sigma^{-1})}\langle h, v\rangle \right]\\
+      &= \overline{\sigma}_{\max}\ex[\|g\|_2] + \ex[\|\sqrt{\Sigma}h\|_2].
+    \end{align*}
+    \item Jensen's inequalityから, $\ex[\|g\|_2] \le \sqrt{n}$ ans $\ex[\|\sqrt{\Sigma}h\|_2] \le \sqrt{\ex[h^\tr \Sigma h]} = \sqrt{\trace(\Sigma)}$となり, (6.16)が示された.\qed
+  \end{itemize}
 \end{frame}
 
 \section{6.3 Covariance matrices from sub-Gaussian ensembles}
