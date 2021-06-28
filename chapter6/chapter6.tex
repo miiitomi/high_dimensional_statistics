@@ -15,6 +15,7 @@
 \def\endexample{\hfill $\clubsuit$}
 \newcommand{\ex}{\mathbb{E}}
 \newcommand{\var}{\mathrm{var}}
+\newcommand{\cov}{\mathrm{cov}}
 \newcommand{\bb}{\mathbb}
 \newcommand{\cc}{\mathcal}
 \newcommand{\tr}{\mathrm{T}}
@@ -31,11 +32,95 @@
 \maketitle
 
 \begin{frame}{Table of Contents}{}
+    \setcounter{tocdepth}{1}
     \tableofcontents
 \end{frame}
 
 \section{6.1 Some preliminaries}
 \begin{frame}{6.1 Some preliminaries}
+  \begin{itemize}
+    \item Notationとこの章で使うpreliminary resultsの説明から.
+  \end{itemize}
+\end{frame}
+
+\subsection{6.1.1 Notation and basic facts}
+\begin{frame}{6.1.1 Notation and basic facts}{}
+  \begin{itemize}
+    \item 行列 $A \in \bb{R}^{n \times m}$ with $n \ge m$ に対し, (順序付き)特異値を
+    \[ \sigma_{\max}(A) = \sigma_1(A) \ge \sigma_2(A) \ge \dots \ge \sigma_m(A) = \sigma_{\min}(A) \ge 0 \]
+    と書く.
+    \item 最小・最大特異値は次のようにcharacterizeされる:
+    \[ \sigma_{\max}(A) = \max_{\nu \in \bb{S}^{m-1}}\| A\nu \|_2 \quad \mathrm{and} \quad \sigma_{\min}(A) = \min_{\nu \in \bb{S}^{m-1}}\|A\nu\|_2, \tag{6.1} \]
+    ただし $\bb{S}^{d-1} := \left\{ \nu \in \bb{R}^d \mid \|\nu\|_2 = 1 \right\}$ は $\bb{R}^d$ 上のEuclidean unit sphere.
+    \item また次の同値性が成り立つ: $||| A |||_2 = \sigma_{\max}(A)$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \begin{itemize}
+    \item 対称行列の集合を ${\cc{S}}^{d\times d} := \left\{Q\in\bb{R}^{d\times d} \mid Q = Q^\tr\right\}$ とし, その半正定値行列からなる部分集合を
+    \[ \cc{S}_+^{d \times d} := \left\{Q \in \cc{S}^{d \times d} \mid Q \succeq 0\right\} \tag{6.2} \]
+    と書く.
+    \item 任意の対称行列 $Q \in \cc{S}^{d\times d}$ は対角化可能であり, その固有値を
+    \[ \gamma_{\max}(Q) = \gamma_1(Q) \ge \gamma_2 \ge \dots \ge \gamma_d(Q) = \gamma_{\min}(Q) \]
+    とする.
+    \item このとき, $Q \succeq 0 \ \Leftrightarrow \ \gamma_{\min}(Q) \ge 0$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+  \begin{itemize}
+    \item 最小・最大固有値の ``Rayleigh–Ritz variational characterization'':
+    \[
+        \gamma_{\max}(Q) = \max_{\nu \in \bb{S}^{d-1}} \nu^\tr Q \nu
+        \quad \mathrm{and} \quad
+        \gamma_{\min}(Q) = \min_{\nu \in \bb{S}^{d-1}} \nu^\tr Q \nu. \tag{6.3}
+    \]
+    \item 任意の対称行列 $Q$ に対し, その$\ell_2$-operator normは, 
+    \[ |||Q|||_2 = \max \left\{ \gamma_{\max}(Q), |\gamma_{\min}(Q)| \right\} = \max_{\nu \in \bb{S}^{d-1}}\left|\nu^\tr Q\nu\right|.\tag{6.4} \]
+    \item 最後に, 行列 $A \in \bb{R}^{n\times m}$ with $n \ge m$ に対し, $m$-次元対称行列 $R := A^\tr A$ を考えると, 
+    \[ \gamma_j(R) = \left(\sigma_j(A)\right)^2 \quad \mathrm{for}\ j = 1, \dots, m. \]
+  \end{itemize}
+\end{frame}
+
+\subsection{6.1.2 Set-up of covariance estimation}
+\begin{frame}{6.1.2 Set-up of covariance estimation}{}
+  \begin{itemize}
+    \item $\{x_1,\dots,x_m\}$ は, $\bb{R}^d$上のzero-mean・covariance $\Sigma = \cov(x_1) \in \bb{S}_+^{d\times d}$なる分布からの $n$ 個のi.i.d.サンプルとする.
+    \item $\Sigma$ のstandard estimatorは, 次の {\it sample covariance matrix} である:
+    \[ \widehat{\Sigma} := \frac{1}{n}\sum_{i=1}^n x_i x_i^\tr.  \tag{6.5} \]
+    \item 各 $x_i$ はzero-meanなので $\ex[x_i x_i^\tr] = \Sigma$ であり, $\widehat{\Sigma}$ は $\Sigma$ のunbiased estimator.
+    \item したがって $\widehat{\Sigma}-\Sigma$ は期待値ゼロとなり, その$\ell_2$-operator normによって測ったerrorのboundを求めることがこの章のgoalとなる.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \begin{itemize}
+    \item (6.4) の$\ell_2$-operator normの表現より, $|||\widehat{\Sigma}-\Sigma|||_2 \le \epsilon$ は以下と同値:
+    \[ \max_{\nu \in \bb{S}^{d-1}} \left|\frac{1}{n}\sum_{i=1}^n \langle x_i,\nu_i \rangle^2 - \nu^\tr \Sigma \nu\right| \le \epsilon. \tag{6.6}\]
+    \item つまり, $|||\widehat{\Sigma} - \Sigma|||_2$ をコントロールすることは, $\nu$ でindexedされた関数クラス $x \mapsto \langle x, \nu\rangle^2$ のuniform law of large numbersを示すことと同値になる.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+　\\
+  \begin{itemize}
+    \item その$\ell_2$-operator normをコントロールすることは, $\widehat{\Sigma}$ の固有値の一様収束も意味する: Weyl's theorem の corollaryより,
+    \[ \max_{j = 1, \dots, d} \left|\gamma_j(\widehat{\Sigma}) - \gamma_j\left(\Sigma\right)\right| \le |||\widehat{\Sigma} - \Sigma|||_2. \tag{6.7} \]
+    　\\
+    \item また最後に, ランダム行列 $X \in \bb{R}^{n \times d}$ が, 第$i$行に $x_i^\tr$ を持つものとする
+    \[
+      X =
+      \begin{pmatrix}
+        x_1^\tr\\
+        \vdots\\
+        x_n^\tr
+      \end{pmatrix} \in \bb{R}^{n \times d}
+    \]
+    と,
+    \[ \widehat{\Sigma} = \frac{1}{n}\sum_{i=1}^n x_i x_i^\tr = \frac{1}{n}X^\tr X \]
+    なので, $\widehat{\Sigma}$ の固有値は $X / \sqrt{n}$ の特異値の2乗となる.
+  \end{itemize}
 \end{frame}
 
 \section{6.2 Wishart matrices and their behavior}
@@ -161,6 +246,13 @@
 
 \begin{frame}{}{}
 {\bf Proof of Theorem 6.1.}
+\end{frame}
+
+\section{6.3 Covariance matrices from sub-Gaussian ensembles}
+\begin{frame}{6.3 Covariance matrices from sub-Gaussian ensembles}{}
+  \begin{itemize}
+    \item 
+  \end{itemize}
 \end{frame}
 
 \end{document}
