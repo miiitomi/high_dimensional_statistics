@@ -335,7 +335,158 @@
 \section{6.3 Covariance matrices from sub-Gaussian ensembles}
 \begin{frame}{6.3 Covariance matrices from sub-Gaussian ensembles}{}
   \begin{itemize}
-    \item 
+    \item Random vector $x_i \in \bb{R}^d$ はzero-meanで, sub-Gaussian with parameter at most $\sigma$, つまり各 $v \in \bb{S}^{d-1}$ に対し,
+          \[
+              \ex\left[\exp\left(\lambda \langle v, x_i \rangle\right)\right]
+              \le \exp\left(\frac{\lambda^2\sigma^2}{2}\right)
+              \quad \mathrm{for\ all}\ \lambda \in \bb{R}
+              \tag{6.18}
+          \]
+          が成り立つとする.
+          \begin{itemize}
+            \item 例1) $x_{ij} \in \bb{R}$ はzero-mean, sub-Gaussian with $\sigma = 1$\\
+                  （$x_{ij} \sim \cc{N}(0,1)$やRademacher variable, サポート$[-1,1]$の分布など）
+            \item 例2) $x_i \sim \cc{N}(0, \Sigma)$ とすると,
+            任意の $v \in \bb{S}^{d-1}$ に対し $\langle v, x_i \rangle \sim \cc{N}(0, v^\tr \Sigma v)$ で $v^\tr \Sigma v \le |||\Sigma|||_2$ より,
+            $x_i$ は sub-Gaussian with parameter at most $\sigma^2 = |||\Sigma|||_2$.
+          \end{itemize}
+    \item このとき, $X \in \bb{R}^{n \times d}$ は {\it row-wise $\sigma$-sub-Gaussian ensemble} からのサンプルであるという.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \begin{block}{Theorem 6.5}
+    ある定数 $c_0, c_1, c_2 , c_3$ が存在して,
+    任意のrow-wise $\sigma$-sub-Gaussianランダム行列 $X \in \bb{R}^{n \times d}$ について,
+    標本共分散 $\widehat{\Sigma} = \frac{1}{n}\sum_{i=1}^n x_i x_i^\tr$ は次ののbound
+    \[
+      \ex\left[ \exp\left( \lambda |||\widehat{\Sigma} - \Sigma|||_2 \right) \right]
+      \le \exp\left( c_0\frac{\lambda^2\sigma^2}{n} + 4d \right)
+      \quad \mathrm{for\ all}\ |\lambda| < \frac{n}{64e^2\sigma^2}
+      \tag{6.19a}
+    \]
+    を満たし, したがって,
+    \[
+      \bb{P}\left[ \frac{|||\widehat{\Sigma} - \Sigma|||_2}{\sigma^2} \ge c_1 \left\{ \sqrt{\frac{d}{n}} + \frac{d}{n} \right\} + \delta \right]
+      \le c_2 \exp\left(-c_3 n \min\{\delta, \delta^2\}\right)
+      \quad \mathrm{for\ all}\ \delta \ge 0.
+      \tag{6.19b}
+    \]
+  \end{block}
+\end{frame}
+
+\begin{frame}{}{}
+  　\\
+  {\it Remarks:}
+  \begin{itemize}
+    \item (6.19a) をgivenとすると, Chernoff technique (Ch.2) からただちに (6.19b) が示される.
+    \item $\Sigma = I_d$ で $x_i$ がsub-Gaussian w/ $\sigma = 1$のとき, (6.19b)は高確率で
+          \[ |||\widehat{\Sigma} - I_d|||_2 \precsim \sqrt{\frac{d}{n}}+\frac{d}{n}\]
+          となることを含意する.
+    \item $n \ge d$ のとき, これは定数 $c' > 1$ について
+          \[
+            1 - c' \sqrt{\frac{d}{n}}
+            \le \frac{\sigma_{\min}(X)}{\sqrt{n}}
+            \le \frac{\sigma_{\max}(X)}{\sqrt{n}}
+            \le 1 + c' \sqrt{\frac{d}{n}}
+            \tag{6.20}
+          \]
+          を意味し, standard Gaussian matrixについてのresult (6.10) の sub-Gaussian versionとみなせる.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+  {\bf Proof}
+  \begin{itemize}
+    \item $Q := \widehat{\Sigma} - \Sigma$ の $\ell_2$-operator normのmoment母関数のboundを求めたい.
+    \item まずSection 6.1より $||| Q |||_2 = \max_{v \in \bb{S}^{d-1}} |\langle v, Qv \rangle|$.
+    \item Example 5.8より, $\bb{S}^{d-1}$ には$N (\le 17^d)$個のベクトルからなる $\frac{1}{8}$-covering が存在し, これを $\{v^1 ,\dots, v^N\}$ とかく.
+    \item 任意の $v \in \bb{S}^{d-1}$ は $v = v^j + \Delta$ where $\|\Delta\|_2 \le \frac{1}{8}$ とかけ, よって
+            \[
+              \langle v, Qv \rangle
+              = \langle v^j, Qv^j \rangle + 2\langle \Delta, Qv^j \rangle + \langle \Delta, Q\Delta \rangle.
+            \]
+    \item 三角不等式とoperator normの定義から
+            \begin{align*}
+              |\langle v, Qv \rangle|
+              &\le |\langle v^j, Qv^j \rangle| + 2\|\Delta\|_2 |||Q|||_2 \|v^j\|_2 + |||Q|||_2\|\Delta\|_2^2\\
+              &\le |\langle v^j, Qv^j \rangle| + \frac{1}{4} |||Q|||_2 + \frac{1}{64} |||Q|||_2\\
+              &\le |\langle v^j, Qv^j \rangle| + \frac{1}{2}|||Q|||_2.
+            \end{align*}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \begin{itemize}
+    \item $v \in \bb{S}$ について$\sup$をとると,
+            \[ |||Q|||_2 = \max_{v \in \bb{S}^{d-1}} |\langle v, Qv\rangle| \le 2 \max_{j = 1,\dots,N} |\langle v^j, Qv^j\rangle|. \]
+    \item よって,
+            {\small
+            \[
+                \ex\left[e^{\lambda|||Q|||_2}\right]
+                \le \ex\left[\exp\left( 2\lambda\max_{j=1,\dots,N}|\langle v^j, Qv^j \rangle| \right)\right]
+                \le \sum_{j=1}^N\left\{ \ex\left[e^{2\lambda\langle v^j, Qv^j\rangle}\right] + \ex\left[e^{-2\lambda\langle v^j, Qv^j\rangle}\right] \right\}.
+                \tag{6.21}
+            \]}
+    \item ここで, 任意の $u \in \bb{S}^{d-1}$ に対して以下が成り立つ（証明は後で）:
+            \[
+              \ex\left[ e^{t \langle u, Qu \rangle} \right] \le e^{512 \frac{t^2}{n} e^4 \sigma^4} 
+              \quad \mathrm{for\ all}\ |t| \le \frac{n}{32 e^2 \sigma^2}.
+              \tag{6.22}
+            \]
+    \item (6.21) (6.22) より,
+            \[
+                \ex\left[e^{\lambda |||Q|||_2}\right] \le 2Ne^{2048 \frac{\lambda^2}{n}e^4 \sigma^4} \le \exp\left(c_0 \frac{\lambda^2\sigma^4}{n}+4d\right)
+                \quad \mathrm{for\ all}\ |\lambda| < \frac{n}{64 e^2 \sigma^2}
+            \]
+            となり（2つ目の不等号は$2\cdot 17^d \le e^{4d}$より） , (6.19a) が示された.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+  {\it Proof of the bound (6.22)}
+  \begin{itemize}
+    \item $Q = \widehat{\Sigma} - \Sigma$ の定義とi.i.d.の仮定より,
+          \begin{align*}
+            \ex\left[e^{t\langle u, Qu\rangle}\right]
+            = \prod_{i=1}^n \ex\left[e^{\frac{t}{n}\left\{\langle x_i, u\rangle^2 - \langle u, \Sigma u\rangle\right\}}\right]
+            = \left( \ex\left[e^{\frac{t}{n}\left\{\langle x_1, u\rangle^2 - \langle u, \Sigma u\rangle\right\}}\right] \right)^n.
+            \tag{6.23}
+          \end{align*}
+    \item $\epsilon \in \{-1, 1\}$をRademacher変数とすると, symmetrization argument (Prop.4.11)より
+          \begin{align*}
+            \mathbb{E}_{x_{1}}\left[e^{\frac{t}{n}\left\{\left\langle x_{1}, u\right\rangle^{2}-\langle u, \Sigma u\rangle\right\}}\right]
+            \leq \mathbb{E}_{x_{1}, \varepsilon}\left[e^{\frac{2 t}{n} \varepsilon\left\langle x_{1}, u\right\rangle^{2}}\right]
+            & \stackrel{(\mathrm{i})}{=} \sum_{k=0}^{\infty} \frac{1}{k !}\left(\frac{2 t}{n}\right)^{k} \mathbb{E}\left[\varepsilon^{k}\left\langle x_{1}, u\right\rangle^{2 k}\right] \\
+            & \stackrel{(\mathrm{ii})}{=} 1+\sum_{\ell=1}^{\infty} \frac{1}{(2 \ell) !}\left(\frac{2 t}{n}\right)^{2 \ell} \mathbb{E}\left[\left\langle x_{1}, u\right\rangle^{4 \ell}\right]
+          \end{align*}
+          となる, ただし(i)は指数関数の冪乗展開, (ii)は奇数次項はRademacher termが$0$になることより.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+  \begin{itemize}
+    \item Thm.2.6のsub-Gaussianの同値条件より,
+            \[
+              \ex\left[ \langle x_1, u\rangle^{4\ell} \right]
+              \le \frac{(4\ell)!}{2^{2\ell}(2\ell)!}(\sqrt{8}e\sigma)^{4\ell}
+              \quad \mathrm{for\ all}\ \ell = 1,2,\dots,
+            \]
+            が成り立つので,
+            \begin{align*}
+              \mathbb{E}_{x_{1}}\left[e^{\frac{t}{n}\{\left\langle x_{1}, u\right\rangle^{2}-\langle u, \Sigma u\rangle\}}\right] & \leq 1+\sum_{\ell=1}^{\infty} \frac{1}{(2 \ell) !}\left(\frac{2 t}{n}\right)^{2 \ell} \frac{(4 \ell) !}{2^{2 \ell}(2 \ell) !}(\sqrt{8} e \sigma)^{4 \ell} \\
+              & \leq 1+\sum_{\ell=1}^{\infty}\Bigg(\underbrace{\frac{16 t}{n} e^{2} \sigma^{2}}_{f(t)}\Bigg)^{2 \ell}
+            \end{align*}
+            となる, ただし最後の不等号は$(4\ell)! \le 2^{2\ell}[(2\ell)!]^2$より.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+  \begin{itemize}
+    \item $f(t) = \frac{16t}{n}e^2 \sigma^2 < \frac{1}{2}$なら
+      \[1+\sum_{\ell=1}^{\infty}\left[f^{2}(t)\right]^{\ell} = \frac{1}{1-f^{2}(t)} \stackrel{(\mathrm{i})}{\leq} \exp \left(2 f^{2}(t)\right)\]
+      となる（(i)は$1/(1-a) \le e^{2a}\mathrm{\ for\ all\ }a \in [0,1/2]$より）ので,
+      (6.23)と合わせて $|t| < \frac{n}{32 e^2 \sigma^2}$ に対して $\ex[e^{t \langle u, Qu \rangle}] \le e^{2nf^2(t)}$, つまり(6.22)が示された.\qed
   \end{itemize}
 \end{frame}
 
