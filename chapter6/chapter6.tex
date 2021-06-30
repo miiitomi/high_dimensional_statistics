@@ -490,4 +490,168 @@
   \end{itemize}
 \end{frame}
 
+\begin{frame}{6.4 Bounds for general matrices}{}
+  \begin{itemize}
+    \item より一般的な条件下でのboundを求める.
+    \item そのために covariance matrices だけでなくよりgeneralなrandom matricesを考える.
+    \item Main resultのTheorem 6.15と6.17はHoeffding・Bernstein boundsのmatrix-based analogsである.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{6.4.1 Background on matrix analysis}{}
+  　\\
+  \begin{itemize}
+    \item 対称行列$Q \in \cc{S}^{d\times d}$の対角化$Q = U^\tr \Gamma U$を考える:
+    \begin{itemize}
+      \item $U \in \bb{R}^{d\times d}$はユニタリ行列 $U^\tr U = I_d$.
+      \item $\Gamma := \mathrm{diag}(\gamma(Q))$は固有値 $\gamma(Q) \in \bb{R}^d$からなる対角行列.
+    \end{itemize}
+    　\\
+    \item 関数 $f : \bb{R} \to \bb{R}$ を $\cc{S}^{d\times d}$上の関数に以下のように拡張する:
+          \[
+              Q \mapsto f(Q) := U^\tr \mathrm{diag}(f(\gamma_1(Q)), \dots, f(\gamma_d(Q))) U.
+          \]
+          \begin{itemize}
+            \item このとき, $f$はユニタリ不変, つまり
+                  \[ f(V^\tr Q V) = V^\tr f(Q) V \quad \mathrm{for\ all\ unitary\ matrices\ } V \in \bb{R}^{d\times d}. \]
+            \item また, 固有値は次のように変換される({\it spectral mapping property}):
+                  \[ \gamma(f(Q)) = \{ f(\gamma_j(Q)),\ j=1,\dots,d \}. \]
+          \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  　\\
+  \begin{itemize}
+    \item 特に matrix exponential と matrix logarithm の2つの関数がこの章では重要.
+    \item Matrix exponential:
+    \begin{itemize}
+      \item Power-series expansionが成立: $e^Q = \sum_{k = 0}^\infty \frac{Q^k}{k!}$.
+      \item Spectral mapping propertyより, $e^Q$ の固有値は常に正, よって $e^Q$は常に正定値.
+    \end{itemize}
+    \item Matrix logarithmはmatrix exponentialのinverse.\\
+    　\\
+    \item 関数 $f$ が単調であるとは, $Q \preceq R$ ならば $f(Q) \preceq f(R)$ が成り立つことをいう.
+    \item Matrix logarithmは単調である（Lowner-Heinz theorem）
+    \item Matrix exponentialは単調でない.\\
+    　\\
+    \item $f : \bb{R} \to \bb{R}$が連続かつ非減少なら, 任意の対称行列$Q \preceq R$ に対し,
+          \[ \trace(f(Q)) \le \trace(f(R)) \tag{6,25}\]
+          が成り立つ（{\it trace inequality}）.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{6.4.2 Tail conditions for matrices}{}
+  \begin{itemize}
+    \item 対称ランダム行列$Q \in \cc{S}^{d\times d}$に対し, polynomial moment $\ex[Q^j]$ が存在すると仮定する.
+    \item $Q$のvarianceは $\var(Q) := \ex[Q^2] - (\ex[Q])^2$で, これは半正定値（Ex.6.6）
+    \item $Q$のmoment generating function $\Psi_Q:\bb{R} \to \cc{S}^{d\times d}$は以下で与えられる:
+          \[
+            \Psi_Q(\lambda) := \ex[e^{\lambda Q}] = \sum_{k=0}^\infty \frac{\lambda^k}{k!} \ex[Q^k].
+            \tag{6.26}
+          \]
+    \item Ch.2の議論と同様に, このmoment generating functionを用いてrandom matrixのsub-Gaussianとsub-exponentialが定義される.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+  \begin{block}{Definition 6.6}
+    Zero-mean対称ランダム行列$Q \in \cc{S}^{d\times d}$がsub-Gaussian with matrix parameter $V \in \cc{S}_{+}^{d \times d}$であるとは,
+    以下が成り立つことをいう:
+    \[
+      \Psi_Q(\lambda) \preceq e^{\frac{\lambda^2 V}{2}}
+      \quad \mathrm{for\ all}\ \lambda \in \bb{R}.
+      \tag{6.27}
+    \]
+  \end{block}
+  {\bf Example 6.7}
+  \begin{itemize}
+    \item $Q = \epsilon B$で, $\epsilon \in \{-1, 1\}$はRademacher変数, $B \in \cc{S}^{d \times d}$はfixed matrixとする.
+    \item このとき, $\ex[Q^{2k+1}] = 0$かつ$\ex[Q^{2k}] = B^{2k}$なので, 
+          \[
+            \ex[e^{\lambda Q}]
+            = \sum_{k=0}^\infty\frac{\lambda^{2k}}{(2k)!}B^{2k}
+            \preceq \sum_{k=1}^\infty \frac{1}{k!} \left(\frac{\lambda^2 B^2}{2}\right)^k
+            = e^{\frac{\lambda^2 B^2}{2}}
+          \]
+          となり, $Q$はsub-Gaussian w/ $V = B^2 = \var(Q)$.
+    \item より一般に, $Q = gB$で$g \in \bb{R}$がzero-mean $\sigma$-sub-Gaussianなら, $Q$は$V = \sigma^2 B^2$でsub-Gaussianとなる.\endexample
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+  {\bf Example 6.8}
+  \begin{itemize}
+    \item $Q = \epsilon C$で, $\epsilon$はRademacher変数, $C$は$\epsilon$と独立で$|||C|||_2 \le b$なるランダム行列とする.
+    \item まず$C$を固定して$\epsilon$について期待値をとると$\ex_\epsilon[e^{\lambda \epsilon C}] \preceq e^{\frac{\lambda^2}{2}C^2}$.
+    \item さらに$||| C |||_2 \le b$より $e^{\frac{\lambda^2}{2}C^2} \preceq e^{\frac{\lambda^2}{2}b^2 I_d}$ となり, よって
+          \[ \Psi_Q(\lambda) \preceq e^{\frac{\lambda^2}{2}b^2 I_d} \quad \mathrm{for\ all}\ \lambda \in \bb{R}.\]
+    \item したがって, $Q$はsub-Gaussian w/ matrix parameter $V = b^2 I_d$.\endexample
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+  \begin{block}{Definition 6.9}
+    Zero-meanランダム行列$Q$が sub-exponential with parameters $(V, \alpha)$であるとは, 以下が成り立つことをいう:
+    \[
+        \Psi_Q(\lambda) \preceq e^{\frac{\lambda^2 V}{2}} \quad \mathrm{for\ all}\ |\lambda| < \frac{1}{\alpha}.
+        \tag{6.28}
+    \]
+  \end{block}
+  \begin{itemize}
+    \item 任意のsub-Gaussian行列はsub-exponential w/ $(V, 0)$.
+    \item Sub-exponentialだがsub-Gaussianでないランダム行列はありうる:
+    \begin{itemize}
+      \item 例）$M = \epsilon g^2 B$ where $\epsilon$はRademacher変数, $g \sim \cc{N}(0, 1)$ でそれぞれ独立.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \begin{itemize}
+    \item Sub-exponentialの1つの判定方法は, 次のBernstein conditionである.
+  \end{itemize}
+  \begin{block}{Definition 6.10 (Bernstein's condition for matrices)}
+    Zero-mean対称ランダム行列$Q$がBernstein condition with parameter $b >0$ を満たすとは, 以下が成り立つことをいう.
+    \[
+      \ex[Q^j] \preceq \frac{1}{2}j! b^{j-2} \var(Q) \quad \mathrm{for}\ j=3,4,\dots .
+      \tag{6.29}
+    \]
+  \end{block}
+  \begin{itemize}
+    \item $Q$がbounded operator normを持つ, つまり $|||Q|||_2 \le b$ almost surely の場合, 次が成り立つ.
+          \[ \ex[Q^j] \preceq b^{j - 2} \var(Q) \quad \mathrm{for\ all}\ j=3,4,\dots.\tag{6.30} \]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+  \begin{itemize}
+    \item 次のLemmaは, Bernstein conditionがsub-exponential conditionを含意することを示す.
+  \end{itemize}
+  \begin{block}{Lemma 6.11}
+    Bernstein conditionを満たす任意のzero-mean対称行列に対し, 以下が成り立つ:
+    \[
+      \Psi_Q(\lambda) \preceq \exp\left( \frac{\lambda^2 \var(Q)}{2(1 - b |\lambda|)} \right)
+      \quad \mathrm{for\ all}\ |\lambda| < \frac{1}{b}.
+      \tag{6.31}
+    \]
+  \end{block}
+\end{frame}
+
+\begin{frame}{}{}
+  　\\
+  {\bf Proof}
+  \begin{itemize}
+    \item $\ex[Q] = 0$なので, matrix exponentialのpower-series expansionより
+          \begin{align*}
+            \ex[e^{\lambda Q}] 
+            &= I_d + \frac{\lambda^2 \var(Q)}{2} + \sum_{j=3}^\infty \frac{\lambda^j \ex[Q^j]}{j!}\\
+            &\stackrel{(\mathrm{i})}{\preceq} I_d + \frac{\lambda^2 \var(Q)}{2}\left\{\sum_{j=0}^\infty |\lambda|^jb^j\right\}\\
+            &\stackrel{(\mathrm{ii})}{=} I_d + \frac{\lambda^2 \var(Q)}{2(1 - b|\lambda|)} \\
+            &\stackrel{(\mathrm{iii})}{\preceq} \exp\left( \frac{\lambda^2 \var(Q)}{2(1 - b|\lambda|)} \right),
+          \end{align*}
+          ただし(i)はBernstein condition, (ii)は$|\lambda| < 1/b$で成立, (iii)はmatric inequality $I_d + A \preceq e^A$ (for any symmetric matrix $A$)より.
+  \end{itemize} 
+\end{frame}
+
 \end{document}
