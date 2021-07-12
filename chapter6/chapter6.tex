@@ -1018,16 +1018,71 @@
     \[\bb{P}[|||T_{\lambda_n}(\widehat{\Sigma}) - \Sigma \ge 2 s \lambda_n] \le 8e^{-\frac{n}{16}\min\{\delta, \delta^2\}}. \tag{6.55}\]
   \end{block}
   \begin{itemize}
-    \item $|||A|||_2 \le s$(see Exercise 6.2)より.
+    \item $|||A|||_2 \le s$ (see Exercise 6.2)より.
   \end{itemize}
 \end{frame}
 
 \begin{frame}{}{}
   {\bf Example 6.25} (Sparsity and adjacency matrices)
   \begin{itemize}
+    \item $A$がFigure 6.1(a)のような, 最大$s-1$ degreeで$s$-clique（$s$個のノードの組でそれらすべてが違いにつながってる)をもつグラフの場合, $|||A|||_2 = s$となり(6.53)と(6.55)は一致する.
+    \item (b)のように1つのノードが$s$個のノードとつながるハブのようになってる場合, $|||A|||_2 = 1 + \sqrt{s - 1}$で, Thm6.23 (6.53)より高確率で
+            \[ |||T_{\lambda_n}(\widehat{\Sigma}) - \Sigma|||_2 \precsim \sqrt{\frac{s\log d}{n}} \]
+            と$\sqrt{s}$のオーダーとなり, (6.55)よりsharperになる.\endexample
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=7cm]{figure_6_1.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \begin{itemize}
+    \item Thm6.23の証明のつづき.
+    \item (6.54)から, $\widehat{\Delta} := \widehat{\Sigma} - \Sigma$のinfinity normのboundを求めれば良い.
+  \end{itemize}
+  \begin{block}{Lemma 6.26}
+    Thm6.23の条件のもとで, 以下が成り立つ:
+    \[
+      \bb{P}[\| \widehat{\Delta} \|_{\max} / \sigma^2 \ge t]
+      \le 8 e^{-\frac{n}{16}\min\{t, t^2\} + 2 \log d}
+      \quad \mathrm{for\ all}\ t > 0.
+      \tag{6.56}
+    \]
+  \end{block}
+  \begin{itemize}
+    \item (6.56)で $t = \lambda_n / \sigma^2 = 8\sqrt{\frac{\log d}{n}} + \delta$ とすると, $n > \log d$より,
+          \[ \bb{P}[\|\widehat{\Delta}\|_{\max} \ge \lambda_n] \le 8e^{-\frac{n}{16}\min\{\delta, \delta^2\}}, \]
+          となる.
+    \item したがってあとはLemma 6.26を示せばよい.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \begin{itemize}
+    \item $\sigma = 1$として一般性を失わない($x_i/\sigma$はsub-Gaussian w/ at most $1$ なので, あとでrescaleすればよい).
+    \item まず対角成分を考えると, Exercise 6.15(a)より定数$c_1, c_2$が存在して
+          \[ \bb{P}[|\widehat{\Delta}_{jj}| \ge c_1\delta] \le 2e^{-c_2 n \delta^2} \quad \mathrm{for\ all} \delta \in (0, 1). \tag{6.57}\]
+    \item 非対角成分については次が成り立つ:
+          \[
+            2 \widehat{\Delta}_{j \ell}
+            =\frac{2}{n} \sum_{i=1}^{n} x_{i j} x_{i \ell}-2 \Sigma_{j \ell}
+            =\frac{1}{n} \sum_{i=1}^{n}\left(x_{i j}+x_{i \ell}\right)^{2}-\left(\Sigma_{j j}+\Sigma_{\ell \ell}+2 \Sigma_{j \ell}\right)-\widehat{\Delta}_{j j}-\widehat{\Delta}_{\ell \ell}.
+          \]
+    \item 各$x_{ij}$はzero-mean sub-Gaussian with at most parameter $\sigma$なので, $x_{ij}+x_{i\ell}$はzero-mean sub-Gaussian w/ parameter at most $2\sqrt{2}\sigma$ (see Exercise 2.13).
+    \item よって, 定数$c_2, c_3$に対して, 任意の$\delta \in (0,1)$について
+          \[
+            \bb{P}\left[ \left|\frac{1}{n}\sum_{i=1}^n (x_{ij}+x_{i\ell})^2 - (\Sigma_{jj}+\Sigma_{\ell\ell}+2\Sigma_{j\ell})\right| \ge c_3 \delta \right] \le 2 e^{- c_2 n \delta^2}
+          \]
+          で, (6.57)と合わせると$\bb{P}[|\widehat{\Delta}_{j\ell}| \ge c_1'\delta] \le 6e^{-c_2 n \delta^2}$となる.
+    \item (6.57)と合わせて$d^2$-entryについて合わせると, claim (6.56)を得る.
+  \end{itemize}
+\end{frame}
+
+\subsection{6.5.2 Approximate sparsity}
+\begin{frame}{6.5.2 Approximate sparsity}{}
+  \begin{itemize}
     \item 
   \end{itemize}
-  \endexample
 \end{frame}
 
 \end{document}
