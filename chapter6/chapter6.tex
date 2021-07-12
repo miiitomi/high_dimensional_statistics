@@ -758,6 +758,188 @@
 \begin{frame}{}{}
   {\bf Example 6.14} (Rademacher symmetrization for random matrices)
   \begin{itemize}
+    \item \endexample
+  \end{itemize}
+\end{frame}
+
+\subsection{6.4.4 Upper tail bounds for random matrices}
+\begin{frame}{6.4.4 Upper tail bounds for random matrices}{}
+{\bf Sub-Gaussian case}
+\begin{itemize}
+  \item Sub-Gaussian random matrixのHoeffding-type tail boundから.
+\end{itemize} 
+\begin{block}{Theorem 6.15 (Hoeffding bound for random matrices)}
+  $\{Q_i\}_{i=1}^n$ はzero-meanの独立対称ランダム行列の列で, それぞれsub-Gaussian w/ parameters $\{V_i\}_{i=1}^n$とする.
+  このとき, 任意の$\delta > 0$に対して次のupper tail boundが成り立つ:
+  \[
+    \mathbb{P}\left[\left|\left|\left|\frac{1}{n} \sum_{i=1}^{n} \mathbf{Q}_{i}\right|\right|\right|_{2} \geq \delta\right]
+    \leq 2 \operatorname{rank}\left(\sum_{i=1}^{n} \mathbf{V}_{i}\right) e^{-\frac{n \delta^{2}}{2 \sigma^{2}}},
+    \tag{6.38}
+  \]
+  ただし $\sigma^2 = ||| \frac{1}{n} \sum_{i=1}^n V_i |||_2$.
+\end{block}
+\end{frame}
+
+\begin{frame}{}{}
+  {\bf Proof.}
+  \begin{itemize}
+    \item まず $V := \sum_i V_i$ がfull-rankのケースを考える.
+    \item Sub-Gauusianityの定義と$\log$のmatrix monotonicityより,
+          \[
+            \sum_{i = 1}^n \log \Psi_{Q_i}(\lambda)
+            \preceq \frac{\lambda^2}{2} \sum_{i=1}^n V_i
+          \]
+    \item $\exp$関数はincreasingなので, (6.25)のtrace inequalityから,
+          \[
+            \trace\left(e^{\sum_{i=1}^n\Psi_{Q_i}(\lambda)}\right)
+            \le \trace\left(e^{\frac{\lambda^2}{2}\sum_{i=1}^nV_i}\right).
+          \]
+    \item これとChernoff bound (6.37) より, 
+          \[
+            \mathbb{P}\left[\left|\left|\left|\frac{1}{n} \sum_{i=1}^{n} Q_{i}\right|\right|\right|_{2} \geq \delta\right]
+            \leq 2 \operatorname{tr}\left(e^{\frac{\lambda^{2}}{2} \sum_{i=1}^{n} V_{i}}\right) e^{-\lambda n \delta}.
+          \]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+  \begin{itemize}
+    \item Fact: 任意の$d$-次元対称行列$R$に対し, $\trace(e^R) \le de^{|||R|||_2}$.
+    \item $R = \frac{\lambda^2}{2}\sum_{i=1}^n V_i$としてこれを使うと, $||| R|||_2 = \frac{\lambda}{2}n\sigma^2$で, 
+          \[
+            \mathbb{P}\left[\left|\left|\left|\frac{1}{n} \sum_{i=1}^{n} Q_{i}\right|\right|\right|_{2} \geq \delta\right]
+            \leq 2 d e^{\frac{\lambda^{2}}{2} n \sigma^{2}-\lambda n \delta}.
+          \]
+    \item これは任意の$\lambda \ge 0$について成り立つので, $\lambda = \delta/\sigma^2$とするとclaimを得る.\\　\\
+    \item 次に$V := \sum_i V_i$がfull-rankでなく, rank $r < d$とする.
+    \item $V$ の固有値分解 $V = UDU^\tr$ ($U \in \bb{R}^{d \times r}$は正規直交列をもつ)を考え,
+          $Q := \sum_{i=1}^n Q_i$に対してr-次元行列 $\widetilde{Q} = U^\tr Q U$をとると,
+          $||| \widetilde{Q} |||_2 = |||Q|||_2$.
+    \item $\widetilde{Q}$に対して同様の議論を行えば, $d$のかわりに$r$として成り立つ.\qed
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+  {\bf Example 6.16} (Looseness/sharpness of Theorem 6.15)
+  \begin{itemize}
+    \item 
+  \end{itemize}
+  \endexample
+\end{frame}
+
+\begin{frame}{}{}
+  {\bf Bernstein-type bounds for random matrices}
+  \begin{itemize}
+    \item 次はSub-exponential random matricesのBernstein bound.
+  \end{itemize}
+  \begin{block}{Theorem 6.17 (Bernstein bound for random matrices)}
+    $\{Q_i\}_{i=1}^n$ はzero-meanな独立対称行列でBernstein condition (6.29) を parameter $b > 0$ で満たすとする.
+    このとき, 任意の$\delta \ge 0$に対して以下が成り立つ:
+    \[
+      \mathbb{P}\left[\frac{1}{n}\left|\left|\left|\sum_{i=1}^{n} Q_{i}\right|\right|\right|_{2} \geq \delta\right]
+      \leq 2 \operatorname{rank}\left(\sum_{i=1}^{n} \operatorname{var}\left(Q_{i}\right)\right) \exp \left\{-\frac{n \delta^{2}}{2\left(\sigma^{2}+b \delta\right)}\right\}
+      \tag{6.42}
+    \]
+    ただし, $\sigma^2 := \frac{1}{n}||| \sum_j \var(Q_j)|||_2$.
+  \end{block}
+\end{frame}
+
+\begin{frame}{}{}
+{\bf Proof.}
+\begin{itemize}
+  \item Lemma 6.13より, $\trace(\Psi_{S_n}(\lambda)) \le \trace(e^{\sum \log \Psi_{Q_i}(\lambda)})$.
+  \item Lemma 6.11より, Bernstein conditionから 任意の$\lambda\ \mathrm{s.t.}\ |\lambda| < 1/b$ に対し $\log \Psi_{Q_i}(\lambda) \preceq \frac{\lambda^2 \var(Q_i)}{1 - b|\lambda|}$.
+  \item したがって, 
+        \[
+          \trace\left(\Psi_{S_n}(\lambda)\right)
+          \le \trace\left(\exp\left( \frac{\lambda^2 \sum_{i=1}^n \var(Q_i)}{1 - b|\lambda|} \right)\right)
+          \le \mathrm{rank}\left(\sum_{i=1}^n \var(Q_i)\right)e^{\frac{n\lambda^2\sigma^2}{1 - b|\lambda|}},
+        \]
+        ただし最後の不等号はThm6.15の証明と同様にして示せる.
+  \item よって (6.37) と合わせると, 任意の$\lambda \in [0, 1/b)$に対し, 
+        \[
+          \bb{P}\left[\left|\left|\left|\frac{1}{n}\sum_{i=1}^n Q_i \right|\right|\right|_2 \ge \delta\right]
+          \le 2 \mathrm{rank}\left(\sum_{i=1}^n \var(Q_i)\right) e^{\frac{n\sigma^2 \lambda^2}{1 - b|\lambda|} - \lambda n \delta}.
+        \]
+  \item $\lambda  = \frac{\delta}{\sigma^2 + b\delta} \in (0, 1/b)$とすると (6.42) を得る.\qed
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+  {\bf Remarks}
+  \begin{itemize}
+    \item 
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+  {\bf Example 6.18}
+  \begin{itemize}
+    \item 
+  \end{itemize}
+  \endexample
+\end{frame}
+
+\begin{frame}{}{}
+  {\bf Example 6.19}
+  \begin{itemize}
+    \item 
+  \end{itemize}
+  \endexample
+\end{frame}
+
+\begin{frame}{6.4.5 Consequences for covariance matrices}{}
+  \begin{itemize}
+    \item Thm 6.17から, covariance matrixの推定に有用な次の系が得られる.
+  \end{itemize}
+  \begin{block}{Corollary 6.20}
+    $x_1, \dots, x_n$ は i.i.d. zero-mean random vectorsで, covariance $\Sigma$, かつ $\| x_j \| \le \sqrt{b}$ almost surely とする.
+    このとき任意の$\delta > 0$に対して, sample covariance $\widehat{\Sigma} = \frac{1}{n}\sum_{i=1}^n x_i x_i^{\tr}$ は次を満たす:
+    \[
+      \mathbb{P}\left[|||\widehat{\Sigma} - \Sigma|||_{2} \geq \delta\right]
+      \leq 2 d \exp \left(-\frac{n \delta^{2}}{2 b\left(|||\Sigma|||_{2}+\delta\right)}\right).
+      \tag{6.49}
+    \]
+  \end{block}
+\end{frame}
+
+\begin{frame}{}{}
+  {\bf Proof.}
+  \begin{itemize}
+    \item Zero-mean random matrix $Q_i := x_i x_i^\tr - \Sigma$に対してThm6.17を適用する.
+    \item 三角不等式より,
+          \[
+            ||| Q_i |||_2 \le \| x_i\|_2^2 + |||\Sigma|||_2 \le b + |||\Sigma|||_2.
+          \]
+    \item $\Sigma = \ex[x_i x_i^\tr]$より, $||| \Sigma|||_2 = \max_{v \in \bb{S}^{d-1}}\ex[\langle v, x_i\rangle^2] \le b$で, よって$|||Q_i|||_2 \le 2b$.
+    \item $Q_i$の分散については,
+          \[
+            \var(Q_i)
+            = \ex[(x_ix_i^\tr)^2] - \Sigma^2
+            \preceq b\Sigma,
+          \]
+          で, よって$||| \var(Q_i)|||_2 \le b|||\Sigma|||_2$.
+    \item これを(6.42)に入れるとclaimを得る.\qed
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+  {\bf Example 6.21} (Random vectors uniform on a sphere)
+  \begin{itemize}
+    \item 
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+  {\bf Example 6.22} (``Spiked'' random vectors)
+  \begin{itemize}
+    \item 
+  \end{itemize}
+\end{frame}
+
+\section{6.5 Bounds for structured covariance matrices}
+\begin{frame}{6.5 Bounds for structured covariance matrices}{}
+  \begin{itemize}
     \item 
   \end{itemize}
 \end{frame}
