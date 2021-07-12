@@ -940,8 +940,94 @@
 \section{6.5 Bounds for structured covariance matrices}
 \begin{frame}{6.5 Bounds for structured covariance matrices}{}
   \begin{itemize}
+    \item これまではgeneral・unstracturedな設定でcovariance matrixの推定を考えた.
+    \item この章ではsparse and/or graph-structuredのもとではより早い収束が得られることを確認する.\\
+          　
+    \item 最も簡単な設定では, covariance matrixはsparceで, そのnon-zero entryが分かってるとする:
+    \item 例えば, covarianceがdiagonalなら,
+      各要素ごとの標本分散を求めて$\widehat{D}:=\mathrm{diag}(\widehat{\Sigma}_{11}, \dots, \widehat{\Sigma}_{dd})$
+      とするのが自然.
+    \item このときはExercise 6.15より, sub-Gaussian variablesならestimation errorのオーダーは$\sqrt{\frac{\log d}{n}}$となり, unstructured settingの$\sqrt{\frac{d}{n}}$よりよくなる.
+    \item これに近いstatementが違う形のsparsityのもとでも得られる.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{6.5.1 Unknown sparsity and thresholding}{}
+  \begin{itemize}
+    \item $\Sigma$ はsparseであることは分かっているが, non-zero entriesのpositionは分かっていないとする.
+    \item パラメータ$\lambda > 0$に対し, {\it hard-thresholding operator} は以下で定義される:
+          \[
+            T_\lambda(u) := u \bb{I}[|u| > \lambda]
+            = \begin{cases}
+                u & \mathrm{if}\ |u| > \lambda,\\
+                0 & \mathrm{otherwise}.
+              \end{cases}
+              \tag{6.52}
+          \]
+    \item 行列$M$について, 各要素に$T_\lambda(\cdot)$をかませた行列を$T_\lambda(M)$と書くものとする.
+    \item ここでは$T_{\lambda_n}(\widehat{\Sigma})$の推定値を考えていく, ただし$\lambda_n$は$n$と$d$に依存して決まる.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+  \begin{itemize}
+    \item $\Sigma$のzero patternは隣接行列$A \in \bb{R}^{d\times d}$ with $A_{j\ell} = \bb{I}[\Sigma_{j\ell} \ne 0]$で表せる.
+    \item $A$はverticesが$\{1,2,\dots,d\}$でedgeが$\{(j, \ell)\mid \Sigma_{j\ell} \ne 0\}$なるundirected graph $G$ を表しているともよめる.
+    \item $|||A|||_2$はsparsityのmeasureとみることができ, $|||A|||_2 \le d$(等号はfully conectedのとき成立)である.
+    \item より一般に, $\Sigma$が各行について最大で$s$のnon-zero entryをもつなら$|||A|||_2 \le s$である.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+  \begin{block}{Theorem 6.23 (Thresholding-based covariance estimation)}
+    $\{x_i\}_{i=1}^n$ はzero-mean, covariance $\Sigma$のi.i.d. random vectorsで,
+    各要素$x_{ij}$はパラメータ最大$\sigma$でsub-Gaussianとする.
+    もし$n > \log d$なら, 任意の$\delta > 0$に対し, 
+    thresholded sample covariance matrix $T_{\lambda_n}(\widehat{\Sigma})$ w/ $\lambda_n/\sigma^2 = 8 \sqrt{\frac{\log d}{n}} + \delta$は以下を満たす:
+    \[
+      \mathbb{P}\left[\left|\left|\left|T_{\lambda_{n}}(\widehat{\Sigma})- \Sigma\right|\right|\right|_{2} \geq 2|||\mathbf{A}|||_{2} \lambda_{n}\right]
+      \leq 8 e^{-\frac{n}{16} \min \left\{\delta, \delta^{2}\right\}}.
+      \tag{6.53}
+    \]
+  \end{block}
+\end{frame}
+
+\begin{frame}{}{}
+  \begin{itemize}
+    \item 証明は次の(deterministic) resultにもとづく:
+          \[\forall \lambda_n \ge \|\widehat{\Sigma} - \Sigma\|_{\max},\ \ |||T_{\lambda_n}(\widehat{\Sigma}) - \Sigma|||_2 \le 2|||A|||_2 \lambda_n. \tag{6.54}\]
+          \begin{itemize}
+            \item 任意の$(j,\ell)$ s.t. $\Sigma_{j\ell} = 0$に対し, $\|\widehat{\Sigma} - \Sigma\|_{\max} \le \lambda_n$より$|\widehat{\Sigma}_{j\ell}| \le \lambda_n$. $\therefore T_{\lambda_n}(\widehat{\Sigma}_{j\ell}) = 0$.
+            \item 一方任意の$(j,\ell)$ s.t. $\Sigma_{j\ell} \ne 0$について,
+                  \[
+                    \left|T_{\lambda_{n}}\left(\widehat{\Sigma}_{j \ell}\right)-\Sigma_{j \ell}\right|
+                    \stackrel{(\mathrm{i})}{\leq}\left|T_{\lambda_{n}}\left(\widehat{\Sigma}_{j \ell}\right)-\widehat{\Sigma}_{j \ell}\right|+\left|\widehat{\Sigma}_{j \ell}-\Sigma_{j \ell}\right|
+                    \stackrel{(\mathrm{ii})}{\leq} 2 \lambda_{n},
+                  \]
+                  ただし(i)は三角不等式, (ii)は$\left|T_{\lambda_{n}}\left(\widehat{\Sigma}_{j \ell}\right)-\widehat{\Sigma}_{j \ell}\right| \le \lambda_n$と$\|\widehat{\Sigma}-\Sigma\|_{\max} \le \lambda_n$より.
+            \item よって$B := |T_{\lambda_n}(\widehat{\Sigma}) - \Sigma|$はelementwise inequality $B \le 2 \lambda_n A$ を満たす.
+            \item $B, A$はnon-negativeより, $|||B|||_2 \le 2 \lambda_n |||A|||_2$で(6.54)が示される.
+          \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+  \begin{block}{Corollary 6.24}
+    Thm6.23の条件に加え, covariance $\Sigma$ の各行は最大で$s$のnon-zero entryを持つとする.
+    このとき $\lambda_n/\sigma^2 = 8\sqrt{\frac{\log d}{n}} + \delta$ で,
+    \[\bb{P}[|||T_{\lambda_n}(\widehat{\Sigma}) - \Sigma \ge 2 s \lambda_n] \le 8e^{-\frac{n}{16}\min\{\delta, \delta^2\}}. \tag{6.55}\]
+  \end{block}
+  \begin{itemize}
+    \item $|||A|||_2 \le s$(see Exercise 6.2)より.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+  {\bf Example 6.25} (Sparsity and adjacency matrices)
+  \begin{itemize}
     \item 
   \end{itemize}
+  \endexample
 \end{frame}
 
 \end{document}
