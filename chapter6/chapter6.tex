@@ -654,4 +654,112 @@
   \end{itemize} 
 \end{frame}
 
+\subsection{6.4.3 Matrix Chernoff approach and independent decompositions}
+
+\begin{frame}{6.4.3 Matrix Chernoff approach and independent decompositions}
+  \begin{itemize}
+    \item まず Chernoff approach の matrix バージョンから.
+  \end{itemize}
+  \begin{block}{Lemma 6.12 (Matrix Chernoff technique)}
+    $Q$ はzero-mean symmetric random matrixで,
+    そのmoment generating function $\Psi_Q$ は $\lambda \in (-a, a)$ の範囲で存在するものとする.
+    このとき, 任意の$\delta > 0$ に対して以下が成り立つ:
+    \[
+      \mathbb{P}\left[\gamma_{\max }( {Q}) \geq \delta\right]
+      \leq \operatorname{tr}\left(\Psi_{ {Q}}(\lambda)\right) e^{-\lambda \delta} \quad \text { for all } \lambda \in[0, a).
+    \tag{6.32}
+    \]
+    さらに同様に,
+    \[
+      \mathbb{P}\left[\| {Q}\|_{2} \geq \delta\right]
+      \leq 2 \operatorname{tr}\left(\Psi_{ {Q}}(\lambda)\right) e^{-\lambda \delta} \quad \text { for all } \lambda \in[0, a).
+      \tag{6.33}
+    \]
+  \end{block}
+\end{frame}
+
+\begin{frame}{}{}
+  　\\
+{\bf Proof}
+\begin{itemize}
+  \item 各 $\lambda \in [0, a)$ に対し, まず以下が成り立つ.
+        \[
+          \mathbb{P}\left[\gamma_{\max }( {Q}) \geq \delta\right]
+          =\mathbb{P}\left[e^{\gamma_{\max }(\lambda  {Q})} \geq e^{\lambda \delta}\right]
+          \stackrel{(\mathrm{i})}{=} \mathbb{P}\left[\gamma_{\max }\left(e^{\lambda  {Q}}\right) \geq e^{\lambda \delta}\right],
+          \tag{6.34}
+        \]
+        ただし(i)は行列関数の固有値の変換(spectral mapping property)から.
+  \item Marlkov's inequalityより,
+        \[
+          \mathbb{P}\left[\gamma_{\max }\left(e^{\lambda  {Q}}\right) \geq e^{\lambda \delta}\right]
+          \leq \mathbb{E}\left[\gamma_{\max }\left(e^{\lambda  {Q}}\right)\right] e^{-\lambda \delta}
+          \stackrel{\mathrm{(i)}}{\leq} \mathbb{E}\left[\operatorname{tr}\left(e^{\lambda  {Q}}\right)\right] e^{-\lambda \delta}
+          \tag{6.35}
+        \]
+        ただし(i)は$e^{\lambda Q}$がpositive definiteから $\gamma_{\max} (e^{\lambda Q}) \le \trace(e^{\lambda Q})$.
+  \item Traceと$\ex$は交換可能なので,
+        \[
+          \mathbb{E}\left[\operatorname{tr}\left(e^{\lambda  {Q}}\right)\right]
+          =\operatorname{tr}\left(\mathbb{E}\left[e^{\lambda  {Q}}\right]\right)
+          =\operatorname{tr}\left(\Psi_{ {Q}}(\lambda)\right).
+        \]
+  \item 同じことが $\gamma(-Q) \ge \delta$, つまり $\gamma_{\min}(Q) \le -\delta$ にも成り立ち,
+        $|||Q|||_2 = \max\{\gamma_{\max}(Q) |\gamma_{\min}(Q)|\}$なので, (6.33)も成り立つ.\qed
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+  \begin{block}{Lemma 6.13}
+    $Q_1,\dots,Q_n$は独立な対称ランダム行列で, moment generating functionは$\lambda \in I$に対し存在するものとし,
+    $S_n := \sum_{i=1}^n Q_i$とする.
+    このとき以下が成り立つ.
+    \[
+      \operatorname{tr}\left(\Psi_{\mathrm{S}_{n}}(\lambda)\right)
+      \leq \operatorname{tr}\left(e^{\sum_{i=1}^{n} \log \Psi_{Q_i}(\lambda)}\right) \quad \text { for all } \lambda \in I.
+      \tag{6.36}
+    \]
+  \end{block}
+  {Remark:}
+  \begin{itemize}
+    \item Lemma 6.12とあわせると, 独立なランダム行列の和のoperator normのtail boundが得られる, つまり, 
+          \[
+            \mathbb{P}\left[\left|\left|\left|\frac{1}{n} \sum_{i=1}^{n} \mathbf{Q}_{i}\right|\right|\right|_{2} \geq \delta\right]
+            \leq 2 \operatorname{tr}\left(e^{\sum_{i=1}^{n} \log \Psi_{Q_i}(\lambda)}\right) e^{-\lambda n \delta}
+            \quad \text { for all } \lambda \in[0, a).
+          \]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+  　\\
+{\bf Proof.}
+\begin{itemize}
+  \item Lieb(1973) より次のresultを用いる: 任意のfixed matrix $H \in S^{d\times d}$に対し, 次の関数 $f : S^{d\times d}_+ \to \bb{R}$
+        \[ f(A) := \trace(e^{H + \log(A)}) \]
+        はconcaveである.
+  \item $G(\lambda) := \trace(\Psi_{S_n}(\lambda))$とかくと, traceと期待値の線形性から
+        \[
+          G(\lambda)
+          =\operatorname{tr}\left(\mathbb{E}\left[e^{\lambda \mathbf{S}_{n-1}+\log \exp \left(\lambda \mathbf{Q}_{n}\right)}\right]\right)
+          =\mathbb{E}_{\mathbf{S}_{n-1}} \mathbb{E}_{\mathbf{Q}_{n}}\left[\operatorname{tr}\left(e^{\lambda \mathbf{S}_{n-1}+\log \exp \left(\lambda \mathbf{Q}_{n}\right)}\right)
+          \right].
+        \]
+  \item $H = \lambda S_{n-1},\ A = e^{\lambda Q_n}$としたときの$f$のconcavityとJensen's inequalityより,
+        \[
+          \mathbb{E}_{\mathbf{Q}_{n}}\left[\operatorname{tr}\left(e^{\lambda \mathbf{S}_{n-1}+\log \exp \left(\lambda \mathbf{Q}_{n}\right)}\right)\right] \leq \operatorname{tr}\left(e^{\lambda \mathbf{S}_{n-1}+\log \mathbb{E}_{\mathbf{Q}_{n}} \exp \left(\lambda \mathbf{Q}_{n}\right)}\right).
+        \]
+  \item よって, $G(\lambda) \le \ex_{S_{n-1}}[\trace (e^{\lambda S_{n-1} + \log \Psi_{Q_n}(\lambda)})]$.
+  \item $Q_{n-1}$についても同様にすると, $G(\lambda) \le \ex_{S_{n-2}}[\trace (e^{\lambda S_{n-2} + \log \Psi_{Q_{n-1}}(\lambda) + \log \Psi_{Q_n}(\lambda)})]$.
+  \item これを繰り返していけばいい.\qed
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+  {\bf Example 6.14} (Rademacher symmetrization for random matrices)
+  \begin{itemize}
+    \item 
+  \end{itemize}
+\end{frame}
+
 \end{document}
