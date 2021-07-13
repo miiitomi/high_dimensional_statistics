@@ -758,7 +758,35 @@
 \begin{frame}{}{}
   {\bf Example 6.14} (Rademacher symmetrization for random matrices)
   \begin{itemize}
-    \item \endexample
+    \item $\{A_i\}_{i=1}^n$は独立な対称ランダム行列の列で, $\sum_i (A_i - \ex[A_i])$の最大固有値のboundを求めたいとする.
+          まず, Markov inequalityより,
+          {\small
+          \[
+            \mathbb{P}\left[\gamma_{\max }\left(\sum_{i=1}^{n}\left\{\mathbf{A}_{i}-\mathbb{E}\left[\mathbf{A}_{i}\right]\right\}\right) \geq \delta\right] \leq \mathbb{E}\left[e^{\lambda \gamma_{\max }\left(\sum_{i=1}^{n}\left\{\mathbf{A}_{i}-\mathbb{E}\left[\mathbf{A}_{i}\right]\right)\right.}\right] e^{-\lambda \delta}.
+          \]}
+    \item 最大固有値のvariational representationから,
+          {\small
+            \begin{align*}
+              \mathbb{E}\left[e^{\lambda \gamma_{\max }\left(\sum_{i=1}^{n}\left\{\mathbf{A}_{i}-\mathbb{E}\left[\mathbf{A}_{i}\right]\right\}\right)}\right] &=\mathbb{E}\left[\exp \left(\lambda \sup _{\|u\|_{2}=1}\left\langle u,\left(\sum_{i=1}^{n}\left(\mathbf{A}_{i}-\mathbb{E}\left[\mathbf{A}_{i}\right]\right)\right) u\right\rangle\right)\right] \\
+              & \stackrel{(\mathrm{i})}{\leq} \mathbb{E}\left[\exp \left(2 \lambda \sup _{\|u\|_{2}=1}\left\langle u,\left(\sum_{i=1}^{n} \varepsilon_{i} \mathbf{A}_{i}\right) u\right\rangle\right)\right] \\
+              &=\mathbb{E}\left[e^{2 \lambda \gamma_{\max }\left(\sum_{i=1}^{n} \varepsilon_{i} \mathbf{A}_{i}\right)}\right] \\
+              & \stackrel{(\mathrm{ii})}{=} \mathbb{E}\left[\gamma_{\max }\left(e^{2 \lambda \sum_{i=1}^{n} \varepsilon_{i} \mathbf{A}_{i}}\right)\right]
+            \end{align*}
+          }
+          ただし(i)はProp4.11(b)のsymmetrization inequality w/ $\Psi(t) = e^{\lambda t}$,
+          (ii)はspectral mapping property(6.24)より.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \begin{itemize}
+    \item さらに,
+          \[
+            \mathbb{E}\left[\gamma_{\max }\left(e^{2 \lambda \sum_{i=1}^{n} \varepsilon_{i} \mathbf{A}_{i}}\right)\right] \leq \operatorname{tr}\left(\mathbb{E}\left[e^{2 \lambda \sum_{i=1}^{n} \varepsilon_{i} \mathbf{A}_{i}}\right]\right) \leq \operatorname{tr}\left(e^{\sum_{i=1}^{n} \log \Psi_{\widetilde{Q}_{i}}(2 \lambda)}\right)
+          \]
+          ただし最後の不等号は$\widetilde{Q}_i = \epsilon_iA_i$についてLemma 6.13を適用.
+    \item したがって, $2$の係数を除けば, $A_i$はzero-meanでdistributionally symmetric around zeroな行列に転換できる.
+    \endexample
   \end{itemize}
 \end{frame}
 
@@ -819,10 +847,50 @@
   \end{itemize}
 \end{frame}
 
+\begin{frame}
+  \begin{itemize}
+    \item (6.38)はnon-symmetric and/or non-square matrixでのboundも導く.
+    \item zero-mean random matrix $A_i \in \in \bb{R}^{d_1 \times d_2}$に対し,
+          \[ 
+            Q_i := \begin{bmatrix}
+              0_{d_1 \times d_2} & A_i \\
+              A_i^\tr & 0_{d_2 \times d_1}
+            \end{bmatrix}
+          \]
+          を考えれば, 適切な条件下で対応するboundが得られる(see Exercise 6.10).
+  \end{itemize}
+\end{frame}
+
 \begin{frame}{}{}
   {\bf Example 6.16} (Looseness/sharpness of Theorem 6.15)
   \begin{itemize}
-    \item 
+    \item 簡単のため, $n = d$とする.
+    \item 各$i = 1,\dots,d$について, $E_i \in S^{d \times d}$を $(i,i)$ だけ$1$で他は$0$である行列とする.
+    \item $Q_i = y_i E_i$, ただし$\{y_i\}_{i=1}^n$はi.i.d.なスカラーで$1$-sub-Gaussianとする.（Rademacher変数$\epsilon_i \in \{-1, 1\}$やstandard Gaussian$N(0,1)$など)
+    \item $Q_i$は$V_i = E_i$でsub-Gaussianで, したがって$\sigma^2 = \|\frac{1}{d}\sum_{i=1}^dV_i\| = 1/d$.
+    \item よってThm6.15より,
+            \[
+              \bb{P}\left[\left|\left|\left|\frac{1}{d}\sum_{i=1}^d Q_i\right|\right|\right|_2 \ge \delta\right]
+              \le 2de^{-\frac{d^2\delta^2}{2}}
+              \quad \mathrm{for\ all}\ \delta > 0,
+              \tag{6.40}
+            \]
+            したがって$|||\frac{1}{d}\sum_{i=1}^d Q_i|||_2 \precsim \frac{\sqrt{2\log(2d)}}{d}$のオーダーとなる.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \begin{itemize}
+    \item 一方$y_i$をRademacher変数$y_i = \epsilon_i$とすると,
+          \[
+            \left|\left|\left|\sum_{i=1}^d Q_i\right|\right|\right|_2 = \max_{i=1,\dots,d}\frac{|\epsilon_i|}{d} = \frac{1}{d}.
+          \]
+          となり, (6.40)のboundは$\sqrt{\log d}$のオーダーだけルーズである.
+    \item $y_i$がstandard Gaussian $y_i = g_i \sim N(0,1)$なら,
+          \[
+            \left|\left|\left|\sum_{i=1}^d Q_i\right|\right|\right|_2 = \max_{i=1,\dots,d}\frac{|g_i|}{d} \simeq \frac{\sqrt{2 \log d}}{d}
+          \]
+          となり, Thm6.15は$d$のオーダーに関してこれよりimproveできないことがわかる.
   \end{itemize}
   \endexample
 \end{frame}
