@@ -24,7 +24,7 @@
 
 \title{6. Random matrices and covariance estimation}
 \author{担当：みーとみ}
-\date{2021年7月1日, 7月7日}
+\date{2021年7月1日, 7月14日}
 
 
 \begin{document}
@@ -936,24 +936,43 @@
 \begin{frame}{}{}
   {\bf Remarks}
   \begin{itemize}
-    \item 
+    \item Thm6.15の場合と同様, non-squared matrix$\{A_i\}_{i=1}^n$についてのboundも出せる.
+    \item たとえばもし$|||A_i|||_2 \le b$ almost surelyなら, $\{Q_i\}$ defind by (6.39)はBernstein condition w/ parameter $b$ and quantity
+          \[
+            \sigma^2
+            := \max\left\{ \left|\left|\left|\frac{1}{n}\sum_{i=1}^n\ex[A_iA_i^\tr]\right|\right|\right|_2, \left|\left|\left|\frac{1}{n}\sum_{i=1}^n\ex[A_i^\tr A_i]\right|\right|\right|_2 \right\}
+          \]
+          でBernstein conditionを満たす.
+    \item Example 6.18はこのtransformationの具体例（省略）.
   \end{itemize}
 \end{frame}
 
 \begin{frame}{}{}
-  {\bf Example 6.18}
+  {\bf Example 6.19} (Bernstein bounds with sharpened dimension dependence)
   \begin{itemize}
-    \item 
+    \item 独立なzero-mean random matrices $Q_i$で$|||Q_i|||_2 \le 1$ almost surelyとする.
+    \item Sum $S_n := \sum_{i=1}^n Q_i$の最大固有値$\gamma_{\max}(S_n)$のupper boundを求めたい.
+    \item $\phi(\lambda) := e^\lambda - \lambda - 1$はincreasing on $\mathbb{R}_+$で, Exercise 6.12より
+          \[
+            \bb{P}[\gamma_{\max}(S_n) \ge \delta] \le \inf_{\lambda > 0}\frac{\trace(\ex[\phi(\lambda S_n)])}{\phi(\lambda \delta)}.
+            \tag{6.46}
+          \]
+    \item また$|||Q_i|||_2 \le 1$から同じExerciseのresultを使うと
+          \[
+            \log \Psi_{Q_i}(\lambda) \preceq \phi(\lambda) \var(Q_i)
+            \quad \mathrm{and} \quad
+            \trace(\ex[\phi(\lambda S_n)]) \le \frac{\trace(\bar{V})}{||| \bar{V}|||_2} e^{\phi(\lambda)|||\var{V}|||_2}
+            \tag{6.47}
+          \]
+          where $\bar{V} = \sum_{i=1}^n\var(Q_i)$.
+      \item (6.46)と合わせると
+          {\small\[
+            \bb{P}[\gamma_{\max}(S_n) \ge \delta]
+            \le \frac{\trace(\bar{V})}{||| \bar{V}|||_2} \inf_{\lambda > 0}\left\{\frac{e^{\phi(\lambda)|||\bar{V}|||_2}}{\phi(\lambda \delta)}\right\}
+            \tag{6.48}
+          \]}
+          となり, 常に$\frac{\trace(\bar{V})}{||| \bar{V}|||_2} \le \mathrm{rank}(\bar{V}) \le d$なので Thm6.17のrank orderより改善しうる.\endexample
   \end{itemize}
-  \endexample
-\end{frame}
-
-\begin{frame}{}{}
-  {\bf Example 6.19}
-  \begin{itemize}
-    \item 
-  \end{itemize}
-  \endexample
 \end{frame}
 
 \begin{frame}{6.4.5 Consequences for covariance matrices}{}
@@ -994,14 +1013,34 @@
 \begin{frame}{}{}
   {\bf Example 6.21} (Random vectors uniform on a sphere)
   \begin{itemize}
-    \item 
+    \item $x_i$ は $S^{d-1}(\sqrt{d})$ からuniformlyにひかれるとする（$\|x_i\| = \sqrt{d}$）.
+    \item By construction, $\Sigma = \ex[x_i^\tr x_i] = I_d$, and hence $|||\Sigma|||_2 = 1$.
+    \item Corollary 6.20より
+          \[
+            \bb{P}[|||\widehat{\Sigma} - I_d|||_2 \ge \delta]
+            \le 2 d e^{-\frac{n\delta^2}{2d+2d\delta}}
+            \quad \mathrm{for\ all} \ \delta \ge 0.
+            \tag{6.50}
+          \]
+    \item したがって,
+          \[
+            ||| \widehat{\Sigma} - I_d |||_2
+            \preceq \sqrt{\frac{d\log d}{n}} + \frac{d \log d}{n}
+            \tag{6.51}
+          \]
+          with high probabilityとなり, $\frac{d\log d}{n} \to 0$であればsample covarianceはconsistent.
+    \item この結果はほぼoptimalだが, Thm6.5を使うと$\log d$項は消去できる.
   \end{itemize}
+  \endexample
 \end{frame}
 
 \begin{frame}{}{}
   {\bf Example 6.22} (``Spiked'' random vectors)
   \begin{itemize}
-    \item 
+    \item $x_i = \sqrt{d} e_{a(i)}$, where $a(i)$は$\{1,\dots,d\}$からuniformlyに決まるindex.
+    \item $\|x_i\|_2 = \sqrt{d}$で$\ex[x_ix_i^\tr] = I_d$なので, (6.50)のboundが同様になりたつ.
+    \item このケースではconstant factorを除いてimproveできない.
+    \endexample
   \end{itemize}
 \end{frame}
 
