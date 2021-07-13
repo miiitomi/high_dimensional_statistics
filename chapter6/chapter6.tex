@@ -1081,7 +1081,90 @@
 \subsection{6.5.2 Approximate sparsity}
 \begin{frame}{6.5.2 Approximate sparsity}{}
   \begin{itemize}
-    \item 
+    \item Thm 6.23は, 厳密に$0$であるentryが少ない場合は使い物にならない.
+    \item 厳密に$0$ではなくとも多くのentryが``near zero''であるときを考える.\\
+          　\\
+    \item $\Sigma$は, パラメータ$q\in[0,1]$と半径$R_q$に対して, 以下を満たすとする:
+          \[
+            \max_{j = 1,\dots, d} \sum_{\ell = 1}^d |\Sigma_{j\ell}|^q \le R_q.
+            \tag{6.58}
+          \]
+          \begin{itemize}
+            \item $q = 0$なら, 各行のnon-zero entryが最大$R_q$であることを示す.
+            \item $\Sigma$が(6.58)を満たすとき, $\ell_q$-sparsityを満たすという.
+          \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \begin{block}{Theorem 6.27 (Covariance estimation under $\ell_q$-sparsity)}
+    Covariance matrix $\Sigma$ は$\ell_q$-sparsity(6.58)を満たすとする.
+    このとき任意の$\lambda_n$ s.t. $\|\widehat{\Sigma} - \Sigma\|_{\max} \le \lambda_n/2$に対して以下が成り立つ:
+    \[
+      |||T_{\lambda_n}(\widehat{\Sigma}) - \Sigma|||_2 \le 4 R_n \lambda_n^{1-q}.
+      \tag{6.59a}
+    \]
+    $\{x_i\}_{i=1}^n$はzero-meanでsub-Gaussian w/ parameter at most $\sigma$からのi.i.d.サンプルなら,
+    $\lambda_n/\sigma^2 = 8\sqrt{\frac{\log d}{n}} + \delta$として以下が成り立つ:
+    \[
+      \mathbb{P}\left[\left\|T_{\lambda_{n}}(\widehat{\Sigma})-\Sigma\right\|_{2} \geq 4 R_{q} \lambda_{n}{ }^{1-q}\right]
+      \leq 8 e^{-\frac{n}{16} \min \left\{\delta, \delta^{2}\right\}} \quad \text { for all } \delta>0
+      \tag{6.59b}
+    \]
+  \end{block}
+\end{frame}
+
+\begin{frame}{}{}
+  {\bf Proof.}
+  \begin{itemize}
+    \item (6.59a)のdeterministic claimをgivenとすると(6.59b)はsub-exponential変数のtail boundから得られるので, (6.59a)を示す.
+    \item Exercise 6.2より, operator normは次のようにboundされる:
+          \[
+            ||| T_{\lambda_n}(\widehat{\Sigma}) - \Sigma|||_2
+            \le \max_{j = 1,\dots,d}\sum_{\ell = 1}^d|T_{\lambda_n}(\widehat{\Sigma}_{j\ell}) - \Sigma_{j\ell}|.
+          \]
+    \item $j \in\{1,\dots,d\}$を固定し, set $S_j(\lambda_n/2) := \{\ell \in \{1,\dots,d\}\mid |\Sigma_{j\ell} > \lambda_n/2|\}$とする.
+    \item 任意の$\ell \in S_j(\lambda_n/2)$について,
+          \[
+            \left|T_{\lambda_{n}}\left(\widehat{\Sigma}_{j \ell}\right)-\Sigma_{j \ell}\right|
+            \leq\left|T_{\lambda_{n}}\left(\widehat{\Sigma}_{j \ell}\right)-\widehat{\Sigma}_{j \ell}\right|+\left|\widehat{\Sigma}_{j \ell}-\Sigma_{j \ell}\right|
+            \leq \frac{3}{2} \lambda_{n}.
+          \]
+    \item 一方 $\ell \notin S_j(\lambda_n/2)$ については, $T_{\lambda_n}(\Sigma_{j\ell}) = 0$なので,
+          $
+            |T_{\lambda_n}(\widehat{\Sigma}_{j\ell}) - \Sigma_{j\ell}| = |\Sigma_{j\ell}|.
+          $
+    \item したがって, 
+          \[
+            \sum_{\ell = 1}^d |T_{\lambda_n}(\widehat{\Sigma}_{j\ell} - \Sigma_{j\ell}|
+            \le |S_j(\lambda_n/2)|\frac{3}{2}\lambda_n + \sum_{\ell \notin S_j(\lambda_n/2)}|\Sigma_{j\ell}|.
+            \tag{6.60}
+          \]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{}{}
+  \begin{itemize}
+    \item ここで次が成り立つ:
+          \[
+            \sum_{\ell \notin S_{j}\left(\lambda_{n} / 2\right)}\left|\Sigma_{j \ell}\right|
+            =\frac{\lambda_{n}}{2} \sum_{\ell \notin S_{j}\left(\lambda_{n} / 2\right)} \frac{\left|\Sigma_{j \ell}\right|}{\lambda_{n} / 2}
+            \stackrel{\mathrm{(i)}}{\leq} \frac{\lambda_{n}}{2} \sum_{\ell \notin S_{j}\left(\lambda_{n / 2)}\right.}\left(\frac{\left|\Sigma_{j \ell}\right|}{\lambda_{n} / 2}\right)^{q}
+            \stackrel{\mathrm{(ii)}}{\leq} \lambda_{n}^{1-q} R_{q}
+          \]
+          ただし(i)は$|\Sigma_{j\ell}|\le \lambda_n/2$と$q \in [0,1]$より, (ii)は$\ell_q$-sparsityから.
+    \item 一方$S_j(\lambda_n/2)$と$\ell_q$-sparsityから,
+          \[
+            |S_j(\lambda_n / 2)| \le \left(\frac{\lambda_n}{2}\right)^{-q}R_n.
+          \]
+    \item よって, (6.60)は
+          \[
+            \sum_{\ell = 1}^d |T_{\lambda_n}(\widehat{\Sigma}_{j\ell} - \Sigma_{j\ell}|
+            \le 2^qR_q\lambda_n^{1-q}\frac{3}{2} + R_q \lambda_n^{1-q}
+            \le 4 R_q \lambda_n^{1-q}
+          \]
+          となる.
+    \item これが全ての$j \in \{1,\dots,d\}$に対して成立するので, (6.59a)が示された.\qed
   \end{itemize}
 \end{frame}
 
